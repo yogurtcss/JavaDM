@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<users>
+    <user id="1">
+        <name>张三嗷</name>
+        <age>23</age>
+        <sex>male</sex>
+    </user>
+
+    <user id="2">
+        <name>哈哈</name>
+        <age>11</age>
+        <sex>female</sex>
+        <code>
+            <![CDATA[我喜欢你！]]>
+        </code>
+    </user>
+
+</users>

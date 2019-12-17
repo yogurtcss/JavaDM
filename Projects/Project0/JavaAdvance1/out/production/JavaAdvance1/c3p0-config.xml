@@ -1,0 +1,32 @@
+<c3p0-config>
+  <!-- 使用默认的配置读取连接池对象 -->
+  <default-config>
+  	<!-- 连接参数 -->
+    <property name="driverClass">com.mysql.jdbc.Driver</property>
+    <!-- 此处的url需设置为 我电脑本地的数据库嗷！ -->
+    <property name="jdbcUrl">jdbc:mysql://localhost:5306/db1</property>
+    <property name="user">root</property>
+    <property name="password">root</property>
+    
+    <!-- 连接池参数 -->
+    <!-- 初始化时，数据库连接池中申请得到的连接数量 5个 -->
+    <property name="initialPoolSize">5</property>
+    <!-- 数据库连接池中最大可容纳(即可申请得到的最大数量)的连接对象 -->
+    <property name="maxPoolSize">10</property>
+    <!-- 申请连接对象的 申请等待时间3000ms，超时将报错 -->
+    <property name="checkoutTimeout">3000</property>
+  </default-config>
+
+  <named-config name="otherc3p0"> 
+    <!--  连接参数 -->
+    <property name="driverClass">com.mysql.jdbc.Driver</property>
+    <property name="jdbcUrl">jdbc:mysql://localhost:3306/day25</property>
+    <property name="user">root</property>
+    <property name="password">root</property>
+    
+    <!-- 连接池参数 -->
+    <property name="initialPoolSize">5</property>
+    <property name="maxPoolSize">8</property>
+    <property name="checkoutTimeout">1000</property>
+  </named-config>
+</c3p0-config>

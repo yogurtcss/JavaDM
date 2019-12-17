@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 关于 form表单的属性
+    * action 规定了提交表单时发送表单数据的目的地，
+    即：将数据发到哪里，例如 action="login.php".
+
+    * method 规定了发送方式，常用的为 get 和 post,
+    涉及到用户隐私时，为了安全起见通常都采用 post 方式.
+
+    * name 表单的名字，如果是在 js 中想要获取 form 的 dom 对象，
+    直接使用 name 属性值即可
+    -->
+    <!-- 记得要填上 action 提交表单的去处！
+    action中的填写格式：/虚拟目录/servlet的资源路径
+    -->
+    <!-- 原本的action是："/Web1/loginServlet"，我暂时修改为其他的servlet -->
+    <!-- 等学到jsp页面时，跳转的资源路径可以 动态写进来
+    现在，在HTML页面中只能写死了资源路径： "/Web1/loginServlet"
+    -->
+    <form action="/Web1/loginServlet" method="post" >
+        用户名: <input type="text" name="username" /> <br>
+        密码： <input type="password" name="password" /> <br>
+
+        <input type="submit" value="登录" />
+
+    </form>
+
+</body>
+</html>
