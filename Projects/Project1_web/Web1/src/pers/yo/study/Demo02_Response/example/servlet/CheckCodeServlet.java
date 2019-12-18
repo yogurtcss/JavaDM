@@ -21,9 +21,22 @@ BufferedImage 生成的图片在内存里有一个图像缓冲区，
 构造方法：
 public BufferedImage (int width,int height,int imageType)  //imageType 指定图像类型，一般是给定的常量
 
-*  */
 
-//2019-12-17 16:57:00 好多方法看不懂，回来在谷歌
+▲ 绘制指定矩形的边框。矩形的左边缘和右边缘分别位于 x 和 x + width。
+上边缘和下边缘分别位于 y 和 y + height。使用图形上下文的当前颜色绘制该矩形。
+Rect，即 rectangle 矩形
+public void drawRect(int x, int y, int width, int height)
+
+
+▲ 填充指定的矩形。该矩形左边缘和右边缘分别位于 x 和 x+width -1。
+上边缘和下边缘分别位于 y 和 y+height -1。
+得到的矩形覆盖 width 像素宽乘以 height 像素高的区域。
+使用图形上下文的当前颜色填充该矩形。
+public abstract void fillRect(int x, int y, int width, int height)
+
+
+
+*  */
 
 
 @WebServlet("/checkCodeServlet") //第一步先把这个注解改了！
@@ -43,17 +56,24 @@ public class CheckCodeServlet extends HttpServlet {
 
         /* 好多方法看不懂！回来再百度方法
         * 2.美化图片
-        * (1)填充背景色
-        * (2)画边框
+        * (1)先填充背景色
+        * (2)然后在背景色的外围，画边框
+        *    注意，边框线是画到 (width-1, height-1)
         *  */
         //2.1 填充背景色
         Graphics g = image.getGraphics(); //已有的图片的 画笔对象
         //Color类在 java.awt包下，已经被我用 java.awt.* 全引进来了……
         g.setColor( Color.PINK ); //设置画笔颜色
+        // 以图片的左上角顶点为坐标原点(0,0)，右为x正轴，下为y正轴
         g.fillRect( 0,0,width,height );
 
         //2.2画边框
         g.setColor( Color.BLUE );
+        /* 矩形的左上角是 (0,0)，右下角是 (x-1,y-1)
+        * 这样的宽度width 从0到x-1，距离为x；
+        * 高度height 从0到y-1，距离为y
+        * 所以边框线应画到 width-1
+        *  */
         g.drawRect( 0,0, width-1, height-1 );
 
         //待随机抽取的字符串str
@@ -69,10 +89,11 @@ public class CheckCodeServlet extends HttpServlet {
             int index = rand.nextInt( str.length() ); //生成随机的下标
             char ch = str.charAt( index ); //根据随机下标，获取字符串中的该 “随机的”字符
             g.drawString( String.valueOf(ch), width/5*i, height/2 );
+            //转换为字符串最简单的方式：ch+"" 加空字符串
         }
 
-        //2.4 画干扰线
-        g.setColor( Color.GREEN );
+        //接下来准备随机画干扰线
+        g.setColor( Color.GREEN ); //设置干扰线的颜色为绿色
 
         //随机生成坐标点
         for( int i=0; i<10; i++ ){
@@ -81,7 +102,7 @@ public class CheckCodeServlet extends HttpServlet {
 
             int y1 = rand.nextInt( height );
             int y2 = rand.nextInt( height );
-
+            //2.4 画干扰线，需要两个坐标(x1,y1)和(x2,y2)，两点确定一线
             g.drawLine( x1,y1, x2,y2 );
         }
 
