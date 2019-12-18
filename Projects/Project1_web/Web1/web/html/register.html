@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+        window.onload = function(){ //页面加载后，才执行此script代码
+            //1.给超链接和图片绑定单击事件
+
+            //为图片绑定单击事件
+        var img = document.getElementById( "checkCode" );
+            img.onclick = function(){
+
+                //2.重新设置图片的src属性值
+
+                //为每一次请求添加一个时间戳，这样保证每次点击都能获取新的验证码图片
+                var date = new Date().getTime(); //getTime() 获取毫秒值，毫秒级别的
+                /* img.src = "/Web1/checkCodeServlet ? XXXX";
+                * 加个 问号? XXXX，相当于请求中传了参数XXXX
+                * 但实际上，我服务器没有利用你这参数XXXX做任何操作，所以你传过来没有任何意义，即没有任何影响
+                * 所以，这可以用来【欺骗服务器，更改请求】
+                *
+                *
+                * 每更改一次【问号后面的值】XXXX，就是“欺骗服务器”——产生新的请求，以获得新的验证码图片
+                * 如果 XXXX值不改变，那么服务器找的一直就是【上次在本地缓存过的图片】，不会获取新的图片！！
+                * 所以，XXXX是永不重复的值。什么是永不重复的？随机数(不是，总有可能会随机到重复的！)
+                * 永不重复的：时间戳，时间一直在走，不会重复！
+                *
+                * var date = new Date().getTime(); //getTime() 获取毫秒值，毫秒级别的
+                * 除非你在1ms内点击多次，才有可能重复！！
+                *  */
+                //img变量的 src属性嗷！
+                //img.src = "/Web1/checkCodeServlet?${date}"; //我佛了，居然不支持ES6的模板字符串
+                img.src = "/Web1/checkCodeServlet?" + date; //只能用传统的拼串模式了
+
+            }
+        };
+
+
+    </script>
+
+
+</head>
+<body>
+    <!-- 注：从技术上讲，<img> 标签并不会在网页中插入图像，而是从网页上链接图像
+    而 /Web1/checkCodeServlet 所显示的正是一张验证码图片
+    通过 img标签的src地址 指向/Web1/checkCodeServlet，可链接此验证码图片至 网页中
+    【我确实不知道src还能这样用！】
+    -->
+    <img id="checkCode" src="/Web1/checkCodeServlet"  />
+    <!-- 当 a 标签当 href 等于空当时候点击跳转到当前页面 (相当于刷新)
+    ▲ 当然还需要为img标签绑定监听然后更改其src资源
+    a标签的href置为空，只是刷新页面而已
+    把 href="" 删除就能发现点不了了
+    -->
+    <a href="" > 看不清？换一张嗷！ </a>
+</body>
+</html>
