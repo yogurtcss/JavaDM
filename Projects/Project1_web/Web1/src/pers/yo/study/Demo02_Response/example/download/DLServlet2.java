@@ -16,8 +16,6 @@ import java.net.URLEncoder;
 @WebServlet("/dlServlet2")
 public class DLServlet2 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        request.setCharacterEncoding( "UTF-8" );
         // 1.从请求参数中，获取文件名
 
         //<a href=  "/Web1/dlServlet2?filename=1.avi"  >视频</a>
