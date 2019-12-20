@@ -1,4 +1,4 @@
-package pers.yo.study.Demo03_Cookie;
+package pers.yo.study.Demo03_Cookie.basic;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
