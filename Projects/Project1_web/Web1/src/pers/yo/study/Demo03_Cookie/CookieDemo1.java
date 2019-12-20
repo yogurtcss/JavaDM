@@ -13,6 +13,11 @@ public class CookieDemo1 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.创建Cookie实例对象：cookie实例对象的值为 字符串msg，值为 字符串hello
         Cookie c = new Cookie( "msg", "hello" );
+
+        // ▲ 设置cookie的持久化存储嗷！
+        // 是我所安装的谷歌浏览器自身有问题。我用火狐浏览器是正常的
+        c.setMaxAge( 60 ); //设置Cookie存活时间为 30s
+
         //2.通过response发送Cookie
         response.addCookie( c );
 
