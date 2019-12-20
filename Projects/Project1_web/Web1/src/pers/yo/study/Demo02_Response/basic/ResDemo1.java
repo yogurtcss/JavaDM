@@ -1,4 +1,4 @@
-package pers.yo.study.Demo02_Response.example.servlet;
+package pers.yo.study.Demo02_Response.basic;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

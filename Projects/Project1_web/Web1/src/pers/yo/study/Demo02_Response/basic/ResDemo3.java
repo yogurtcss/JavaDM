@@ -1,4 +1,4 @@
-package pers.yo.study.Demo02_Response.example.servlet;
+package pers.yo.study.Demo02_Response.basic;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/resDemo3") //第一步先把这个注解改了！
 public class ResDemo3 extends HttpServlet {

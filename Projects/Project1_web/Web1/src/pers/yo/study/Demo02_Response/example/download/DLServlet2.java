@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 
 @WebServlet("/dlServlet2")
 public class DLServlet2 extends HttpServlet {
