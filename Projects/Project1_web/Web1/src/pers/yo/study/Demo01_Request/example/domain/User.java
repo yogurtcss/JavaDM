@@ -7,9 +7,22 @@ package pers.yo.study.Demo01_Request.example.domain;
 *  */
 
 public class User {
-    private int id;
-    private String username;
-    private String password;
+//    private int id;
+//    private String username;
+//    private String password;
+
+    public int id;
+    public String username;
+    public String password;
+
+    public User() {
+    }
+
+    public User(int id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
     public int getId() {
         return id;
