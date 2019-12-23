@@ -62,11 +62,13 @@
 
             * 注意，只有设置了 name 属性的控件，才会向服务器提交，不设置就不会提交。
             * 如：某用户在输入框中输入了 zhangsan的值，那么提交给服务器的键值对为：
-            * 【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】username = zhangsan！！
+            * 【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
 
-            【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】
-            【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】
-            【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】
+             【name属性的属性值】username = zhangsan！！
+
+            【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
+            【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
+            【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
 
             * 这用在 后台的servlet 通过request请求获取参数：
             * request.getParameter( 【post请求所提交过来的 “键值对” 的】"键名" 如username )
