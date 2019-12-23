@@ -45,7 +45,9 @@
 <div class="container" style="width: 400px;">
     <h3 style="text-align: center;">管理员登录</h3>
 
-    <%-- 更改2 --%>
+    <%-- 更改2
+    <form> 标签用来定义一个表单，所有表单内容放到这个容器元素之中。
+    --%>
     <form action="${pageContext.request.contextPath}/loginServlet" method="post">
         <div class="form-group">
             <%-- <label> 标签是一个行内元素，提供控件的文字说明，帮助用户理解控件的目的。
@@ -62,13 +64,13 @@
 
             * 注意，只有设置了 name 属性的控件，才会向服务器提交，不设置就不会提交。
             * 如：某用户在输入框中输入了 zhangsan的值，那么提交给服务器的键值对为：
-            * 【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
+            * 【name属性的属性值-此控件的名称 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
 
              【name属性的属性值】username = zhangsan！！
 
-            【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
-            【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
-            【name属性的属性值 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
+            【name属性的属性值-此控件的名称 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
+            【name属性的属性值-此控件的名称 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
+            【name属性的属性值-此控件的名称 就是 ▲包含此input标签的外部大的form表单 发出的post请求 所提交的键值对的“键名”嗷！】
 
             * 这用在 后台的servlet 通过request请求获取参数：
             * request.getParameter( 【post请求所提交过来的 “键值对” 的】"键名" 如username )
