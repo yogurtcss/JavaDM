@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /* 关于 request、response乱码的复习嗷！
@@ -34,9 +35,24 @@ public class LoginServlet extends HttpServlet {
         request.setCharacterEncoding( "UTF-8" );
 
         //----------2.获取数据：验证码verifyCode； verify 核实、查证
+        String verifyCode = request.getParameter( "verifyCode" );
 
+        //----------3.验证码校验
+        //通过request请求对象，验证码被存储此次会话中；会话存储在服务器端，很安全不会被截取
+        HttpSession session = request.getSession();
+        // Object session.getAttribute( "属性名" )，原本的返回值为Object。需向下转型为 String
+        String checkCode_server = (String)session.getAttribute( "CHECKCODE_SERVER" );
+        //获取了本次会话中 本次的验证码后，立马把本次验证码清除掉，下一次访问时就产生新的验证码了
+        session.removeAttribute( "CHECKCODE_SERVER" );
 
-
+        if( !checkCode_server.equalsIgnoreCase(verifyCode) ){ //如果验证码不正确
+            //为此请求添加新的提示信息
+            //即：在此请求中添加新的键值对，键名为错误提示login_msg，值为提示信息"验证码错误"
+            request.setAttribute( "login_msg", "验证码错误！" );
+            //跳转到登录页面
+            request.getRequestDispatcher( "/jsp/login.jsp" ).forward( request, response );
+            return; //直接返回、退出
+        }
 
     }
 
