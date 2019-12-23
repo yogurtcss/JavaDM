@@ -57,16 +57,16 @@
             <label for="user">用户名：</label>              <%-- 注意：此处 input标签的 id属性值为 user --%>
             <input type="text" name="username" class="form-control" id="user" placeholder="请输入用户名"/>
             <%-- input标签：必须写上name属性
-            * name属性：设置此控件的名称。主要用于向服务器提交数据时，【设置】此input标签提交的键值对的【键名】。
-            ▲ name属性 的 【属性值】 就是 此input标签提交的键值对的【键名】
+            * name属性：设置此控件的名称。主要用于向服务器提交数据时，【设置】此input标签 通过post请求提交的键值对的【键名】。
+            ▲ name属性 的 【属性值】 就是 此input标签 通过post请求提交的键值对的【键名】
 
             * 注意，只有设置了 name 属性的控件，才会向服务器提交，不设置就不会提交。
             * 如：某用户在输入框中输入了 zhangsan的值，那么提交给服务器的键值对为：
-            * 【name属性的属性值 就是 所提交的键值对的“键名”嗷！】username = zhangsan！！
+            * 【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】username = zhangsan！！
 
-            【name属性的属性值 就是 所提交的键值对的“键名”嗷！】
-            【name属性的属性值 就是 所提交的键值对的“键名”嗷！】
-            【name属性的属性值 就是 所提交的键值对的“键名”嗷！】
+            【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】
+            【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】
+            【name属性的属性值 就是 post请求所提交的键值对的“键名”嗷！】
 
             * 这用在 后台的servlet 通过request请求获取参数：
             * request.getParameter( 【post请求所提交过来的 “键值对” 的】"键名" 如username )
