@@ -16,15 +16,15 @@
     <title>管理员登录</title>
 
     <!-- 1. 导入CSS的全局样式 -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- 2. jQuery导入，建议使用1.9以上的版本 -->
-    <script src="../js/jquery-2.1.0.min.js"></script>
+    <script src="{pageContext.request.contextPath}/js/jquery-2.1.0.min.js"></script>
     <!-- 3. 导入bootstrap的js文件 -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="{pageContext.request.contextPath}/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     </script>
 
-    <script>
+    <script type="text/javascript" >
         window.onload = function(){
 
             //点击时 更改验证码图片
@@ -85,7 +85,13 @@
 
         <div class="form-inline">
             <label for="vcode">验证码：</label>
-            <input type="text" name="verifycode" class="form-control" id="verifycode" placeholder="请输入验证码" style="width: 120px;"/>
+            <%-- 我佛了，原来这里的name="verifyCode"不是用驼峰命名法！
+            原本写的是 verifycode， c是小写的！我真的佛了！
+
+            而在 request.getParameter( "verifyCode" ) 我用的是 verifyCode！
+            键名verifyCode不正确，以至于获取不到真正的验证码！
+            --%>
+            <input type="text" name="verifyCode" class="form-control" id="verifycode" placeholder="请输入验证码" style="width: 120px;"/>
 
             <%-- 改造1
             ${pageContext页面上下文对象.request属性.contextPath}
@@ -101,10 +107,10 @@
             JAVA中真正的pageContext实例对象.getRequest()方法  获取请求request的对象
 
             --%>
-            <a href="javascript:refreshCode()">
-                <img src="${pageContext.request.contextPath}/checkCodeServlet" title="看不清点击刷新" id="vcode"/>
 
-            </a>
+            <img src="${pageContext.request.contextPath}/checkCodeServlet" title="看不清点击刷新" id="vcode"/>
+
+
 
         </div>
         <hr/>
@@ -118,7 +124,17 @@
         <button type="button" class="close" data-dismiss="alert" >
             <span>&times;</span>
         </button>
-        <strong>登录失败!</strong>
+        <%-- 在request域中的数据login_msg
+        在请求request中添加属性的键值对，键为login_msg，值为 "用户名或密码错误！"
+        request.setAttribute( "login_msg", "用户名或密码错误！" );
+        在JSP页面中，使用 el表达式 应在request域-requestScope中获取此值
+
+        或者我们不指明域在哪，让 JSP自己在四个域找去吧
+        ▲ EL 从四个域中获得某个值 ${ key键名 };
+        同样是依次从 pageContext 域，request 域，session 域，application 域中 获取属性，
+        在某个域中获取后将不在向后寻找
+        --%>
+        <strong>${login_msg}</strong>
     </div>
 </div>
 </body>
