@@ -15,6 +15,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>管理员登录</title>
 
+    <%--
+    ▲ pageContext 页面上下文，该对象提供了对 【jsp 页面所有对象】 以及命名空间的访问。
+    context 英文解释为上下文，
+    一般理解为【运行的环境】，比如说你在教室上课，你所处的环境就叫 context, 你需要什么就从这个环境中取得。
+    【教室 提供了 教室中所有对象 的访问】 ——类似于 【工具类utils的用法嗷！】
+
+    使用 pageContext 可以访问 【jsp 页面所有对象】以及 【page、request、session、application 范围的变量】。
+
+     servlet 重定向到 jsp 后，css 样式和图片都没了，
+    原因是在 servlet 中转发时 css 和图片的路径变成相对于这个 servlet 的相对路径而非相对于 web 项目的路径了。
+    解决办法：导入 css 样式和图片时把 css 写成动态绝对路径，
+    如："${pageContext.request.contextPath }/css/main.css"
+    --%>
+
     <!-- 1. 导入CSS的全局样式 -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- 2. jQuery导入，建议使用1.9以上的版本 -->
@@ -134,7 +148,7 @@
         同样是依次从 pageContext 域，request 域，session 域，application 域中 获取属性，
         在某个域中获取后将不在向后寻找
         --%>
-        <strong>${login_msg}</strong>
+        <strong>${requestScope.login_msg}</strong>
     </div>
 </div>
 </body>
