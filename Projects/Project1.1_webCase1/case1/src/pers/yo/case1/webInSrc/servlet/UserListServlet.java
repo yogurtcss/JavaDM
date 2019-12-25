@@ -22,8 +22,8 @@ public class UserListServlet extends HttpServlet {
         List<User> users = service.findAll();
         //2.将list存入request域
         request.setAttribute("users",users);
-        //3.转发到list.jsp
-        request.getRequestDispatcher("/list.jsp").forward(request,response);
+        //3.转发到/jsp/list.jsp
+        request.getRequestDispatcher("/jsp/list.jsp").forward(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
