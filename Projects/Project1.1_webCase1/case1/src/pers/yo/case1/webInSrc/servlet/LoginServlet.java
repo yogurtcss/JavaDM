@@ -48,6 +48,9 @@ response.setContentType("text/html;charset=UTF-8");
 -----------------------------------
 
 
+▲ 解决 Tomcat在IDEA控制台输出中文乱码问题：
+配置Tomcat服务器中，虚拟机选项 填写 -Dfile.encoding=UTF-8
+重启服务器即可正常
 
 
 *  */
@@ -61,13 +64,13 @@ public class LoginServlet extends HttpServlet {
 
         //----------2.获取数据：用户填写的验证码verifyCode； verify 核实、查证
         String verifyCode = request.getParameter( "verifyCode" );
-        System.out.println( verifyCode ); // 测试一下是否能真正获取到用户填写的验证码！
+        //System.out.println( verifyCode ); // 测试一下是否能真正获取到用户填写的验证码！
         //----------3.验证码校验
         //通过request请求对象，验证码被存储此次会话中；会话存储在服务器端，很安全不会被截取
         HttpSession session = request.getSession();
         // Object session.getAttribute( "属性名" )，原本的返回值为Object。需向下转型为 String
         String checkCode_server = (String)session.getAttribute( "CHECKCODE_SERVER" );
-        System.out.println(  checkCode_server );
+        //System.out.println(  checkCode_server );
         //获取了本次会话中 本次的验证码后，立马把本次验证码清除掉，下一次访问时就产生新的验证码了
         session.removeAttribute( "CHECKCODE_SERVER" );
 
