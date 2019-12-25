@@ -30,11 +30,18 @@
     </style>
 
     <script>
+        <%-- 逮到你了：自定义的deleteUser函数，传入形参为 用户的id
+        --%>
         function deleteUser(id){
             //用户安全提示
             if(confirm("您确定要删除吗？")){
                 //访问路径
-                location.href="${pageContext.request.contextPath}/delUserServlet?id="+id;
+                <%-- window.location对象 ——在window全局中的location对象
+                window.location.href="某新的url"  ——类似点击另一个a标签的链接。跳转到指定的新的url
+                --%>
+                window.location.href="${pageContext.request.contextPath}/delUserServlet?id="+id;
+                <%-- ?问号后的是 post请求中传递参数，这里传递的参数名为"id"
+                在delUserServlet中获取被删除用户的id 语句为 request.getParameter("id"); --%>
             }
         }
 
@@ -58,10 +65,9 @@
                         //表单提交
                         document.getElementById("form").submit();
                     }
-
                 }
 
-            }
+            };
             //1.获取第一个cb
             document.getElementById("firstCb").onclick = function(){
                 //2.获取下边列表中所有的cb
@@ -74,8 +80,6 @@
                 }
 
             }
-
-
         }
 
 
@@ -137,7 +141,55 @@
                 <td>${user.qq}</td>
                 <td>${user.email}</td>
                 <td><a class="btn btn-default btn-sm" href="${pageContext.request.contextPath}/findUserServlet?id=${user.id}">修改</a>&nbsp;
-                    <a class="btn btn-default btn-sm" href="javascript:deleteUser(${user.id});">删除</a></td>
+                    <%-- 逮到你了：自定义的deleteUser函数，
+                    传入形参为 用户的id
+                    --%>
+                    <%-- 第一种写法，我还真没想到！ --%>
+                    <%--
+                    <a id="wantToDelete"
+                       class="btn btn-default btn-sm"
+                       href="javascript:deleteUser(${user.id});">删除</a></td>  --%>
+
+                    <%-- 第二种写法，看下面嗷！ --%>
+                    <a id="wantToDelete"
+                       class="btn btn-default btn-sm"
+                       href="javascript:void(0)"
+                       onclick="deleteUser(${user.id});return false;">删除</a></td>
+
+                    <%--
+                    一般想在 A 标签上使用 js 代码 有三种情况：
+                        <a href="javascript: 自定义函数test(${el表达式-传入形参})"> 标签 1</a>
+                        <a onclick="自定义函数test( ${el表达式-传入形参} )" href="#"> 标签 2</a>
+                        <a onclick="自定义函数test( ${el表达式-传入形参} )" href="javascript:void(0)"> 标签 3</a>
+                    --%>
+                    <%--
+                    ▲ <a> 标签的 href 属性用于指定超链接目标的 URL，
+                    href 属性的值可以是任何有效文档的相对或绝对 URL，包括片段标识符和 【JavaScript 代码段】。
+
+
+                    ▲ javascript: 自定义函数function(传入形参)    //表示在点击<a>标签时，执行一段 JavaScript 代码；
+                      - 【javascript:】是伪协议，它可以让我们通过一个链接来调用 javascript 函数。
+
+                    而 javascript:; 表示什么都不执行，这样点击 <a> 时就没有任何反应。
+
+
+                    ▲ javascript:; 表示这是一个空连接。点击之后没任何反应。
+                    类似的是 #，但是一个 #点击之后页面很长的情况下会会滚到顶部；而 javascript:; 没这样的问题；
+                    当然 ### 这样的效果就跟 javascript:; 一样了
+
+                    --%>
+
+                    <%--
+                    a标签的 onclick 和 href 同时存在的写法：
+                    a标签的href跳转会执行在 onClick 之前。所以解决方法是在 href 里面添加 javascript:void(0)
+                      注：javascript:void(0)仅仅表示一个死链接，没有任何信息。
+
+                        <a href="javascript:void(0)"
+                           οnclick="自定义函数-doSomething( ${el表达式-传入形参} );return false;" >test
+                        </a>
+
+                    --%>
+
             </tr>
 
         </c:forEach>
