@@ -48,8 +48,11 @@ public class AddUserServlet extends HttpServlet {
         *  */
 
         /* ▲ 注：跳转页面时，可用到 【请求转发】、【重定向】，该怎么用？
+	    *
 	    * 1.当请求中需要用到【共享数据】时，才用 “请求转发”
+	    * //服务器内部跳转路径，【不需要加项目名称(虚拟目录名！！)】
 	    *    request.getRequestDispatcher("/虚拟路径").forward(request.response)；
+	    *
 	    * 2.若请求中没有共享数据，则直接用“重定向” response.sendRedirect("/虚拟目录/servlet虚拟路径或jsp路径")
 	    * 即：response.sendRedirect( request.getContextPath()+"/servlet虚拟路径或jsp路径" )
         *  */
