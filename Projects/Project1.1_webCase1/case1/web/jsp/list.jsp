@@ -140,6 +140,7 @@
                 <td>${user.address}</td>
                 <td>${user.qq}</td>
                 <td>${user.email}</td>
+                <%-- 改进：点击修改按钮，带着id数据跳转到findUserServlet --%>
                 <td><a class="btn btn-default btn-sm" href="${pageContext.request.contextPath}/findUserServlet?id=${user.id}">修改</a>&nbsp;
                     <%-- 逮到你了：自定义的deleteUser函数，
                     传入形参为 用户的id
