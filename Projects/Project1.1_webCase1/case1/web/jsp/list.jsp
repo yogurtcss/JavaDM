@@ -153,33 +153,53 @@
                     <%-- 第二种写法，看下面嗷！ --%>
                     <a id="wantToDelete"
                        class="btn btn-default btn-sm"
-                       href="javascript:void(0)"
-                       onclick="deleteUser(${user.id});return false;">删除</a></td>
+                       href="javascript:void(0);"
+                       <%-- ------------------------------------
+                       1.onclick=""，双引号中的既不是字符串，也不是表达式，而是【语句】。所以要加上分号
+                       2.onclick="return false;" 会阻止默认行为，如阻止 form表单中的 submit按钮和 reset 钮，以及 阻止<a>标签跳转
+                       3.关于 javascript:前缀 该写在哪里
+                       一个是 onclick="javascript:"，另一个就是 <a href="javascript:">，
+                       (1)对于onclick， 可以省略javascript前缀；
 
-                    <%--
+                       (2)但是 <a>标签写和不写就代表两种意思了：
+                          写了前缀，那么 href的作用就和 onclick 一样了：执行一段javascript代码
+                          不写前缀，href 就是一个字符串 URL，会进行跳转。
+                       ------------------------------------ --%>
+                       onclick="javascript:deleteUser(${user.id});return false;">删除</a>
+                        <%-- 这里的 javascript: 可以省略--%>
+                </td>
+
+                    <%-- ------------------------------------
                     一般想在 A 标签上使用 js 代码 有三种情况：
                         <a href="javascript: 自定义函数test(${el表达式-传入形参})"> 标签 1</a>
                         <a onclick="自定义函数test( ${el表达式-传入形参} )" href="#"> 标签 2</a>
                         <a onclick="自定义函数test( ${el表达式-传入形参} )" href="javascript:void(0)"> 标签 3</a>
-                    --%>
-                    <%--
+                    ------------------------------------ --%>
+
+
+                    <%-- ------------------------------------
                     ▲ <a> 标签的 href 属性用于指定超链接目标的 URL，
                     href 属性的值可以是任何有效文档的相对或绝对 URL，包括片段标识符和 【JavaScript 代码段】。
 
-
                     ▲ javascript: 自定义函数function(传入形参)    //表示在点击<a>标签时，执行一段 JavaScript 代码；
                       - 【javascript:】是伪协议，它可以让我们通过一个链接来调用 javascript 函数。
-
                     而 javascript:; 表示什么都不执行，这样点击 <a> 时就没有任何反应。
-
 
                     ▲ javascript:; 表示这是一个空连接。点击之后没任何反应。
                     类似的是 #，但是一个 #点击之后页面很长的情况下会会滚到顶部；而 javascript:; 没这样的问题；
                     当然 ### 这样的效果就跟 javascript:; 一样了
 
-                    --%>
+                    【关于 javascript:前缀 该写在哪里】
+                     一个是 onclick="javascript:"，另一个就是 <a href="javascript:">，
+                       (1)对于onclick， 可以省略javascript前缀；
 
-                    <%--
+                       (2)但是 <a>标签写和不写就代表两种意思了：
+                          写了前缀，那么 href的作用就和 onclick 一样了：执行一段javascript代码
+                          不写前缀，href 就是一个字符串 URL，会进行跳转。
+                    ------------------------------------ --%>
+
+
+                    <%-- ------------------------------------
                     a标签的 onclick 和 href 同时存在的写法：
                     a标签的href跳转会执行在 onClick 之前。所以解决方法是在 href 里面添加 javascript:void(0)
                       注：javascript:void(0)仅仅表示一个死链接，没有任何信息。
@@ -188,10 +208,8 @@
                            οnclick="自定义函数-doSomething( ${el表达式-传入形参} );return false;" >test
                         </a>
 
-                    --%>
-
+                    ------------------------------------ --%>
             </tr>
-
         </c:forEach>
 
 
