@@ -47,27 +47,30 @@
 
         window.onload = function(){
             //给删除选中按钮添加单击事件
-            document.getElementById("delSelected").onclick = function(){
-                if(confirm("您确定要删除选中条目吗？")){
+            document.getElementById( "delSelected" ).onclick = function(){
+                if( confirm("您确定要删除选中条目吗？") ){
+                    let flag = false; //选中条目是否为 “空” 的标志
 
-                   var flag = false;
-                    //判断是否有选中条目
-                    var cbs = document.getElementsByName("uid");
-                    for (var i = 0; i < cbs.length; i++) {
-                        if(cbs[i].checked){
-                            //有一个条目选中了
-                            flag = true;
-                            break;
+                    /* 通过name值"uid"，获取所有用户的复选框checkbox_s 即 cbs --HTML的集合对象，
+                    * 遍历cbs，看看其中是否有一个被选中：是则flag为true， 否则就不做任何事
+                    *  */
+                    let cbs = document.getElementsByName( "uid" );
+                    for( let i=0, length=cbs.length; i<length; i++ ){
+                        if( cbs[i].checked == true ){ //若有一个条目被选中了，直接跳出循环
+                            flag = true; //将标志改为true
+                            break; //若有一个条目被选中了，直接跳出循环
                         }
                     }
 
-                    if(flag){//有条目被选中
-                        //表单提交
-                        document.getElementById("form").submit();
+                    if( flag===true ){ //如果标志改为true -选中条目是否不为 “空”，则可以提交进行删除了
+                        // formObject-form对象.submit()方法 把表单数据提交到 Web 服务器。
+                        document.getElementById( "form" ).submit(); //该方法提交表单的方式与用户单击 Submit 按钮一样
                     }
                 }
-
             };
+
+
+
             //1.获取第一个cb
             document.getElementById("firstCb").onclick = function(){
                 //2.获取下边列表中所有的cb
@@ -76,9 +79,7 @@
                 for (var i = 0; i < cbs.length; i++) {
                     //4.设置这些cbs[i]的checked状态 = firstCb.checked
                     cbs[i].checked = this.checked;
-
                 }
-
             }
         }
 
@@ -116,6 +117,12 @@
         <a class="btn btn-primary" href="javascript:void(0);" id="delSelected">删除选中</a>
 
     </div>
+
+    <%--
+    form表单 默认支持 把【选中的】复选框的值 通过post请求 提交到指定url中
+
+    在这一大组的复选框最外部，套一个 form表单 即可把这些【选中的】复选框的值 通过post请求 提交到指定url中
+    --%>
     <form id="form" action="${pageContext.request.contextPath}/delSelectedServlet" method="post">
         <table border="1" class="table table-bordered table-hover">
         <tr class="success">
@@ -131,7 +138,19 @@
         </tr>
 
         <c:forEach items="${pb.list}" var="user" varStatus="s">
+            <%-- 这里用了forEach循环，显示的是多个用户数据
+            显然就会 【显示 多个 该用户专属的复选框 】
+            --%>
             <tr>
+                <%-- 在这一大组的复选框最外部，套一个 form表单 即可把这些【选中的】复选框的值 通过post请求 提交到指定url中
+                所以，在post请求的参数格式为 ?uid=1&uid=2&uid=3...&uid=100 --被选中的复选框的值value，即value="${user.id}"
+                --%>
+                <%-- 这是每一个用户专属的复选框，在servlet中通过 uid 来 获取单个用户的复选框的值value="${user.id}"
+
+                因为多个用户都是使用相同的 键名"uid"，
+                所以使用String[] request.getParameterValues("uid")
+                得到的是 String数组，数组元素为 被选中的用户的${user.id}
+                --%>
                 <td><input type="checkbox" name="uid" value="${user.id}"></td>
                 <td>${s.count}</td>
                 <td>${user.name}</td>
