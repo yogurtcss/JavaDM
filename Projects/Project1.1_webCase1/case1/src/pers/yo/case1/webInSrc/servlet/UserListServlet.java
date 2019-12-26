@@ -19,7 +19,7 @@ public class UserListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.调用UserService完成查询
         UserService service = new UserServiceImpl();
-        List<User> users = service.findAll();
+        List<User> users = service.findAll(); //相当于 select * from XXX表
         //2.将list存入request域
         request.setAttribute("users",users);
         //3.转发到/jsp/list.jsp
