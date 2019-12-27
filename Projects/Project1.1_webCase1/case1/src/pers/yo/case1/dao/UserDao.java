@@ -26,7 +26,8 @@ public interface UserDao {
 
     /**
      * 查询总记录数
-     * @return
+     * //@return
+     * //@param condition  //临时删掉了
      * @param condition
      */
     int findTotalCount(Map<String, String[]> condition);
@@ -35,6 +36,7 @@ public interface UserDao {
      * 分页查询每页记录
      * @param start
      * @param rows
+     * // @param condition  //临时删掉了嗷！
      * @param condition
      * @return
      */

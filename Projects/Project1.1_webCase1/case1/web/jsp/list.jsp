@@ -92,6 +92,12 @@
 
     <div style="float: left;">
 
+        <%-- 将需要查询的【姓名name、籍贯address、邮箱email】属性 及 用户输入的“查询关键字”
+        以post请求发给 /findUserByPageServlet
+
+        如，我需要查询 name=李，address=北京，email=333@qq.com
+        以上3个【用户输入的查询字段】以post请求发给 /findUserByPageServlet
+        --%>
         <form class="form-inline" action="${pageContext.request.contextPath}/findUserByPageServlet" method="post">
             <div class="form-group">
                 <label for="exampleInputName2">姓名</label>
@@ -239,14 +245,14 @@
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <c:if test="${pb.currentPage == 1}">
-                    <li class="disabled">
+                    <li class="disabled"> <%-- 当页码为1时，不能点击后退喽 --%>
                 </c:if>
 
                 <c:if test="${pb.currentPage != 1}">
                     <li>
                 </c:if>
 
-
+                <%-- 从上面的两个if中，必然会出现一个<li>标签与底下这个</li>相匹配嗷！ --%>
                     <a href="${pageContext.request.contextPath}/findUserByPageServlet?currentPage=${pb.currentPage - 1}&rows=5&name=${condition.name[0]}&address=${condition.address[0]}&email=${condition.email[0]}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>

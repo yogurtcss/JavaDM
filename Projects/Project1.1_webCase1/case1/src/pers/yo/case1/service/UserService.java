@@ -57,12 +57,12 @@ public interface UserService {
 
     /**
      * 分页的条件 查询
-     * @param currentPage 当前页
-     * @param rows
-     * @param condition
-     * @return
+     * @param _currentPage 当前页
+     * @param _rows
+     * //@param condition  //临时删掉了
+     * //@return
      */
-    PageBean<User> findUserByPage(String currentPage, String rows, Map<String,String[]> condition );
+    PageBean<User> findUserByPage(String _currentPage, String _rows, Map<String, String[]> condition );
 
 
 }

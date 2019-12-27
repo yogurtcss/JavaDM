@@ -59,19 +59,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //将所需数据【setXXX-填入】PageBean 实例对象pb中，返回给前端页面以【动态展示数据】嗷！
-    public PageBean<User> findUserByPage(String _currentPage, String _rows) {
+    public PageBean<User> findUserByPage(String _currentPage, String _rows, Map<String,String[]> condition ) {
         //----------1.创建空的PageBean 实例对象pb
         PageBean<User> pb = new PageBean<>();
 
         //先把字符串形式的数据转为 整型数据
         int currentPage = Integer.parseInt( _currentPage );
         int rows = Integer.parseInt( _rows );
+
+        //当处于第一页时，若用户还想回退，则我们手动把页码改为1，就不会报错了
+        if( currentPage<=1 ){ //防止用户再次点击“后退”按钮
+            currentPage = 1;
+        }
+
         //----------2.为实例对象pb【setXXX-填入数据】 当前页面currentPage、和 rows
         pb.setCurrentPage( currentPage );
         pb.setRows( rows );
 
         //----------3.调用dao查询totalCount总记录数，并【setXXX-填入数据】进实例对象pb中
-        int totalCount = dao.findTotalCount();
+        int totalCount = dao.findTotalCount( condition );
         pb.setTotalCount( totalCount );
 
         //----------4.计算某页的开始索引start
@@ -80,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
         //----------5.调用dao查询list集合
         //dao.findByPage( int start, int rows );
-        List<User> list = dao.findByPage( start, rows );
+        List<User> list = dao.findByPage( start, rows, condition );
         pb.setList( list );
 
         //----------6.计算总页码totalPage，并【setXXX-填入数据】进实例对象pb中

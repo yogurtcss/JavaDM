@@ -1,7 +1,7 @@
 package pers.yo.case1.dao.impl;
 
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.omg.CORBA.Object;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pers.yo.case1.dao.UserDao;
@@ -140,47 +140,133 @@ public class UserDaoImpl implements UserDao {
         );
 
     }
+    /* 【单条记录的查询语句】，返回值也是单个的。
+    * queryForObject()与queryForMap()
+
+    --------------------
+     Object  queryForObject(sql语句, 【可选的 -Object[] args】, Class类类型<T> requiredType, )
+    返回一个【基本数据类型 或String】的实例对象——可认为是 【返回一个“值”的 包装类实例对象】
+    注：聚合函数的查询结果通常为一个“值”；
+    故queryForObject()方法 常用于聚合函数的查询：count、avg、sum、max、min
+
+    聚合函数：将一列数据作为一个整体，进行纵向的计算
+     count 计算个数
+     max
+     min
+     sum
+     avg 计算平均值
+
+    * sql：即sql语句
+    * 【可选的 -Object[] args】，即 Object类型的数组；数组元素是：为原sql语句中各 ? 号按先后顺序赋值
+       如 不用在外部new了，直接在此处传入一个 new Object[]{ 15-第一个?号, "user4"-第二个?号 }
+
+    * Class类类型<T> requiredType：
+      (此语句执行后的返回值)-等号左边、返回的实例对象所属的“类” 的【类_类型实例对象】
+      如 返回的实例对象是整型int的，则它所属的“类”为Integer，所以 此处的requiredType为 Integer.class
+    *
+    *
+    *  */
 
     @Override
     public int findTotalCount(Map<String, String[]> condition) {
-        //1.定义模板初始化sql
-        String sql = "select count(*) from user where 1 = 1 ";
-        StringBuilder sb = new StringBuilder(sql);
-        //2.遍历map
-        Set<String> keySet = condition.keySet();
-        //定义参数的集合
-        List<Object> params = new ArrayList<Object>();
-        for (String key : keySet) {
+        /* 2019-12-27 16:28:11
+        * 查询总记录数
+        *  */
 
-            //排除分页条件参数
-            if("currentPage".equals(key) || "rows".equals(key)){
-                continue;
+        /* 根据 条件查询参数map集合中的【value值】 动态生成sql语句 —— “若某键key对应的value有值，我就 用and把此键key添进sql语句中！”
+        *
+        *  1.定义初始化的sql语句：使用StringBuilder变量嗷！因为要 append添加sql语句
+        * StringBuilder实例对象sb 表示的字符串是 初始的sql语句
+        * select count(*) from user 【where 1=1】--这是永真的，有没有1=1 都是正常运行的
+        * 若某键key对应的value有值，我就 用and把此键key添进sql语句中！
+        * select count(*) from user 【where 1=1】 and name=? and address=?
+        *
+        * 2.遍历map，判断每一个键key的value是否有值
+        * 若有值， StringBuilder实例对象sb.append( "and 键key like %.." );
+        *   其中 StringBuilder实例对象sb 表示的字符串是 初始的sql语句
+        *
+        *  */
+
+        //1.定义初始化的sql语句
+        String sql = "select count(*) from user where 1=1 "; //sql语句的关键字前后要加空格嗷！
+        StringBuilder sb = new StringBuilder( sql );  //StringBuilder实例对象sb 表示的字符串是 初始的sql语句
+
+        //2.遍历map，判断每一个键key的value是否有值
+        Set<String> keys = condition.keySet(); //这里使用最简单的 增强for循环哈！
+        List<String> params = new ArrayList<>(); //若键key对应的value有值，将此值存入params数组中
+        for( String oneKey : keys ){
+            //排除分页的参数currentPage、rows
+            if( oneKey.equals("currentPage") || oneKey.equals("rows") ){
+                continue; //跳过当轮循环，进行下一轮循环
             }
 
-            //获取value
-            String value = condition.get(key)[0];
-            //判断value是否有值
-            if(value != null && !"".equals(value)){
-                //有值
-                sb.append(" and "+key+" like ? ");
-                params.add("%"+value+"%");//？条件的值
+            //虽然 值是 String数组类型的，但我明确知道 String数组里面只有一个元素，直接取第一个元素-下标为0
+            String oneValue = condition.get(oneKey)[0];
+
+            if( oneValue!=null && !oneValue.equals("") ){
+                /* 拼接sql语句，真的怕了
+                * 每个关键字前后，都给我加空格！！
+                *  */
+                sb.append( " and "+oneKey+" like ? " ); //正式动态拼接sql语句
+                params.add( "%"+oneValue+"%" );
             }
         }
-        System.out.println(sb.toString());
-        System.out.println(params);
 
-        return template.queryForObject(sb.toString(),Integer.class,params.toArray());
+        System.out.println( sb.toString() );
+        System.out.println( params );
+
+        /* 忘了这句话怎么用了，
+        * Object  queryForObject(sql语句, 【可选的 -Object[] args】, Class类类型<T> requiredType )
+        *  */
+        //自动拆箱，将Integer类型自动转为int型。不需我们手动转换了
+        // params.toArray() 就是可变参数的数组！！--按顺序填充sql语句中的各个问号
+        int ans = template.queryForObject( sb.toString(), params.toArray(), Integer.class  );
+
+        return ans;
     }
 
     @Override
     public List<User> findByPage(int start, int rows, Map<String, String[]> condition) {
+        /* 2019-12-27 16:46:20
+        * 分页查询
+        *  */
+
+        /* template.query方法
+        * 将查询sql所得【每一行数据】映射成【每一个实例对象X】，
+        * 并将 此映射后的实例对象X放入列表list中，
+        * 所以 list列表的泛型是 实例对象的X类型(如 T)
+        *
+        * List<T> query( sql语句,
+        *               new Object[]{ 数组元素-args为各问号?按顺序赋值 },
+        *               RowMapper<T> rm -将查询sql所得数据映射到的实例对象
+        * )
+        *
+        * List<T> query( sql语句,
+        *               RowMapper<T> rm,  -将查询查询sql所得数据映射到的实例对象
+        *               Object ...args    -单个的可变参数-各问号?按顺序赋值
+        * )
+        *  */
+        /*
+        List<User> list = template.query(
+                sql,
+                new Object[]{start,rows},  //使用其中一种重载方法：以对象数组的方式传入形参，为各问号赋值嗷！
+                new BeanPropertyRowMapper<User>(User.class)
+        );  */ //不能用这个写法 错误:(249, 30) java: 不兼容的类型: int无法转换为org.omg.CORBA.Object
+
+
         String sql = "select * from user  where 1 = 1 ";
 
         StringBuilder sb = new StringBuilder(sql);
         //2.遍历map
         Set<String> keySet = condition.keySet();
-        //定义参数的集合
-        List<Object> params = new ArrayList<Object>();
+        //定义参数的集合!!
+
+        /* List list = null;
+        * 从 list 的声明当中我们可以对比发现，原始类型没有为容器指定明确的元素类型，
+        * 所以我们可以在容器中放入一个 String，也可以放入一个 Integer，甚至任意的类型，
+        * value是字符串型， start和rows是整型，照样能放进List中！
+        *  */
+        List params = new ArrayList<>(); //List 没有设置泛型，所以可以放任意的数据！
         for (String key : keySet) {
 
             //排除分页条件参数
@@ -199,14 +285,14 @@ public class UserDaoImpl implements UserDao {
         }
 
         //添加分页查询
-        sb.append(" limit ?,? ");
+        sb.append(" limit ?, ? ");
         //添加分页查询参数值
-        params.add(start);
-        params.add(rows);
+        params.add( start );
+        params.add( rows );
         sql = sb.toString();
         System.out.println(sql);
         System.out.println(params);
 
-        return template.query(sql,new BeanPropertyRowMapper<User>(User.class),params.toArray());
+        return template.query( sql,new BeanPropertyRowMapper<User>(User.class),params.toArray() );
     }
 }
