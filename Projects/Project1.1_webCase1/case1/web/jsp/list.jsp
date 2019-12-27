@@ -254,15 +254,12 @@
 
 
                 <c:forEach begin="1" end="${pb.totalPage}" var="i" >
-
-
                     <c:if test="${pb.currentPage == i}">
                         <li class="active"><a href="${pageContext.request.contextPath}/findUserByPageServlet?currentPage=${i}&rows=5&name=${condition.name[0]}&address=${condition.address[0]}&email=${condition.email[0]}">${i}</a></li>
                     </c:if>
                     <c:if test="${pb.currentPage != i}">
                         <li><a href="${pageContext.request.contextPath}/findUserByPageServlet?currentPage=${i}&rows=5&name=${condition.name[0]}&address=${condition.address[0]}&email=${condition.email[0]}">${i}</a></li>
                     </c:if>
-
                 </c:forEach>
 
 
