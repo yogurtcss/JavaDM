@@ -34,7 +34,9 @@ import java.io.IOException;
 
 *  */
 
-@WebFilter( "/*" ) // 注意到，/*代表任意、所有资源的路径。
+// @WebFilter( "/*" ) // 注意到，/*代表任意、所有资源的路径。
+// 先把原本Demo01Filter.java 代码 @WebFilter( "/*" )注释掉，然后再来web.xml这里，配置过滤器
+
 /* 这个注解表示：当【访问所有资源的路径】之前，都会执行此Demo01Filter过滤器！！
 * 配好后，直接开tomcat服务器，访问index.jsp试试看
 *
