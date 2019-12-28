@@ -59,6 +59,7 @@ public class Demo01Filter implements Filter {
         System.out.println( "俺是Filter！Demo01Filter被执行啦！" );
 
         //“放行”：什么样的东西能通过我的“过滤、拦截”？
+        //执行这一句，说明放行（让下一个过滤器执行，如果没有过滤器了，就执行执行目标资源）
         filterChain.doFilter( servletRequest, servletResponse );
 
     }
