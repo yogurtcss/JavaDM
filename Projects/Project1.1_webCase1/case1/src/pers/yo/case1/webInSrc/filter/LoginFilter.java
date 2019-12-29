@@ -41,8 +41,7 @@ public class LoginFilter implements Filter {
         * 第一步要将 原本的请求ServletRequest类型 转为 HttpServletRequest类型，然后才获取cookie、session！！
         *  */
 
-        //0.强制转换为HttpServletRequest，单独【新建一个不同名字的变量】request
-        // 以获取cookie、session
+        //----------0.强制转换为HttpServletRequest，单独【新建一个不同名字的变量】request 以获取cookie、session
         HttpServletRequest request = (HttpServletRequest)req;
         /* chain.doFilter( ... ) 放行时传入哪个类型的请求req？
         * 注意，这里的形参！！ chain.doFilter( ServletRequest req, ServletResponse resp )
@@ -51,29 +50,29 @@ public class LoginFilter implements Filter {
         * 不要搞乱了！所以要单独【新建一个不同名字的变量】request，来装着【强制类型转换后的】HttpServletRequest类型变量
         *  */
 
-        //1.获取资源请求路径：统一资源标识符uri
+        //----------1.获取资源请求路径：统一资源标识符uri
         String uri = request.getRequestURI();
-        //2.判断当前请求的路径，是否包含【与登录页面login.jsp相关的资源：如css/js/字体/图片/验证码等】
+        //----------2.判断当前请求的路径，是否包含【与登录页面login.jsp相关的资源：如css/js/字体/图片/验证码等】
         if( uri.contains("/login.jsp") || uri.contains("/loginServlet") || uri.contains("/css/") ||
             uri.contains("/js/")       || uri.contains( "/fonts/" )     || uri.contains( "/checkCodeServlet" )  ){
-            /* 是，则直接放行
+            /* ----------是，则直接放行
             * 注意，这里的形参！！ chain.doFilter( ServletRequest req, ServletResponse resp )
             * chain.doFilter( 这里不是传HttpServletRequest啊！！！传入原本的形参ServletRequest req )
             *  */
             chain.doFilter( req,resp );
-        }else{ //不是，则判断用户是否登录
+        }else{ //----------不是，则判断用户是否登录
             /* HttpSession实例对象中的方法：
             * Object getAttribute(String name)
             * 有点忘了返回值是什么类型了，原来是Object类型的！
             *  */
             Object user = request.getSession().getAttribute( "user" );
             if( user!=null ){
-                /* 若已登录，则放行
+                /* ----------若已登录，则放行
                 * 注意，这里的形参！！ chain.doFilter( ServletRequest req, ServletResponse resp )
                 * chain.doFilter( 这里不是传HttpServletRequest啊！！！传入原本的形参ServletRequest req )
                 *  */
                 chain.doFilter( req,resp );
-            }else{ //没有登录，则登录到跳转页面
+            }else{ //----------没有登录，则登录到跳转页面
                 /* 在login.jsp页面中设置了 错误提示信息 login_msg
                 * <strong>${requestScope.login_msg}</strong>
                 *
