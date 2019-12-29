@@ -88,6 +88,7 @@ public class ProxyTest {
         //返回值是 Object类型的；真正使用时要 向下转型为自己需要的类型嗷(如 接口类型)！
         /*  public static Object newProxyInstance的三个参数：【简单版】
         * 1.类加载器：真实对象.getClass().getClassLoader()
+        * 一般做法：让动态代理类的实例对象 使用 【与 真实对象相同的】 类加载器！！
         *
         * 2.接口数组：
         * -在动态代理中：代理对象和真实对象实现相同的接口！！所以接口数组必需传入 【真实对象A已实现的接口】
@@ -133,35 +134,85 @@ public class ProxyTest {
                 new InvocationHandler(){  //处理器。匿名内部类的写法！
                     @Override  //使用IDEA快速帮我生成需重写的方法
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        /* invoke方法的3个参数
+                        /* invoke方法的3个参数：proxy、method、args
                         1.proxy动态代理类的实例对象，通常情况下不需要它。
                           但可以使用 getClass () 方法，得到 proxy 的 Class 类从而取得实例的类信息，如方法列表，annotation 等。
 
-                        2.method方法对象：代理对象调用的方法，被封装为的对象
-                         代表被动态代理类调用的方法。从中可得到方法名，参数类型，返回类型等等
-
-                        3.args对象数组：代理对象调用的方法时，传递的实际参数
-                         代表被调用方法的参数。注意基本类型 (int,long) 会被装箱成对象类型 (Interger, Long)
-                        * */
 
 
-                        return null;
+                        2.method方法对象：代理对象调用的方法，被封装为的对象 ——类型为java.lang.reflect.Method
+                          类似于反射中的 method对象：代表某个方法 的【中间实例】
+                          表示【被 动态代理类的实例对象调用】的方法(并不是真正的 “方法”)。从中可得到方法名，参数类型，返回类型等等
+                          - 获取由Method对象表示的方法名称 String getName()方法
+
+                          // 获取成员方法 的中间实例 后的操作：执行方法
+                            Object--返回值 Java.lang.reflect.Method实例对象.invoke(
+                                Object receiver【此method表示的方法】所在类的 真正实例对象,
+                                Object... args 【此method表示的方法】的传入形参(可变参数)...
+                            )
+                            ▲ invoke方法的返回值总是 Object类型的；
+                              真正调用时 需将其返回值进行【强制类型转换】-向下转型等操作
+
+                            //人话
+                            Object--返回值 Method实例对象method.invoke(
+                                【此method表示的方法】所在类的 真正实例对象obj,
+                                【此method表示的方法】的传入形参(可变参数)...
+                            )
+
+
+
+                        3.args对象数组：表示【被 动态代理类的实例对象调用】的方法 中 传入的 形参【数组】
+                          ▲ 【参数的数据类型】args数组中的每一个元素都是Object类型的
+                          注意基本类型 (int, long, double) 会【被装箱】成对象类型 (Integer, Long, Double)
+
+                          ▲ 所以，需用到args数组中的元素(即 方法中的传入形参)时，需要进行：
+                             - 强制类型转换，手动拆箱为基本数据类型，
+                             - 或 强制类型转换，向下转型
+
+                          ▲ 【参数顺序】此args对象数组参数顺序 与 原本方法形参的参数顺序 【是完全一致的】
+
+                        *  */
+
+                        System.out.println( "无论调用代理对象中的哪个方法，该invoke方法必定执行嗷！" );
+                        //----------判断被调用的是哪个方法 if...(else if)...(else if) 的结构，然后对该方法进行【增强】的操作
+                        if( method.getName().equals("sale") ){ //method.getName() 获取由method对象表示的方法名
+                            //----------1.增强参数
+                            /* 【参数顺序】此args对象数组参数顺序 与 原本方法形参的参数顺序 【是完全一致的】
+                            * 因为原本的 sale方法中只有1个传入的形参：
+                            * public String sale( double money ); //卖电脑的方法
+                            * 所以，从【参数顺序】来看， args[0] 就是代表 money参数；
+                            *
+                            * 注意！！从【参数的数据类型】来看，args[0]是 Double包装类的 money ！！
+                            * 需手动作强制类型转换为 基本数据类型double！！
+                            *  */
+                            //取出参数
+                            double money = (double)args[0]; //【参数的数据类型】args数组中的每一个元素都是Object类型的
+                            money = money *0.8; //正式的【增强参数】操作
+                            System.out.println( "专车接你嗷！" );
+                            /* 使用 此method所在类的实例对象lenovo，调用此方法
+                            * 注意，invoke方法的返回值总是 Object类型的；
+                            * 真正调用时 需将其返回值进行【强制类型转换】-向下转型等操作
+                            *  */
+                            String ans = (String)method.invoke( lenovo, money ); //传入增强后的money参数嗷！
+
+                            //----------2.增强返回值：注意，方法的返回值ans是 String类型的！！
+                            return (ans+"鼠标垫");
+                        }else{ //如果被调用的不是sale方法，那就随便你搞了：
+                            /* 注意：仍然传入此方法所属类的真正实例对象，且 仍然传入 原本的对象数据args(不做任何增强)，
+                            * 这就是 对【被调用的原方法】，原样调用
+                            *  */
+                            Object ans = method.invoke( lenovo, args );
+                            return ans;
+                        }
                     }
                 }
-
-
         );
-
-
-
-
-
 
         //----------3.使用代理对象调用方法
         //因为代理对象与真实对象实现了相同的接口，所以代理对象与真实对象有相同的方法可调用
+        String computer = proxy_lenovo.sale( 8000 );
+        System.out.println( computer );
+        System.out.println( "--------------" );
+        proxy_lenovo.show(); //调用的不是sale方法，(而show方法没有被增强！！)则原样调用嗷！
     }
-
-
-
-
 }
