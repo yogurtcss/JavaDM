@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="../js/jquery-3.3.1.min.js" ></script>
+
+        <script>
+            /* JQuery对象和JS对象的方法是不通用的!!
+            * JQuery对象与JS对象相互转换
+            *     JQ --> JS :
+            *         ▲ JQuery对象也可以当作数组来使用, JQuery对象就是一个数组, 其中的元素是 JS对象
+            *         (1) JQ对象[索引]
+            *         (2) JQ对象.get(索引)
+            *
+            *     JS --> JQ :  $(JS对象)
+            *  */
+
+            //------------------------------JS入口函数: 给b1按钮添加单击事件
+            window.onload = function(){ //JS入口函数: 等待整个页面（包括视频、音乐、图片等多媒体文件）加载完毕再执行；
+                $("#b1").click( function(){
+                    console.log("abc");
+                } );
+            }
+
+            //------------------------------JQuery入口函数(dom文档加载完成之后执行该函数中的代码)
+            /* 将JS中的document对象转为JQuery对象
+            紧接着调用这转化后的JQuery对象的ready( function(){} )函数--方法
+            传入ready()的形参为 要执行的函数 function(){}
+
+               $(document).ready(
+                   function(){...} //等待dom树结构（不包括视频、音乐、图片等多媒体文件）加载完毕就执行
+            *  )
+            *
+            *
+            * $(document).ready(  function(){}  ) 的 等价简写方式 为:
+            * $(  function(){}  )       //省略 转换JS中document对象 调用ready方法了!!
+            *  */
+
+            //------------------------------JS入口函数与JQuery入口函数的比较
+            /*
+            1.执行时间不同
+              (1) window.οnlοad=function (){} 会等待整个页面（包括视频、音乐、图片等多媒体文件）加载完毕再执行；
+              (2) $(document.).ready (function (){}) 等待 dom 树结构（不包括视频、音乐、图片等多媒体文件）加载完毕就执行。
+
+            2.编写个数不同
+              (1) 一个页面只能写一个 window.οnlοad=function (){}，
+                 如果重复写多个，那么最后一个 window.οnlοad=function (){} 才有效；
+
+              (2) 一个页面可以写多个 $(document).ready (funciton (){})，每一个都有效。
+
+            3.简化写法
+              (1) window.onload 没有简化写法;
+              (2) $(document).ready (function (){}) 可以简写成 $(function (){});
+
+            *  */
+
+
+        </script>
+
+
+
+
+    </head>
+    <body>
+        <div id="div1">div1....</div>
+        <div id="div2">div2....</div>
+        <input type="button" value="点我" id="b1">
+    </body>
+</html>
