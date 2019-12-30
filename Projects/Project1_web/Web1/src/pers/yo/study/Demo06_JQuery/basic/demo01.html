@@ -19,6 +19,12 @@ jquery-xxx.js 与 jquery-xxx.min.js区别：
     <div id="div1"> div1... </div>
     <div id="div2"> div2... </div>
 
+    <!-- 测试：for循环 绑定监听事件 -->
+    <button>测试1</button>
+    <button>测试2</button>
+    <button>测试3</button>
+    <button>测试4</button>
+
     <script>
         //------------------------------1.JQuery入门(这里有30个短杠!!)
         //1.根据id获取元素对象
@@ -44,24 +50,103 @@ jquery-xxx.js 与 jquery-xxx.min.js区别：
         // console.log( div2.html() );
 
 
+        //------------------------------▲ for循环 绑定监听事件时，
+        // 若局部变量使用var i=0，那么索引值总是最后一个
+        /*
+        * 解决：(1)下标法：为每个按钮添加下标属性index
+        * var btns = document.getElementsByTagName( "xxx" );
+        * //伪数组每次循环时都会重新计算一次长度，所以最好提出去或者直接加到for循环内部
+        * for( var i=0, length=btns.length; i<length; i++ ){
+        *    var btn = btns[i]; //取到某个btn
+        *    btn.index = i; //为每个按钮添加下标属性index
+        *    btn.onclick = function(){
+        *       console.log( "第"+ (this.index+1) +"个按钮哦！" );
+        *    }
+        *
+        * }
+        *
+        * (2)将局部变量 var i=0; 改为 let i=0 即可
+        *
+        *
+        * ▲ 若不是循环绑定监听事件，则for循环中的var与let作用是相同的
+        *  */
+
+        var btns = document.querySelectorAll( "button" );
+        // console.log( btns );
+        /* for循环 绑定监听事件时，若局部变量使用var i=0
+        * 那么索引值总是最后一个
+        *  */
+        // console.log( btns.length );
+        // for( var i=0,length=btns.length; i<length; i++ ){
+        //     btns[i].onclick = function(){ //序号为 下标+1
+        //         //此时，无论点击哪个按钮，输出的索引值总是最后一个 (在这里 最后一个下标是3)
+        //         console.log(  "我的下标是："+ i +"，我是第 "+ (i+1) +" 个按钮！" );
+        //     }
+        // }
+
+        //改进1：保持var i=0不变，使用下标法，为每个btn添加index属性
+        // for( var i=0, length=btns.length; i<length; i++ ){
+        //     var btn = btns[i]; //取出某个btn
+        //     btn.index = i; //为当前这个btn添加index属性 --值为此btn的下标
+        //     btn.onclick = function(){
+        //         /* 注意，是获取【当前btn对象】的下标
+        //         * 【当前btn对象】就是 this ！！
+        //         *  */
+        //         console.log( "我的下标是："+ this.index +"，我是第 "+ (this.index+1) +" 个按钮！" )
+        //     }
+        // }
+
+        //改进2：直接把var i=0改为 let i=0即可正常
+        for( let i=0,length=btns.length; i<length; i++ ){
+            btns[i].onclick = function(){ //序号为 下标+1
+                //此时，无论点击哪个按钮，输出的索引值总是最后一个 (在这里 最后一个下标是3)
+                console.log(  "我的下标是："+ i +"，我是第 "+ (i+1) +" 个按钮！" );
+            }
+        }
+
         //------------------------------2.JQuery对象与JS对象的转换
         //1.通过JS方式,获取标签名TagName为 "div"的所有HTML元素对象
         var divs = document.getElementsByTagName( "div" );
+        console.log( "我是divs, "+divs ); //我是divs, [object HTMLCollection集合] --即 object对象的集合
         console.log( divs.length ); //可以当作数组来使用
         //对divs中所有的div 让其标签体内容变为"aaa"
 
-        //回来搜一下 for循环!!
-        for( let i=0, length=divs.length; i<length; i++ ){
-            divs[i].innerHTML = "aaa";
+        // ------------------------------▲ 若不是循环绑定监听事件，则for循环中的var与let作用是相同的
+        for( var i=0, length=divs.length; i<length; i++ ){
+            //divs[i].innerHTML = "aaa";
+            /* $( divs[i] ) 将每一个JS对象divs[i] 转换为JQuery对象!!
+            * 注意,要先把底下的 $divs.html( "bbb" ); 给注释掉!!
+            *  */
+            $(divs[i]).html("ccc");
         };
 
         //2.通过JQ方式,获取标签名TagName为 "div"的所有HTML元素对象
         var $divs = $("div");
-        console.log( $divs.length ); //也可以当作数组来使用
+        console.log( "我是$divs, "+$divs ); //我是$divs, [object Object]
+        console.log( $divs.length ); //JQuery对象也可以当作数组来使用
 
+        //对divs中所有的div 让其标签体内容变为"bbb"
+        //$divs.html( "bbb" ); //居然不用for循环遍历!
 
+        /* html () 方法设置或返回被选元素的内容（innerHTML）。
+        * 当该方法用于 [返回内容] 时，则 [返回第一个匹配元素的内容] 。
+        * 当该方法用于 [设置内容] 时，则 [重写所有匹配元素的内容] 。
+        * 提示：如只需设置或返回被选元素的文本内容，请使用 text() 方法。
+        *  */
 
+        /* JQuery对象和JS对象的方法是不通用的!!
+        * JQuery对象与JS对象相互转换
+        *     JQ --> JS :
+        *         ▲ JQuery对象也可以当作数组来使用, JQuery对象就是一个数组, 其中的元素是 JS对象
+        *         (1) JQ对象[索引]
+        *         (2) JQ对象.get(索引)
+        *
+        *     JS --> JQ :  $(JS对象)
+        *  */
 
+        // JQ --> JS
+        $divs[0].innerHTML = "ddd";  // $divs[0] 获取JQuery对象数组中的: 第1个<div>的 JS对象
+        $divs.get(1).innerHTML = "eee"; // $divs[0] 获取JQuery对象数组中的: 第2个<div>的 JS对象
     </script>
 
 
