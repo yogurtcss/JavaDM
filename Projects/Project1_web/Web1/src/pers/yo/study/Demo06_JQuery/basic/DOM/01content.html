@@ -12,7 +12,11 @@
             *  */
 
             /* 一、内容操作
+            注：(1)无形参传入时，是【获取】；
+            (2)有形参X传入时，是【设置】 XXX属性的值为 X；
+
 		    1. html(): 获取/设置元素的标签体内容   <a><font>内容</font></a>  --> <font>内容</font>
+		        标签体内容：某个标签的开始和结束标签之间的内容
 		    2. text(): 获取/设置元素的标签体纯文本内容   <a><font>内容</font></a> --> 内容
 		    3. val()： 获取/设置元素的value属性值
             *  */
@@ -25,6 +29,7 @@
             *  */
             $(document).ready( function(){
                 console.log( "获取myinput 的value值："+$("#myinput").val() );
+                console.log( "设置myinput 的value值："+$("#myinput").val("李四嗷") );
             } );
 
             //---------------获取mydiv的标签体内容
@@ -43,6 +48,6 @@
     </head>
     <body>
         <input id="myinput" type="text" name="username" value="张三" /><br />
-        <div id="mydiv"><p><a href="#">标题标签</a></p></div>
+        <div id="mydiv">  <p><a href="#">标题标签</a></p>  </div>
     </body>
 </html>
