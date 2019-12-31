@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>内部插入脚本</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <!-- 注意JQuery引入文件的路径！ -->
+        <script  src="../../js/jquery-3.3.1.min.js"></script>
+        <style type="text/css">
+            div,span{
+                width: 140px;
+                height: 140px;
+                margin: 20px;
+                background: #9999CC;
+                border: #000 1px solid;
+                float:left;
+                font-size: 17px;
+                font-family:Roman;
+            }
+
+            div .mini{
+                width: 30px;
+                height: 30px;
+                background: #CC66FF;
+                border: #000 1px solid;
+                font-size: 12px;
+                font-family:Roman;
+            }
+
+            div.visible{
+                display:none;
+            }
+        </style>
+
+        <script type="text/javascript">
+            /* 注意JQuery引入文件的路径！
+            *  */
+
+            /* CRUD操作:
+		    1. append():父元素将子元素追加到末尾
+			  对象1.append(对象2): 将对象2添加到对象1元素内部的 【最末尾】
+			2. prepend():父元素将子元素追加到开头
+			   ▲ prepend 前置
+			  对象1.prepend(对象2):将对象2添加到对象1元素内部的 【最开头】
+		    3. appendTo():
+			  对象1.appendTo(对象2):将对象1添加到对象2内部的 【最末尾】
+		    4. prependTo()：
+			  对象1.prependTo(对象2):将对象1添加到对象2内部的 【最开头】
+            *  */
+
+            $( function(){
+                $("#b1").click( function(){
+                    /* 将“反恐”放置到 id为city的元素 内部的 最末尾
+                    *  反恐 不是  id为city的元素 的子元素！！
+                    *  */
+                    $("#fk").appendTo( $("#city") );
+                } );
+
+                $("#b2").click( function(){
+                    /* 将 反恐 放置到 id为city的元素 内部的 最前面
+                    * 反恐 不是  id为city的元素 的子元素！！
+                    *  */
+                    $("#fk").prependTo( $("#city") );
+                } );
+
+                /* 注意 after()与insertAfter() 主语宾语的区别！
+
+			    对象1.after(对象2)： 【对象1的后边after是对象2】
+			    将对象2添加到对象1后边。使得：对象1和对象2是兄弟关系
+
+			    对象1.before(对象2)： 【对象1的前边是对象2】
+			    将对象2添加到对象1前边。使得：对象1和对象2是兄弟关系
+
+			    ------------------------
+			    对象1.insertAfter(对象2)：
+			    将对象1【插入】insert到对象2后边。使得：对象1和对象2是兄弟关系
+
+			    对象1.insertBefore(对象2)：
+			    将对象1【插入】insert到对象2前边。使得：对象1和对象2是兄弟关系
+                *  */
+
+                $("#b3").click( function(){
+                    /* 将反恐插入到天津后面 insertAfter
+                    * 或者：天津的后面是反恐 after
+                    * 使得 天津和反恐 是兄弟元素
+                    *  */
+                    // $("#tj").after( $("#fk") ); //XXX的后面是YYY
+                    $("#fk").insertAfter( $("#tj") ); //把YYY插入到XXX后面
+                } );
+                $("#b4").click( function(){
+                    /* 将反恐插入到天津前面 insertBefore
+                    * 或者：天津的前面是反恐 before
+                    * 使得 天津和反恐 是兄弟元素
+                    *  */
+                    // $("#tj").before( $("#fk") ); //XXX的前面是YYY
+                    $("#fk").insertBefore( $("#tj") ); //把YYY插入到XXX的前面
+                } );
+
+
+
+            } )
+
+
+
+        </script>
+
+
+    </head>
+
+    <body>
+
+        <input type="button" value="将反恐放置到city的后面"  id="b1"/>
+        <input type="button" value="将反恐放置到city的最前面"  id="b2"/>
+        <input type="button" value="将反恐插入到天津后面"  id="b3"/>
+        <input type="button" value="将反恐插入到天津前面"  id="b4"/>
+        <ul id="city">
+            <li id="bj" name="beijing">北京</li>
+            <li id="tj" name="tianjin">天津</li>
+            <li id="cq" name="chongqing">重庆</li>
+        </ul>
+
+
+        <ul id="love">
+            <li id="fk" name="fankong">反恐</li>
+            <li id="xj" name="xingji">星际</li>
+        </ul>
+
+        <div id="foo1">Hello1</div>
+
+    </body>
+
+
+
+</html>
