@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>表单属性过滤选择器</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <!-- 注意JQuery文件的路径！ -->
+        <script  src="../../js/jquery-3.3.1.min.js"></script>
+        <style type="text/css">
+            div,span{
+                width: 180px;
+                height: 180px;
+                margin: 20px;
+                background: #9999CC;
+                border: #000 1px solid;
+                float:left;
+                font-size: 17px;
+                font-family:Roman;
+            }
+
+            div .mini{
+                width: 50px;
+                height: 50px;
+                background: #CC66FF;
+                border: #000 1px solid;
+                font-size: 12px;
+                font-family:Roman;
+            }
+
+            div .mini01{
+                width: 50px;
+                height: 50px;
+                background: #CC66FF;
+                border: #000 1px solid;
+                font-size: 12px;
+                font-family:Roman;
+            }
+            #job{
+                margin: 20px;
+            }
+            #edu{
+                margin-top:-70px;
+            }
+
+        </style>
+
+        <script type="text/javascript">
+            /* <!-- 注意JQuery文件的路径！ -->
+            * <script  src="../../js/jquery-3.3.1.min.js" />
+            *  */
+
+            /* JQuery对象的val()方法：返回或设置被选元素的【value属性】的值
+            *   当val()没有传入形参时：【返回】第一个匹配元素的 value 属性的值
+            *   当val()传入一个形参X时：【设置】第一个匹配元素的 value 属性的值 为X
+            * 适用于：元素的值是通过 value 属性设置的；该方法大多用于 input 元素
+            *  */
+
+            /* 可用元素选择器
+			* 语法： :enabled 获得可用元素
+            *  */
+            $(document).ready( function(){ //利用 jQuery 对象的 val() 方法改变表单内可用 <input> 元素的值
+                $("#b1").click( function(){
+                    //input标签有很多个，需要依据 type属性来选出真正要的input标签呀！
+                    //在所有input标签中：选出 类型type为'text'的那一堆input标签！！
+                    $("input[type='text']:enabled").val("aaa");
+                } );
+            } );
+
+
+            /* 不可用元素：disabled属性="disabled"值
+            * 不可用元素选择器：
+			* 语法： :disabled 获得不可用元素
+            *  */
+            $( function(){ //利用 jQuery 对象的 val() 方法改变表单内不可用 <input> 元素的值
+                $("#b2").click( function(){
+                    //在所有input标签中，选出 类型type为text的那一堆input标签！
+                    $("input[type='text']:disabled").val("bbb");
+                } );
+            } );
+
+
+            /* 选中选择器
+			* 语法： :checked 获得单选/复选框选中的元素
+            *  */
+            $(document).ready( function(){ //利用 jQuery 对象的 length 属性获取复选框选中的个数
+                $("#b3").click( function(){
+                    /* 在所有input标签中，选出 类型type为checkbox的 那一堆input标签！！
+                    * 被选中checked的元素被放入数组中，  --“被选中元素”的数组arr
+                    * ".length"属性 获取“被选中元素”的数组arr长度，
+                    * 就是 得到了 有几个元素被选中了！！
+                    *  */
+                    console.log( $("input[type='checkbox']:checked").length ); //控制台输出
+                    //
+                } );
+            } );
+
+
+            /* 选中选择器
+			* 语法： :selected 获得下拉框选中的元素
+            *  */
+            $( function(){ //利用 jQuery 对象的 length 属性获取下拉框选中的个数
+                $("#b4").click( function(){
+                    /* id为job的下拉选框，获取此下拉选框的直接后代option选项
+                    * 被选中selected的元素被放入数组中，  --“被选中元素”的数组arr
+                    * ".length"属性 获取“被选中元素”的数组arr长度，
+                    * 就是 得到了 有几个元素被选中了！！
+                    *  */
+                    console.log( $("#job>option:selected").length );
+                } );
+            } );
+
+
+        </script>
+
+
+    </head>
+
+    <body>
+
+        <input type="button" value="保存"  class="mini" name="ok"  class="mini" />
+        <input type="button" value=" 利用 jQuery 对象的 val() 方法改变表单内可用 <input> 元素的值"  id="b1"/>
+        <input type="button" value=" 利用 jQuery 对象的 val() 方法改变表单内不可用 <input> 元素的值"  id="b2"/>
+        <input type="button" value=" 利用 jQuery 对象的 length 属性获取复选框选中的个数"  id="b3"/>
+        <input type="button" value=" 利用 jQuery 对象的 length 属性获取下拉框选中的个数"  id="b4"/>
+
+        <br><br>
+
+        <input type="text" value="不可用值1" disabled="disabled">
+        <input type="text" value="可用值1" >
+        <input type="text" value="不可用值2" disabled="disabled">
+        <input type="text" value="可用值2" >
+
+        <br><br>
+        <input type="checkbox" name="items" value="美容" >美容
+        <input type="checkbox" name="items" value="IT" >IT
+        <input type="checkbox" name="items" value="金融" >金融
+        <input type="checkbox" name="items" value="管理" >管理
+
+        <br><br>
+
+        <input type="radio" name="sex" value="男" >男
+        <input type="radio" name="sex" value="女" >女
+
+        <br><br>
+
+        <select name="job" id="job" multiple="multiple" size=4>
+            <option>程序员</option>
+            <option>中级程序员</option>
+            <option>高级程序员</option>
+            <option>系统分析师</option>
+        </select>
+
+        <select name="edu" id="edu">
+            <option>本科</option>
+            <option>博士</option>
+            <option>硕士</option>
+            <option>大专</option>
+        </select>
+
+
+        <br/>
+
+        <div id="two" class="mini" >
+            id为two   class是 mini  div
+            <div  class="mini" >class是 mini</div>
+        </div>
+
+        <div class="one" >
+            class是 one
+            <div  class="mini" >class是 mini</div>
+            <div  class="mini" >class是 mini</div>
+        </div>
+        <div class="one" >
+            class是 one
+            <div  class="mini01" >class是 mini01</div>
+            <div  class="mini" >class是 mini</div>
+        </div>
+
+    </body>
+
+
+
+</html>
+
+
+
