@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>DOM操作：内容操作</title>
+        <!-- 注意JQuery文件的路径！ -->
+        <script  src="../../js/jquery-3.3.1.min.js"></script>
+
+        <script type="text/javascript">
+            /* !-- 注意JQuery文件的路径！ -->
+            * <script  src="../../js/jquery-3.3.1.min.js" />
+            *  */
+
+            /* 一、内容操作
+		    1. html(): 获取/设置元素的标签体内容   <a><font>内容</font></a>  --> <font>内容</font>
+		    2. text(): 获取/设置元素的标签体纯文本内容   <a><font>内容</font></a> --> 内容
+		    3. val()： 获取/设置元素的value属性值
+            *  */
+
+            //---------------获取myinput 的value值
+            /* JQuery对象的val()方法：返回或设置被选元素的【value属性】的值
+            *   当val()没有传入形参时：【返回】第一个匹配元素的 value 属性的值
+            *   当val()传入一个形参X时：【设置】第一个匹配元素的 value 属性的值 为X
+            * 适用于：元素的值是通过 value 属性设置的；该方法大多用于 input 元素
+            *  */
+            $(document).ready( function(){
+                console.log( "获取myinput 的value值："+$("#myinput").val() );
+            } );
+
+            //---------------获取mydiv的标签体内容
+            $( function(){
+                console.log( "获取mydiv的标签体内容："+$("#mydiv").html() );
+            } );
+
+            //---------------获取mydiv文本内容
+            $(document).ready( function(){
+                console.log( "获取mydiv文本内容："+$("#mydiv").text() );
+            } );
+
+        </script>
+
+
+    </head>
+    <body>
+        <input id="myinput" type="text" name="username" value="张三" /><br />
+        <div id="mydiv"><p><a href="#">标题标签</a></p></div>
+    </body>
+</html>
