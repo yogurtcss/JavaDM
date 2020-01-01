@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<!-- 注意JQuery文件的引入！ -->
+		<script  src="../../js/jquery-3.3.1.min.js"></script>
+
+
+		<style>
+			#leftName , #btn,#rightName{
+				float: left;
+				width: 100px;
+				height: 300px;
+			}
+			#toRight,#toLeft{
+				margin-top:100px ;
+				margin-left:30px;
+				width: 50px;
+			}
+
+			.border{
+				height: 500px;
+				padding: 100px;
+			}
+		</style>
+
+		<script type="text/javascript">
+			/* 需求：实现下拉列表选中条目左右选择功能
+			* 左下拉列表A --简称左表A
+			* 右下拉列表B --简称右表B
+			*
+			* 在A中选条目abc，扔到B表中，
+			* 注意 扔到B表后，A表中就没有abc条目了嗷，所以这不是复制clone()
+			*
+			* 选中选择器
+			* 语法： :selected 获得下拉框选中的元素
+			*
+			* A.appendTo(B) 把A添加到B元素内的 最末尾
+			*
+			*  */
+			$(document).ready( function(){
+				$("#toRight").click( function(){ //左表A 扔到 右表B
+					$("#leftName option:selected").appendTo( $("#rightName") );
+				} );
+
+				$("#toLeft").click( function(){ //右表B 扔到 左表A
+					$("#rightName option:selected").appendTo( $("#leftName") );
+				} );
+			} );
+
+
+		</script>
+
+
+
+
+	</head>
+	<body>
+		<div class="border">
+			<select id="leftName" multiple="multiple">
+				<option>张三</option>
+				<option>李四</option>
+				<option>王五</option>
+				<option>赵六</option>
+			</select>
+			<div id="btn">
+				<input type="button" id="toRight" value="-->"><br>
+				<input type="button" id="toLeft" value="<--">
+
+			</div>
+
+			<select id="rightName" multiple="multiple">
+				<option>钱七</option>
+			</select>
+
+		</div>
+
+
+	</body>
+</html>
