@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>隔行换色</title>
+        <!-- 注意JQuery文件的导入！ -->
+        <script  src="../../js/jquery-3.3.1.min.js"></script>
+
+        <!-- HTML table表格中的隔行换色 -->
+        <script type="text/javascript">
+            /* 需求：将数据行的奇数行背景色设置为 pink，偶数行背景色设置为 yellow
+            *
+            * 已知：table表格中，行的下标(编号)是从0开始的，
+            * 第0行是删除按钮，第1行是 “各列的名字”，
+            * 从大于第1行开始(不包含第1行，即第2行)开始才是数据行；
+            *
+            * 从大于第1行(不包括第1行) 开始，即从第2行开始，隔行变色
+            * (1)某一行的标签是 <tr>；
+            * (2)使用 “大于”索引选择器 gt(行的下标1)；
+            * (3)奇数odd，偶数even;
+            *  */
+            $(document).ready( function(){
+                // $( "选择器" ).XXX方法
+                //标签名为tr的，下标大于1的，奇数行
+                $("tr:gt(1):odd").css( "backgroundColor","pink" );
+                //标签名为tr的，下标大于1的，偶数行
+                $("tr:gt(1):even").css( "backgroundColor","yellow" );
+            } )
+        </script>
+
+    </head>
+    <body>
+        <table id="tab1" border="1" width="800" align="center" >
+            <!-- ----------------第0行 -->
+            <tr>
+                <td colspan="5"><input type="button" value="删除"></td>
+            </tr>
+            <!-- ----------------第1行 -->
+            <tr style="background-color: #999999;">
+                <th><input type="checkbox"></th>
+                <th>分类ID</th>
+                <th>分类名称</th>
+                <th>分类描述</th>
+                <th>操作</th>
+            </tr>
+            <!-- ----------------第2行---------------
+            从大于第1行(不包括第1行) 开始，即从第2行开始，隔行变色
+            使用 “大于”索引选择器 gt(下标1)；奇数odd，偶数even
+            -->
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>0</td>
+                <td>手机数码</td>
+                <td>手机数码类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>1</td>
+                <td>电脑办公</td>
+                <td>电脑办公类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>2</td>
+                <td>鞋靴箱包</td>
+                <td>鞋靴箱包类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>3</td>
+                <td>家居饰品</td>
+                <td>家居饰品类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+        </table>
+    </body>
+</html>
