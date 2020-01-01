@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- 注意JQuery文件的引入！ -->
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        /* 遍历
+	    一、js的遍历方式
+		    * for(初始化值;循环结束条件;步长)
+		--------------------------
+	    二、jq的遍历方式
+
+	       1.遍历某个JQ【实例】对象
+	       遍历一个JQuery实例对象--即$(selector选择器)，
+	       为每个匹配元素都执行一个回调函数function。
+	       $(selector选择器).each(
+	            //回调函数，必需传入的
+	            function(  index-当前被操作的元素X的 属性名    或  当前元素X所在的索引,
+	                       element-当前被操作的元素X 的属性值  或  当前元素X的内容(即X的值)    ){
+
+	                //...
+	                //▲ 在回调函数中可使用 this关键字，代表 【当前被操作的元素】
+	                //回调函数是在以【当前DOM元素】为上下文的语境中触发的。
+	                //因此关键字this 总是指向这个【当前被操作的元素】。
+
+	                //▲ [可选的-回调函数的返回值]：只能返回boolean值，不能返回其他类型的值！！(不能返回数据)
+	                (1)return false：将停止循环 (就像在普通的循环中使用 'break')。
+	                (2)return true：停止本轮循环，跳至下一轮循环 (就像在普通的循环中使用 'continue')。
+	       } );
+
+
+		   2.【全局遍历】
+		   全局对象jQuery中的静态方法，用于遍历指定的对象或数组
+		   //注，全局对象的名字为 jQuery ！！
+		   jQuery.each( object, [function回调函数] );
+		   其中，全局对象jQuery 可以简写为 $  ——一个美元符号
+
+		   $.each(   object某个指定的对象或数组,
+		              [回调函数-可选的]-function( index当前元素索引,element当前元素值 ){ ... }
+		             //此回调函数，与上面所述 【遍历某个JQ实例对象时，传入的回调函数function】  用法相同
+		   );
+
+
+		   3.for..of: jquery 3.0 版本之后提供的方式
+			 for(元素对象 of 容器对象){  ... }
+
+        *  */
+
+        //-----------------获取 id为city的<ul>标签--即列表下的各列表项的值(innerHTML)
+        //遍历 <ul>标签下的 <li>标签，而不是<ul>标签啊！！
+        // window.onload = function(){
+        //     var lis = document.getElementsByTagName("li"); //获取 由这一堆<li>标签组成的 数组lis
+        //     for( var i=0,length=lis.length; i<length; i++ ){
+        //         console.log( "当前此列表项的下标为："+ i +"；当前此列表项的值为："+lis[i].innerHTML );
+        //     }
+        // };
+
+
+        //遍历 <ul>标签下的 <li>标签，而不是<ul>标签啊！！
+        $(document).ready( function(){
+            console.log("JQ方式：遍历某个实例对象");
+            //--------遍历某个实例对象
+            $("#city li").each( function(index,element){
+                /* 遍历 <ul>标签下的 <li>标签，而不是<ul>标签啊！！
+                * 在这里element是 当前被遍历到的列表项：每一个<li>标签！！
+                *  */
+                console.log( "当前此列表项的下标为："+ index +"；当前此列表项的值为："+element.innerHTML);
+                if( element.innerHTML==="上海" ){ //使用“强等于”的符号，若取到了上海，则退出循环
+                    return false;
+                }
+            } );
+
+            console.log("-------------------------------------");
+            //--------使用全局对象jQuery的静态方法each( object, [callback回调函数] )来遍历
+            //其中 全局对象jQuery可以简写为 $
+            console.log( "JQ方式：使用全局对象jQuery的静态方法each( object, [callback回调函数] )来遍历" );
+            $.each( $("#city li"), function(index,element){
+                //将原本的JavaScript对象element转为 jQuery对象，然后调用JQ中的方法html()
+                console.log( "当前此列表项的下标为："+ index + "；当前此列表项的值为：" +$(element).html() );
+            } );
+
+            console.log("-------------------------------------");
+            console.log( "我是全局对象jQuery，我不简写了！" );
+            jQuery.each( $("#city li"), function(index,element){
+                console.log( "当前此列表项的下标为："+ index + "；当前此列表项的值为：" +$(element).html() );
+            } )
+
+            console.log("-------------------------------------");
+            console.log( "使用JQuery 3.x版本的 for of方法来遍历" );
+            for( let oneLi of $("#city li") ){
+                console.log( oneLi.innerHTML );
+            }
+        } );
+
+    </script>
+
+
+</head>
+<body>
+<ul id="city">
+    <li>北京</li>
+    <li>上海</li>
+    <li>天津</li>
+    <li>重庆</li>
+</ul>
+</body>
+</html>
