@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>广告的自动显示与隐藏</title>
+        <style>
+            #content{width:100%;height:500px;background:#999}
+        </style>
+
+        <!-- 引入jquery，注意JQ文件的引入 -->
+        <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+
+        <script type="text/javascript">
+            /*
+            需求：
+                1. 当页面加载完，3秒后。自动显示广告
+                2. 广告显示5秒后，自动消失。
+
+            分析：
+                1. 使用定时器来完成。setTimeout (执行一次定时器)
+                2. 分析发现JQuery的显示和隐藏动画效果其实就是控制display
+                3. 使用  show/hide方法来完成广告的显示
+            */
+            function adShow(){
+                $("#ad").show( "slow","swing" );
+            };
+            function adHide(){
+                $("#ad").hide( "slow","swing" );
+            }
+
+            $(document).ready( function(){
+                //setTimeout( JavaScript回调函数, 等待的毫秒数 )
+
+                //3000ms 即3s后执行 【延时执行定时器】，执行的是adShow()函数
+                // setTimeout( adShow, 3000 ); //展示5s
+                //8000ms 即8s后执行 【延时执行定时器】。执行的是adHide()函数
+                // setTimeout( adHide, 8000 );
+
+                setTimeout( function(){
+                    $("#ad").fadeIn( "slow" );
+                }, 3000 ); //3000ms后，即3s后开始展示
+
+                setTimeout( function(){
+                    //slideUp 向上滑动撤离，即隐藏
+                    $("#ad").slideUp( "slow" );
+                },8000 ) //8000ms 即8s后隐藏，所以总计显示了5s
+            } );
+
+        </script>
+
+    </head>
+    <body>
+        <!-- 整体的DIV -->
+        <div>
+            <!-- 广告DIV
+            display 属性设置元素如何显示；none表示：此元素不会被显示。
+            style="display: none;"
+            -->
+            <div id="ad" style="display:none;">
+                <!-- 我佛了，adv.jpg居然不能显示？！
+                破案：我装的火狐浏览器自带并激活了【去广告插件】，
+                这adv图片被识别成广告，自动被【去广告插件】屏蔽了……
+                把火狐浏览器的去广告插件去掉！
+                -->
+                <img style="width:100%" src="../example/img/adv.jpg" alt="adv"/>
+            </div>
+
+            <!-- 下方正文部分 -->
+            <div id="content">
+                正文部分
+            </div>
+        </div>
+    </body>
+</html>
