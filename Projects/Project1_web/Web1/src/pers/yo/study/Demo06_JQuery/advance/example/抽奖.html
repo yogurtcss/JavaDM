@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>jquery案例之抽奖</title>
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+
+    <script type="text/javascript">
+        /*
+          1. 给开始按钮绑定单击事件
+              1.1 定义循环定时器
+              1.2 切换小相框的src属性
+                  * 定义数组，存放图片资源路径
+                  * 生成随机数。数组索引
+
+          2. 给结束按钮绑定单击事件
+             1.1 停止定时器
+             1.2 给大相框设置src属性
+
+         */
+        var imgs = [
+                "../example/img/man00.jpg",
+                "../example/img/man01.jpg",
+                "../example/img/man02.jpg",
+                "../example/img/man03.jpg",
+                "../example/img/man04.jpg",
+                "../example/img/man05.jpg",
+                "../example/img/man06.jpg",
+        ];
+
+        //全局变量
+        //由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。
+        var startId; //开始定时器的id
+        var index; //随机下标
+        $(document).ready( function(){
+            //初始时：开始按钮可用，停止按钮不可用
+            $("#startID").prop( "disabled",false ); //disabled是停用，false它，就是可用！
+            $("#stopID").prop( "disabled",true ); //停止按钮不可用
+
+            /* int setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
+            * 由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。
+            *
+            * setInterval() 方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭。
+            * 由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。
+            *  */
+
+            $("#startID").click( function(){
+                startId = setInterval( function(){
+                    //点击开始按钮后，只能“停止”，而不能再次“开始”
+                    $("#startID").prop( "disabled",true ); //点击开始后，此开始按钮不可用
+                    $("#stopID").prop( "disabled",false ); //点击开始后，此停止按钮可用
+
+                    //生成随机下标0-6
+                    ////0.000--0.999 --> * 7 --> 0.0-----6.9999
+                    index = Math.floor( Math.random()*7 );
+                    //根据随机下标，找到这张图片，并展示这张图片
+                    $("#img1ID").prop( "src",imgs[index] );
+                },20 ); //循环执行定时器，周期为20ms
+            } );
+
+            $("#stopID").click( function(){
+                //点击停止按钮后，只能“开始”，而不能再次“停止”
+                $("#startID").prop( "disabled",false ); //点击停止后，开始按钮可用
+                $("#stopID").prop( "disabled",true ); //点击停止后，停止按钮不可用
+
+                //由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。
+                clearInterval( startId );
+                //给大相框显示 随机生成的那张图片
+
+                //调用.hide( 空参 )方法，表示 拿到随机的图片后，不立即显示，而是先隐藏这张图片，
+                $("#img2ID").prop( "src", imgs[index] ).hide();
+                //1s后，才显示这张图片，这样显得没这么生硬
+                $("#img2ID").show( "slow" );
+            } )
+        } );
+    </script>
+
+</head>
+<body>
+
+<!-- 小像框 -->
+<div style="border-style:dotted;width:160px;height:100px">
+    <img id="img1ID" src="../example/img/man00.jpg" style="width:160px;height:100px"/>
+</div>
+
+<!-- 大像框 -->
+<div
+        style="border-style:double;width:800px;height:500px;position:absolute;left:500px;top:10px">
+    <img id="img2ID" src="../example/img/man00.jpg" width="800px" height="500px"/>
+</div>
+
+<!-- 开始按钮 -->
+<input
+        id="startID"
+        type="button"
+        value="点击开始"
+        style="width:150px;height:150px;font-size:22px">
+
+<!-- 停止按钮 -->
+<input
+        id="stopID"
+        type="button"
+        value="点击停止"
+        style="width:150px;height:150px;font-size:22px">
+
+
+</body>
+</html>
