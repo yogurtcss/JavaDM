@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <!-- 注意JQuery文件的引入！ -->
+        <script  src="../../js/jquery-3.3.1.min.js"></script>
+        <script>
+            //分析：需要保证下边的选中状态和第一个【总的复选框】的选中状态一致即可
+
+            /* 这里selectAll函数传入的形参是 this
+            * 把自身this【总的复选框】 --这个type为"checkbox"的input标签
+            * 传入selectAll函数中
+            *  */
+            function selectAll( totalSelect ){ //在外部，传入的是【总的复选框--totalSelect】
+                /* 注意到，下面的复选框都有一个共有属性 class="itemSelect"
+                * 可用.itemSelect来获取这一堆复选框嗷！
+                *
+                * JQuery对象的prop( "固有属性", "新值newVale" )：
+                * 设置【原固有属性】的新值， 或添加【新的固有属性】并为此新固有属性 设置新值
+                *
+                * 设置：下面所有复选框的的选中状态 和 第一个【总的复选框】的选中状态  一致即可
+                *  */
+                $(".itemSelect").prop( "checked", totalSelect.checked );
+            }
+
+        </script>
+    </head>
+    <body>
+        <table id="tab1" border="1" width="800" align="center" >
+            <tr>
+                <td colspan="5"><input type="button" value="删除"></td>
+            </tr>
+            <tr>
+                <!-- 注意，这里selectAll函数传入的形参是 this
+                把自身this【总的复选框】 --这个type为"checkbox"的input标签 传入selectAll函数中
+                -->
+                <th><input type="checkbox" onclick="selectAll(this)" ></th>
+                <th>分类ID</th>
+                <th>分类名称</th>
+                <th>分类描述</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="itemSelect"></td>
+                <td>1</td>
+                <td>手机数码</td>
+                <td>手机数码类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="itemSelect"></td>
+                <td>2</td>
+                <td>电脑办公</td>
+                <td>电脑办公类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="itemSelect"></td>
+                <td>3</td>
+                <td>鞋靴箱包</td>
+                <td>鞋靴箱包类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="itemSelect"></td>
+                <td>4</td>
+                <td>家居饰品</td>
+                <td>家居饰品类商品</td>
+                <td><a href="">修改</a>|<a href="">删除</a></td>
+            </tr>
+        </table>
+    </body>
+</html>
