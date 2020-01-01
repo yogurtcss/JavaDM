@@ -5,25 +5,24 @@
         <title></title>
         <!-- 注意JQuery文件的引入！ -->
         <script  src="../../js/jquery-3.3.1.min.js"></script>
-        <script>
-            //分析：需要保证下边的选中状态和第一个【总的复选框】的选中状态一致即可
+        <script type="text/javascript">
+                //分析：需要保证下边的选中状态和第一个【总的复选框】的选中状态一致即可
 
-            /* 这里selectAll函数传入的形参是 this
-            * 把自身this【总的复选框】 --这个type为"checkbox"的input标签
-            * 传入selectAll函数中
-            *  */
-            function selectAll( totalSelect ){ //在外部，传入的是【总的复选框--totalSelect】
-                /* 注意到，下面的复选框都有一个共有属性 class="itemSelect"
-                * 可用.itemSelect来获取这一堆复选框嗷！
-                *
-                * JQuery对象的prop( "固有属性", "新值newVale" )：
-                * 设置【原固有属性】的新值， 或添加【新的固有属性】并为此新固有属性 设置新值
-                *
-                * 设置：下面所有复选框的的选中状态 和 第一个【总的复选框】的选中状态  一致即可
+                /* 这里selectAll函数传入的形参是 this
+                * 把自身this【总的复选框】 --这个type为"checkbox"的input标签
+                * 传入selectAll函数中
                 *  */
-                $(".itemSelect").prop( "checked", totalSelect.checked );
-            }
-
+                function selectAll( totalSelect ){ //在外部，传入的是【总的复选框--totalSelect】
+                    /* 注意到，下面的复选框都有一个共有属性 class="itemSelect"
+                    * 可用.itemSelect来获取这一堆复选框嗷！
+                    *
+                    * JQuery对象的prop( "固有属性", "新值newVale" )：
+                    * 设置【原固有属性】的新值， 或添加【新的固有属性】并为此新固有属性 设置新值
+                    *
+                    * 设置：下面所有复选框的的选中状态 和 第一个【总的复选框】的选中状态  一致即可
+                    *  */
+                    $(".itemSelect").prop( "checked", totalSelect.checked );
+                }
         </script>
     </head>
     <body>
