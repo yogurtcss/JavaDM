@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>QQ表情选择</title>
+    <!-- 注意JQuery文件的引入！ -->
+    <script  src="../../js/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+    *{margin: 0;padding: 0;list-style: none;}
+
+    .emoji{margin:50px;}
+    ul{overflow: hidden;}
+    li{float: left;width: 48px;height: 48px;cursor: pointer;}
+    .emoji img{ cursor: pointer; }
+    </style>
+
+    <script type="text/javascript">
+        /* 需求：点击qq表情，将其追加到发言框中
+        * 即把QQ表情添加到 <p>标签内的<strong>标签后面
+        *  */
+
+        $( function(){
+            /* 难点：如何判断出 哪个表情被点击了？：绑定单击事件
+            *
+            * 注意到，这里被添加的img标签 --是ul标签下的后代img标签！！
+            *  */
+            $("ul img").click( function(){
+                /* this表示当前被点击的对象
+                * 用户点击哪个标签，【哪个标签】就是当前被点击的对象this
+                * 注意到，this是JavaScript中的对象，
+                * 需转换为JQ对象$(this) 才能用JQ中的方法
+                *
+                * $(selector选择器).clone( [true|false] )
+                * clone()方法复制元素——生成被选元素的副本，包含子节点、文本和属性。
+                *   -- 默认false。规定不复制事件处理程序。
+                *
+                * $(this).clone() 表示 复制被点击的对象this
+                *
+                * appendTo():
+			    * 对象1.appendTo(对象2):将对象1添加到对象2内部 的最末尾
+			    *
+			    * A.insertAfter(B)：A插入到B的后面
+			    * B.after(A)：B的后面是A
+                *  */
+                //( $(this).clone() ).appendTo( $(".word") );
+                //( $(this).clone() ).insertAfter( $("strong") );
+                $("strong").after( $(this).clone() );
+            } )
+        } );
+    </script>
+
+	
+</head>
+<body>
+    <div class="emoji">
+        <ul>
+            <li><img src="img/01.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/02.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/03.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/04.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/05.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/06.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/07.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/08.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/09.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/10.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/11.gif" height="22" width="22" alt="" /></li>
+            <li><img src="img/12.gif" height="22" width="22" alt="" /></li>
+        </ul>
+        <p class="word">
+            <strong>请发言：</strong>
+
+        </p>
+    </div>
+</body>
+</html>
