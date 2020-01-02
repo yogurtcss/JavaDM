@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Json数据</title>
+    </head>
+
+    <script type="text/javascript">
+        //键用引号(单双都行)引起来，也可以不使用引号
+        var person = { "name":"张三", age:23, 'gender':true };
+        console.log( "一般的获取键值：使用 Json实例对象.键名 获取："+person.name );
+        console.log( "一般的获取键值，也可使用 Json实例对象['键名-字符串型'] 来获取嗷！" );
+        console.log( "特殊的获取键值：当键是一个变量时-【此变量已是字符串型了】，必需使用方括号！！" +
+            "Json实例对象[某个变量名]，【此变量已是字符串型了，不用再加引号！！】" )
+
+    </script>
+
+
+    <body>
+        
+    </body>
+</html>
