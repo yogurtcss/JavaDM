@@ -12,20 +12,43 @@
         <script type="text/javascript">
             function fun(){ //使用 $.ajax()发送异步请求
                 console.log("我佛了！");
-                $.ajax( {
-                    //▲ 访问servlet时，一定要带上虚拟目录名！教训
-                    url: "/Web1/ajaxServlet1", //请求路径
-                    type: "POST", //请求方式
+                // $.ajax( {
+                //     //▲ 访问servlet时，一定要带上虚拟目录名！教训
+                //     url: "/Web1/ajaxServlet1", //请求路径
+                //     type: "POST", //请求方式
+                //
+                //     // data : "username=jack&age=23"
+                //     data: { "username":"jack", "age":23 }, //请求中，post给服务器的参数
+                //
+                //     success: function(data){ console.log("响应成功！"+data) }, //响应成功的回调函数
+                //     error: function(){ console.log("响应失败！") },  //响应失败的回调函数
+                //
+                //     dataType: "text" //设置 【接收到的响应数据的格式】
+                //
+                // } );
 
-                    // data : "username=jack&age=23"
-                    data: { "username":"jack", "age":23 }, //请求中，post给服务器的参数
+                //语法：$.get(url, [data], [callback], [type])
+                // $.get(
+                //     "/Web1/ajaxServlet1",  //提交请求的 目的地。 /虚拟目录/servlet名字！
+                //     {username: "hhahha我是$.get()方法！"},
+                //     //请求成功时，自动调用回调函数
+                //     function(data){ //传入形参data为 服务器返回的数据
+                //         console.log( data );
+                //     },
+                //     "text"
+                // );
 
-                    success: function(data){ console.log("响应成功！"+data) }, //响应成功的回调函数
-                    error: function(){ console.log("响应失败！") },  //响应失败的回调函数
+                //语法：$.post(url, [data], [callback], [type])
+                $.post(
+                    "/Web1/ajaxServlet1", //提交请求的目的地！/虚拟目录/servlet名字！
+                    {username: "我是username啊！服务器返回的数据"},
+                    //请求成功时，自动调用回调函数
+                    function(data){ //传入形参data为 服务器返回的数据
+                        console.log( data );
+                    },
+                    "text"
+                )
 
-                    dataType: "text" //设置 【接收到的响应数据的格式】
-
-                } );
             }
         </script>
 
