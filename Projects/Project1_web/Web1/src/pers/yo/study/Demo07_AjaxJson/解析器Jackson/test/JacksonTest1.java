@@ -1,12 +1,11 @@
-package pers.yo.study.Demo07_AjaxJson.servlet.解析器Jackson.test;
+package pers.yo.study.Demo07_AjaxJson.解析器Jackson.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import pers.yo.study.Demo07_AjaxJson.servlet.解析器Jackson.domain.Person;
+import pers.yo.study.Demo07_AjaxJson.解析器Jackson.domain.Person;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 

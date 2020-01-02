@@ -1,4 +1,4 @@
-package pers.yo.study.Demo07_AjaxJson.servlet.解析器Jackson.domain;
+package pers.yo.study.Demo07_AjaxJson.解析器Jackson.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
