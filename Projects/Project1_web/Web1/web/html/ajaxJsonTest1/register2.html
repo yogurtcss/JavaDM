@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <!-- 注意JQ文件的引入方式！ -->
+        <script src="../../js/jquery-3.3.1.min.js" ></script>
+        <script type="text/javascript">
+            $( function(){
+                //为id为username的input标签-输入框绑定blur(失去焦点)的事件
+                $("#username").blur( function(){
+                    var username_input = $(this).val(); //输入框当前被输入的值
+
+                    $.get( //get请求，到数据库中查询是否有此用户
+                        "/Web1/findUserServlet_simple2", //提交请求的目的地
+                        { username_input: username_input }, //get请求时提交给服务器的参数
+                        /* 期盼服务器返回的数据格式：JSON格式
+                        { "userIsExist": true,  msg: "此用户已存在！请换另一个用户名！" }
+                        { "userIsExist": false, msg:"此用户名可用嗷！" }
+                        *  */
+
+                        //请求成功时，自动调用的回调函数
+                        function( resData ){ //传入形参为：服务器返回的数据resData
+                            if( resData.userIsExist===true ){ //此用户已存在；使用强等于的符号
+                                $("span").css( "color","red" ); //设置提示语为警告的红色
+                                $("span").html( resData.msg ); //让span标签显示这个提示语
+                            }else{ //此用户不存在
+                                $("span").css( "color","green" ); //设置提示语为温和的绿色
+                                $("span").html( resData.msg ); //让span标签显示这个提示语
+                            }
+                        }
+                    )
+                } )
+            } )
+
+        </script>
+
+    </head>
+
+    <body>
+        <label for="username" >用户名</label>
+        <input type="text" id="username" name="username" placeholder="请输入用户名" />
+
+        <span id="s_username"></span>
+        <br/>
+
+        <label for="password">密码</label>
+        <input type="password" id="password" name="password" placeholder="请输入密码" />
+        <label for="submit"></label>
+        <input type="submit" id="submit" value="注册！" />
+    </body>
+</html>
