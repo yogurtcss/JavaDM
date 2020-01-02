@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>注册页面</title>
+        <script src="../../js/jquery-3.3.1.min.js" ></script>
+
+        <script type="text/javascript" >
+            $(document).ready( function(){
+                /* 当元素失去焦点时发生 blur事件
+                * 给 id为username的 input标签-输入框 绑定失去焦点的事件blur
+                *  */
+                $("#username").blur( function(){
+                    //获取当前文本框中的值
+                    var username = $(this).val();
+
+                    /* 发送Ajax请求
+
+                    期望服务器响应回的数据格式：
+                    {"userExsit":true,   "msg":"此用户名太受欢迎,请更换一个"}
+                    {"userExsit":false,   "msg":"用户名可用"}
+
+                    * */
+                    //语法：$.get(url, [data], [callback], [type])
+                    $.get( "/Web1/findUserServlet_simple",
+                        {username: username},
+                        //请求成功时，自动调用回调函数
+                        function(data){ //传入形参data为 服务器返回的数据
+                            console.log( data );
+                            if( data.userExsit===true ){//如果此用户名存在
+                                $("span").css( "color","red" );
+                                $("span").html( data.msg );
+                            }else{ //此用户名不存在
+                                $("span").css( "color","green" );
+                                $("span").html( data.msg );
+                            }
+                        }
+                    )
+                } )
+            } );
+        </script>
+
+
+
+    </head>
+
+    <body>
+        <form>
+            <!-- 已知事实：(1)post提交数据时，提交的数据是 “键值对”：
+            注意，只有设置了 name 属性的控件，才会向服务器提交，不设置就不会提交。
+            (2)name属性的值 username表示此控件的名字
+
+            ▲ 此id为username的输入框，post提交数据时：
+            name属性的值username作为 提交数据的键值对的 “键名”
+            value属性的值(即 用户在此id为username的输入框中 填入的值) 作为 提交数据的键值对的 “值”
+
+            <label>标签中的属性for：关联另外一个控件(如 input标签)的 id属性。
+            -->
+            <label for="username"></label>
+            <input type="text" id="username" name="username" placeholder="请输入用户名" />
+
+            <span id="s_username"></span>
+            <br />
+
+            <input type="password" name="password" placeholder="请输入密码" />
+            <input type="submit" value="注册" />
+
+        </form>
+
+
+    </body>
+</html>
