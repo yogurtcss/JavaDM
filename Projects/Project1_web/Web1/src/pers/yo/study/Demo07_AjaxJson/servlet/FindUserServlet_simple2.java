@@ -44,6 +44,9 @@ public class FindUserServlet_simple2 extends HttpServlet {
 
         //5.正式返回数据喽！
         /* 返回数据之前，告诉浏览器 返回数据的格式为JSON格式，要使用utf-8解码
+        *
+        * 设置返回数据的MIME类型-JSON格式 以及解码格式utf-8
+        * ▲ JSON格式对应的 MIME类型为 application/json
         * response.setContentType( "application/json;charset=utf-8" );
         * 忘记 application/json的写法了！
         *  */
