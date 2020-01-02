@@ -46,18 +46,23 @@ public class FindUserServlet_simple extends HttpServlet {
 
         //将Java对象转换为Json字符串
         /* 转换方法：
-        (1)writeValue(参数1，obj):
+        1.writeValue(参数1，obj):
            参数1：
-              File：将obj对象转换为JSON字符串，并保存到指定的文件中
-              【？与response怎么关联】Writer：将obj对象转换为JSON字符串，并将json数据填充到字符输出流中
-              【？】OutputStream：将obj对象转换为JSON字符串，并将json数据填充到字节输出流中
+              (1)File类型：将obj对象转换为JSON字符串，并保存到指定的文件中
 
-        (2)writeValueAsString(obj): 将对象转为json字符串
+              (2)Writer类型：将obj对象转换为JSON字符串，并将json数据填充到字符输出流中
+              -向浏览器返回数据时使用response：
+              -response.getWriter()方法 返回的是PrintWriter类型 ——属于Writer的子类
+
+              (3)OutputStream类型：将obj对象转换为JSON字符串，并将json数据填充到字节输出流中
+              -向浏览器返回数据时使用response：
+              -response.getOutputStream()方法，返回的是ServletOutputStream ——属于OutputStream的子类
+
+        2.writeValueAsString(obj): 将对象obj转为json字符串
         * */
 
         //正式返回数据之前：告诉浏览器 返回数据的格式是json 和解码要用utf-8
         response.setContentType( "application/json;charset=utf-8" );
-
         ObjectMapper om = new ObjectMapper(); //传进 Jackson核心对象
         om.writeValue( response.getWriter(), resMap ); //把 数据转为JSON格式 并返回给浏览器
 
