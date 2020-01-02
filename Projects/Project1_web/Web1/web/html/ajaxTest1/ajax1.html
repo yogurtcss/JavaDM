@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <!-- JQuery文件的引入
+        绝对路径：本地硬盘的全路径，从盘符开始写的
+        相对路径：从某个文件夹开始写的(不是从盘符开始写的)
+        -->
+        <script src="../../js/jquery-3.3.1.min.js"></script>
+
+        <script type="text/javascript">
+            function fun(){ //使用 $.ajax()发送异步请求
+                console.log("我佛了！");
+                $.ajax( {
+                    //▲ 访问servlet时，一定要带上虚拟目录名！教训
+                    url: "/Web1/ajaxServlet1", //请求路径
+                    type: "POST", //请求方式
+
+                    // data : "username=jack&age=23"
+                    data: { "username":"jack", "age":23 }, //请求中，post给服务器的参数
+
+                    success: function(data){ console.log("响应成功！"+data) }, //响应成功的回调函数
+                    error: function(){ console.log("响应失败！") },  //响应失败的回调函数
+
+                    dataType: "text" //设置 【接收到的响应数据的格式】
+
+                } );
+            }
+        </script>
+
+    </head>
+    <body>
+
+        <input type="button" value="发送异步请求" onclick="fun();">
+        <input />
+        <!-- 我佛了，访问servlet前要加 斜杠/虚拟目录名！ /Web1虚拟目录/servlet名！ -->
+        <a href="/Web1/ajaxServlet1" >请求访问ajaxServlet1</a>
+    </body>
+</html>
