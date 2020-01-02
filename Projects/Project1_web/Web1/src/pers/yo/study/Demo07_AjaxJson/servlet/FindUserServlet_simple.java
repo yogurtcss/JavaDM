@@ -62,6 +62,13 @@ public class FindUserServlet_simple extends HttpServlet {
         * */
 
         //正式返回数据之前：告诉浏览器 返回数据的格式是json 和解码要用utf-8
+        /* 返回数据之前，告诉浏览器 返回数据的格式为JSON格式，要使用utf-8解码
+        *
+        * 设置返回数据的MIME类型-JSON格式 以及解码格式utf-8
+        * ▲ JSON格式对应的 MIME类型为 application/json
+        * response.setContentType( "application/json;charset=utf-8" );
+        * 忘记 application/json的写法了！
+        *  */
         response.setContentType( "application/json;charset=utf-8" );
         ObjectMapper om = new ObjectMapper(); //传进 Jackson核心对象
         om.writeValue( response.getWriter(), resMap ); //把 数据转为JSON格式 并返回给浏览器
