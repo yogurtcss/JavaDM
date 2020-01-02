@@ -65,7 +65,6 @@ public class FindUserServlet_simple extends HttpServlet {
         response.setContentType( "application/json;charset=utf-8" );
         ObjectMapper om = new ObjectMapper(); //传进 Jackson核心对象
         om.writeValue( response.getWriter(), resMap ); //把 数据转为JSON格式 并返回给浏览器
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
