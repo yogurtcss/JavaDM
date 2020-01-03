@@ -9,7 +9,7 @@
     <script type="text/javascript">
         $(document).ready( function(){
             $.get(
-                "/Web1/FindProvinceServlet",
+                "/Web1/findProvinceServlet",   //提交请求的目的地！！servlet首字母是小写的嗷！
                 {}, //不传数据给服务器
                 /* 期望返回的数据：JSON格式
                 * [ {"id":1, "name":xxx},
@@ -23,7 +23,7 @@
                     $(resData).each( function(){
                         //为每个信息 组装成一个 选项
                         var option = "<option name=\" "+this.id+" \">"+this.name+"</option>";
-                        //在下拉列表中 添加这个选项
+                        //动态地：在下拉列表中 添加这个选项
                         $("#province").append( $(option) );
                     } )
                 }
