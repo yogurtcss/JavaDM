@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Redis案例：下拉列表选择省份</title>
+    </head>
+    <script src="../../js/jquery-3.3.1.min.js" ></script>
+
+    <script type="text/javascript">
+        $(document).ready( function(){
+            $.get(
+                "/Web1/FindProvinceServlet",
+                {}, //不传数据给服务器
+                /* 期望返回的数据：JSON格式
+                * [ {"id":1, "name":xxx},
+                *   {"id":2, "name":YYY}
+                * ]
+                *  */
+
+                //请求成功后，自动调用回调函数
+                function( resData ){
+                    //resData是一个 数组，遍历整个数组对象
+                    $(resData).each( function(){
+                        //为每个信息 组装成一个 选项
+                        var option = "<option name=\" "+this.id+" \">"+this.name+"</option>";
+                        //在下拉列表中 添加这个选项
+                        $("#province").append( $(option) );
+                    } )
+                }
+            )
+        } );
+    </script>
+
+
+    <body>
+        <label for="province"></label>
+        <select id="province">
+            <option>--请选择省份--</option>
+        </select>
+    </body>
+</html>
