@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Redis案例：下拉列表选择省份</title>
+    </head>
+    <script src="../../js/jquery-3.3.1.min.js" ></script>
+
+    <script type="text/javascript" >
+        $(document).ready( function(){
+            //ajax 发送get请求
+            $.get(
+                "/Web1/FindProvinceServlet", //请求提交的目的地
+                {}, //没有传递参数，直接从服务器拿哦！
+
+                //请求成功时，自动执行的回调函数
+                //返回的数据为JSON格式的对象，内容为：
+                // [ {"id":1,"name":"北京"},{"id":2,"name":"上海"},{"id":3,"name":"广州"},{"id":4,"name":"陕西"} ]
+                function( resData ){ //resData是返回的数据
+                    $(resData).each( function(){
+
+                    } )
+                }
+            )
+
+        } );
+    </script>
+
+
+    <body>
+        <label for="province"></label>
+        <select id="province">
+            <option>--请选择省份--</option>
+        </select>
+    </body>
+</html>
