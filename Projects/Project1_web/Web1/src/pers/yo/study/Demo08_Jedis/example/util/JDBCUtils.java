@@ -12,6 +12,7 @@ import java.util.Properties;
 * 复习 JDBCUtils 的写法！
 *  */
 public class JDBCUtils {
+    //因为要在静态方法getDataSource中使用这个变量，所以此变量ds必需声明为静态变量 private static
     private static DataSource ds; //私有的静态、全局变量 数据库连接池对象ds
 
     static{ //静态代码块中，加载配置文件
@@ -50,8 +51,20 @@ public class JDBCUtils {
         return ds;
     }
 
-    //从数据连接池中，获取某个连接对象
-    //然后利用此连接对象 进行数据库的操作
+    /* 类的静态成员 (变量和方法) 属于类本身，在类加载的时候就会分配内存，可以通过类名直接去访问（类名。方法 | 类名。变量）；
+    非静态成员（变量和方法）属于类的对象，所以只有在类的对象产生（创建类的实例）时才会分配内存，然后通过类的对象（实例）去访问。
+
+    在一个类的静态成员中去访问其非静态成员之所以会出错：
+    是因为 【在类的非静态成员不存在的时候】，类的静态成员就已经存在了，
+    此时访问一个内存中不存在的东西【非静态成员】当然会出错。
+    *  */
+
+
+    /* 类的静态方法：从数据连接池中，获取某个连接对象
+    * 然后利用此连接对象 进行数据库的操作
+    * 静态方法只能调用静态方法（或者变量），非静态方法可以调用静态方法（或者变量）
+    * 因为此静态方法中调用了变量ds，所以ds必需声明为 静态变量！private static
+    *  */
     public static Connection getConnection() throws SQLException {
         return( ds.getConnection() );
     }
