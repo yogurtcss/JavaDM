@@ -12,7 +12,9 @@ import java.util.Properties;
 * 复习 JDBCUtils 的写法！
 *  */
 public class JDBCUtils {
-    //因为要在静态方法getDataSource中使用这个变量，所以此变量ds必需声明为静态变量 private static
+    /* 因为要在静态方法getDataSource、getConnection中使用这个变量，
+    * 所以此变量ds必需声明为静态变量 private static
+    *  */
     private static DataSource ds; //私有的静态、全局变量 数据库连接池对象ds
 
     static{ //静态代码块中，加载配置文件
@@ -42,6 +44,12 @@ public class JDBCUtils {
         }
     }
 
+    /* 类的静态方法：从数据连接池中，获取某个连接对象
+    * 然后利用此连接对象 进行数据库的操作
+    * 静态方法只能调用静态方法（或者变量），非静态方法可以调用静态方法（或者变量）
+    * 因为此静态方法getDataSource()中调用了变量ds，所以ds必需声明为 静态变量！private static
+    *  */
+
     /* 获取数据库连接池对象
     * 这在 DAO层 操作数据库时，创建JdbcTemplate实例对象 用得着！！
     * DAO类中的私有变量：
@@ -63,7 +71,7 @@ public class JDBCUtils {
     /* 类的静态方法：从数据连接池中，获取某个连接对象
     * 然后利用此连接对象 进行数据库的操作
     * 静态方法只能调用静态方法（或者变量），非静态方法可以调用静态方法（或者变量）
-    * 因为此静态方法中调用了变量ds，所以ds必需声明为 静态变量！private static
+    * 因为此静态方法getConnection()中调用了变量ds，所以ds必需声明为 静态变量！private static
     *  */
     public static Connection getConnection() throws SQLException {
         return( ds.getConnection() );
