@@ -46,7 +46,8 @@ public class JDBCUtils {
             *  */
             InputStream is = JDBCUtils.class.getClassLoader().getResourceAsStream("pers/yo/case1/props/druid.properties");
             System.out.println( JDBCUtils.class.getClassLoader().getResource("") );//查看输出路径
-            /* 输出的路径为：
+            /* 2020-01-03 12:42:18
+            * 输出的路径为：
             * file:/H:/ProcExes/JavaFiles/JavaDM/Projects/Project1.1_webCase1/out/artifacts/case1_war_exploded/WEB-INF/classes/
             * 此输出路径的末尾已经带了斜杠了！
             * 所以，以上 JDBCUtils.class.getClassLoader().getResourceAsStream("pers/yo/case1/props/druid.properties");
