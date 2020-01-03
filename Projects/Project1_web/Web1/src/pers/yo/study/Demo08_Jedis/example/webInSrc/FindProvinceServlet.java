@@ -20,15 +20,23 @@ public class FindProvinceServlet extends HttpServlet {
 
         //---2.调用service层，查询数据
         ProvinceService ps = new ProvinceServiceImpl(); //获取service层的对象。接口回调 ——向上转型
-        List<Province> rst = ps.findAll(); //正式查询数据
+        //List<Province> rst = ps.findAll(); //正式查询数据
+
+        String json = ps.findAllJson(); //从redis中查询
 
         //---3.返回【JSON格式的】数据
         /* 告诉浏览器：返回的数据是JSON格式的(JSON格式对应的MIME类型为application/json)
         * 同时告诉浏览器，要用utf-8来解码
         *  */
         response.setContentType( "application/json;charset=utf-8" );
-        ObjectMapper om = new ObjectMapper(); //Jackson的核心对象
-        om.writeValue( response.getWriter(), rst );
+        //ObjectMapper om = new ObjectMapper(); //Jackson的核心对象
+        //om.writeValue( response.getWriter(), rst );
+
+        /* 设置 返回给浏览器的响应体(响应体正文)
+        * 因为这里返回的是字符数据，所以用getWriter().write()了
+        * 如果响应体的内容是字节(如下载时)，那么可以使用 response.getOutputStream()
+        *  */
+        response.getWriter().write( json );
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
