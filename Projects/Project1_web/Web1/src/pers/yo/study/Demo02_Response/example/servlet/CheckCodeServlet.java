@@ -116,7 +116,6 @@ public class CheckCodeServlet extends HttpServlet {
         *  */
         ImageIO.write( image, "jpg", response.getOutputStream() );
 
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
