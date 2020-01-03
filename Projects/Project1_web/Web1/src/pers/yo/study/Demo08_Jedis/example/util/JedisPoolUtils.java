@@ -22,9 +22,8 @@ public class JedisPoolUtils {
             * (2)类名.class属性
             * (3)任意实例对象.getClass()方法
             *  */
-            InputStream is = JedisPoolUtils.class.getResourceAsStream( "pers/yo/props/jedis.properties" );
+            InputStream is = JedisPoolUtils.class.getClassLoader().getResourceAsStream( "pers/yo/props/jedis.properties" );
             prop.load( is ); //正式读取数据
-
             //准备JedisPoolConfig配置对象
             JedisPoolConfig config = new JedisPoolConfig();
             //注意，properties集合中的 键和值 都是String型的！！
