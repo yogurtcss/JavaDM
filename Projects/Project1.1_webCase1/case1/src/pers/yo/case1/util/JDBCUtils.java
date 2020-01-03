@@ -41,10 +41,17 @@ public class JDBCUtils {
             /* 2019-12-24 22:57:02
             * 忘记数据源的配置文件要改地方了！
             *  */
-            /* 正确的路径：/pers/yo/case1/props/druid.properties
-            * 【记住，pers前要带斜杠！】
+            /* 正确的相对路径：pers/yo/case1/props/druid.properties
+            * 【记住，pers前不要带斜杠！】
             *  */
-            InputStream is = JDBCUtils.class.getClassLoader().getResourceAsStream("/pers/yo/case1/props/druid.properties");
+            InputStream is = JDBCUtils.class.getClassLoader().getResourceAsStream("pers/yo/case1/props/druid.properties");
+            System.out.println( JDBCUtils.class.getClassLoader().getResource("") );//查看输出路径
+            /* 输出的路径为：
+            * file:/H:/ProcExes/JavaFiles/JavaDM/Projects/Project1.1_webCase1/out/artifacts/case1_war_exploded/WEB-INF/classes/
+            * 此输出路径的末尾已经带了斜杠了！
+            * 所以，以上 JDBCUtils.class.getClassLoader().getResourceAsStream("pers/yo/case1/props/druid.properties");
+            * pers/yo/case1/props/druid.properties 开头不要带斜杠！
+            *  */
             pro.load(is);
 
             //2.初始化连接池对象
