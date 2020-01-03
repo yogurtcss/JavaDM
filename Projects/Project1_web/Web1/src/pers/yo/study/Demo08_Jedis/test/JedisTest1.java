@@ -12,6 +12,7 @@ import java.util.Set;
 
 //引入自定义的 JedisPool工具类1
 import pers.yo.study.Demo08_Jedis.util.JedisPoolUtils;
+import pers.yo.study.Demo08_Jedis.util.JedisPoolUtils2;
 
 public class JedisTest1 {
     @Test
@@ -149,12 +150,10 @@ public class JedisTest1 {
 
     @Test
     public void test8(){
-        //---1.获取某个Jedis连接对象
-        Jedis oneJedis = JedisPoolUtils.getJedis();
-        //---2.操作
-        oneJedis.set( "oneJedis", "来喽！" );
-        System.out.println( oneJedis.get("oneJedis") );
-        //---3.释放资源，把此Jedis连接对象归还到连接池中
-        oneJedis.close();
+        //从自定义的工具类中，获取Jedis连接对象
+        Jedis oneJedis = JedisPoolUtils2.getJedis();
+        //操作
+        oneJedis.set( "我是JedisPoolUtils2！！", "哈哈哈哈JedisPoolUtils2成功了！" );
+        System.out.println( oneJedis.get("我是JedisPoolUtils2！！") );
     }
 }
