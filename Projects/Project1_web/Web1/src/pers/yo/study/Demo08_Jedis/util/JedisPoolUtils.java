@@ -19,9 +19,7 @@ public class JedisPoolUtils {
         System.out.println( JedisPoolUtils.class.getClassLoader().getResource("") );
         //   file:/H:/ProcExes/JavaFiles/JavaDM/Projects/Project1_web/out/production/Web1/
         //此输出路径已经自带斜杠了！所以，在上面的路径 pers/yo/props/jedis.properties中，开头不要有斜杠!!
-        if( is==null ){
-            System.out.println( "空的！" );
-        }
+
         Properties prop = new Properties(); //创建properties实例对象，准备放入配置文件的数据
         try { //IDEA 快速帮我生成 捕获异常！
             prop.load( is ); //读取配置文件的数据
