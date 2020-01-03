@@ -46,6 +46,9 @@ public class JedisPoolUtils {
     }
 
     //获取连接对象的静态方法
+    /* 因为这个静态方法使用了 变量 jedisPool
+    * 所以 jedisPool也要声明为静态的
+    *  */
     public static Jedis getJedis(){
         return( jedisPool.getResource() ); //返回某个jedis连接对象
     }
