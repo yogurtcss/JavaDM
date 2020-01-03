@@ -1,4 +1,4 @@
-package pers.yo.study.Demo08_Jedis.test;
+package pers.yo.study.Demo08_Jedis.basic.test;
 
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
@@ -11,8 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 //引入自定义的 JedisPool工具类1
-import pers.yo.study.Demo08_Jedis.util.JedisPoolUtils;
-import pers.yo.study.Demo08_Jedis.util.JedisPoolUtils2;
+import pers.yo.study.Demo08_Jedis.basic.util.JedisPoolUtils2;
 
 public class JedisTest1 {
     @Test

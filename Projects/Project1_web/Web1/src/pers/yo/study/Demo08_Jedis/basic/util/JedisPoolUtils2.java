@@ -1,4 +1,4 @@
-package pers.yo.study.Demo08_Jedis.util;
+package pers.yo.study.Demo08_Jedis.basic.util;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
