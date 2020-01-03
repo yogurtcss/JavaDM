@@ -2,6 +2,8 @@ package pers.yo.study.Demo08_Jedis.test;
 
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.Iterator;
 import java.util.List;
@@ -105,19 +107,42 @@ public class JedisTest1 {
     }
 
     @Test
-    public void test6(){ //sortedset 数据结构操作
+    public void test6(){ //sortedset
         //---1.获取连接
         Jedis jedis = new Jedis( "localhost", 6379 );
         //---2.操作
-        //sortedset存储
-        jedis.zadd( "mysortedset", 3, "haha" );
-        jedis.zadd( "mysortedset", 20, "bbb" );
-        jedis.zadd( "mysortedset",100, "您好" );
-        //sortedset获取
+        jedis.zadd( "mysortedset", 3, "a" );
+        jedis.zadd( "mysortedset",30,"b" );
+        jedis.zadd( "mysortedset",45, "c" );
+        //取出mysortset中的数据
         Set<String> mysortedset = jedis.zrange( "mysortedset",0,-1 );
         System.out.println( mysortedset );
-        //---3.关闭连接
-        jedis.close();
+    }
+
+    @Test
+    public void test7(){ //Jedis连接池
+        /* Jedis 操作步骤如下：
+        1-> 获取 Jedis实例对象 需要从 JedisPool 中获取；
+        2-> 用完 Jedis实例对象 需要返还给 JedisPool；
+        3-> 如果 Jedis实例对象 在使用过程中出错，则也需要还给 JedisPool；
+        *  */
+
+        //---0.创建一个配置对象
+        JedisPoolConfig config = new JedisPoolConfig();
+        //控制一个pool中共有多少个jedis示例
+        config.setMaxTotal( 50 );
+        //控制一个pool最多有多少个状态为idle(空闲的)的jedis实例。
+        config.setMaxIdle( 5 );
+
+        //---1.根据自定义的配置对象config，获取连接池对象jedisPool
+        JedisPool jedisPool = new JedisPool( config, "localhost", 6379 );
+        //---2.获取连接
+        Jedis oneJedis = jedisPool.getResource();
+        //---3.使用此jedis连接对象进行操作
+        oneJedis.set( "您好！","jedis！" );
+        System.out.println( oneJedis.get( "您好！" ) );
+        //---4.释放此jedis实例对象，表示归还到连接池中
+        oneJedis.close();
     }
 
 }
