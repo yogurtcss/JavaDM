@@ -32,11 +32,27 @@ public class FindProvinceServlet extends HttpServlet {
         //ObjectMapper om = new ObjectMapper(); //Jackson的核心对象
         //om.writeValue( response.getWriter(), rst );
 
-        /* 设置 返回给浏览器的响应体(响应体正文)
+        /* 2020-01-03 23:21:08
+        * Tomcat 是一个 web应用服务器，是一个Servlet/Jsp 容器，
+        * 主要负责 【将客户端请求传递给对应的 Servlet】，
+        * 【并且将 Servlet 的响应数据返回给客户端】。
+        *
+        * 原来Tomcat能自动地 接收请求、将客户端请求传递给对应的 Servlet；
+        * Tomcat能自动地 将Servlet的响应数据返回给客户端；
+        *
+        * 我们只需要 接受请求、处理请求即可
+        *
+        * ▲响应体：——我们真正要返回的数据，就塞在【响应体】中
+        * 是服务端返回给客户端的 HTML 文本内容，
+	    * 或者【其他格式的数据】，比如：视频流、图片或者音频数据。
+        *  */
+
+        /* 设置 返回给浏览器的响应体(响应体正文)。
+        * 由Tomcat帮我们把响应数据 返回给浏览器
         * 因为这里返回的是字符数据，所以用getWriter().write()了
         * 如果响应体的内容是字节(如下载时)，那么可以使用 response.getOutputStream()
         *  */
-        response.getWriter().write( json );
+        response.getWriter().write( json ); //设置 返回给浏览器的响应体
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
