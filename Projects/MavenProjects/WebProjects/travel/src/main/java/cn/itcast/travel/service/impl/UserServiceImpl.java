@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         //---3.向用户邮箱发送激活邮件
         /*【坑】编写邮件正文: 把用户的激活码code, [通过请求参数code] 传给activeUserServlet
         * <a href='http://localhost:8080/travel/activeUserServlet?code=XXXYYY'> 点击激活[来自黑马旅游网] </a>
-        * 要带上端口号8080，否则提示找不到这个servlet！
+        * 【要带上端口号8080】，否则提示找不到这个servlet！
         *  */
         String content = "<a href='http://localhost:8080/travel/activeUserServlet?code="+user.getCode()+"'>点击激活[来自黑马旅游网]</a>";
         //正式发送邮件
