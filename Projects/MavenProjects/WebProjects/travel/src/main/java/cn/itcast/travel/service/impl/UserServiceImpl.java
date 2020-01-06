@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
         /* ---1.调用dao，根据用户名查询用户
         * userFromSQL 可能存在的用户
         *  */
-        System.out.println( "用户名是："+user.getUsername() );
+
         /* 往后涉及到 从数据库中查询而得的“对象”rst 时，养成好习惯：
         * 先实例化一个对象A，初始化赋值为 null
         * 然后在 try...catch...中 把 从数据库中查询而得的“对象”rst 赋值给 A
@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean active(String code) { //激活用户: 修改用户的状态status为 Y
+    //激活用户: 根据激活码code找到该用户，并修改该用户的状态status为 Y；返回激活状态的标志flag --布尔值
+    public boolean active(String code) {
         //---1.根据激活码查询用户对象
         User user = dao.findByCode( code );
         if( user!=null ){
