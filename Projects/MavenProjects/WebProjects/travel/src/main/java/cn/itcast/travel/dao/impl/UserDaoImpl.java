@@ -102,7 +102,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByUserAndPassword(String username, String password) {
+    public User findByUsernameAndPassword(String username, String password) {
         /* 每次接收数据库查询结果时：
         * 务必事先初始化一个实例对象A 为 null
         * 然后在 try...catch...中 把数据库查询结果 赋给 A ！！
