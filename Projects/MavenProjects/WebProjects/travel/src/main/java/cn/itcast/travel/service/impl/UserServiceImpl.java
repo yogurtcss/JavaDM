@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
         * userFromSQL 可能存在的用户
         *  */
 
-        /* 往后涉及到 从数据库中查询而得的“对象”rst 时，养成好习惯：
+        /* 【坑】往后涉及到 从数据库中查询而得的“对象”rst 时，养成好习惯：
         * 先实例化一个对象A，初始化赋值为 null
         * 然后在 try...catch...中 把 从数据库中查询而得的“对象”rst 赋值给 A
         * 这样就安全了！
@@ -42,9 +42,11 @@ public class UserServiceImpl implements UserService {
         dao.save( user );
 
         //---3.向用户邮箱发送激活邮件
-        // <a href='http://localhost/travel/activeUserServlet?code=XXXYYY'> 点击激活[来自黑马旅游网] </a>
-        //编写邮件正文: 把用户的激活码code, [通过请求参数code] 传给activeUserServlet
-        String content = "<a href='http://localhost/travel/activeUserServlet?code="+user.getCode()+"'>点击激活[来自黑马旅游网]</a>";
+        /*【坑】编写邮件正文: 把用户的激活码code, [通过请求参数code] 传给activeUserServlet
+        * <a href='http://localhost:8080/travel/activeUserServlet?code=XXXYYY'> 点击激活[来自黑马旅游网] </a>
+        * 要带上端口号8080，否则提示找不到这个servlet！
+        *  */
+        String content = "<a href='http://localhost:8080/travel/activeUserServlet?code="+user.getCode()+"'>点击激活[来自黑马旅游网]</a>";
         //正式发送邮件
         MailUtils.sendMail( user.getEmail(), content, "激活邮件" );
         //返回注册标志为true
