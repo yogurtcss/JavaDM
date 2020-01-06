@@ -3,6 +3,7 @@ package cn.itcast.travel.dao.impl;
 import cn.itcast.travel.dao.UserDao;
 import cn.itcast.travel.domain.User;
 import cn.itcast.travel.util.JDBCUtils;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -60,11 +61,64 @@ public class UserDaoImpl implements UserDao {
         String sql = "insert into tab_user(username,password,name,birthday,sex,telephone,email,status,code) values(?,?,?,?,?,?,?,?,?)";
         /* 2020-01-05 22:23:24
         * 这里插入数据，用的是 template.update()方法，我真的是忘了！
+        * 这里没有用 实例对象去接收数据库查询出来的值,所以不用 try...catch!!
         *  */
         template.update(  sql, //要执行的sql语句
                 user.getUsername(), user.getPassword(), user.getName(),
                 user.getBirthday(), user.getSex(),      user.getTelephone(),
                 user.getEmail(),    user.getStatus(),   user.getCode()
         );
+    }
+
+    @Override
+    public User findByCode(String code) {
+        /* 每次接收数据库查询的结果时:
+        * 务必提前初始化一个实例对象A为null
+        * 在try...catch...中 把查询结果赋给 A! 这样就安全了!
+        *  */
+        User user = null; //提前初始化一个实例对象user 为null
+        try{
+            String sql = "select * from tab_user where code=?";
+            user = template.queryForObject( //查询单条记录
+                    sql,
+                    new BeanPropertyRowMapper<User>(User.class),
+                    code
+            );
+        }catch( DataAccessException e){
+            //DataAccessException 是 RuntimeException, 是一个无须检测的异常，不要求代码去处理这类异常
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    @Override
+    public void updateStatus(User user) {
+        /* 这里没有用 实例对象去接收数据库查询出来的值,所以不用 try...catch!!
+        * 若sql语句是拼接而成的, 注意拼接处的末尾要加空格 ！！
+        *  */
+        String sql = "update tab_user set status='Y' where uid=?";
+        template.update( sql, user.getUid() ); //普通的【执行 增、删、改】方法：都是用这个方法嗷
+    }
+
+    @Override
+    public User findByUserAndPassword(String username, String password) {
+        /* 每次接收数据库查询结果时：
+        * 务必事先初始化一个实例对象A 为 null
+        * 然后在 try...catch...中 把数据库查询结果 赋给 A ！！
+        *  */
+        User user = null;
+        try{
+            String sql = "select * from tab_user where username=? and password=?";
+            user = template.queryForObject(
+                    sql,
+                    new BeanPropertyRowMapper<User>(User.class),
+                    user.getUsername(), user.getPassword()
+            );
+        }catch( Exception e ){
+            e.printStackTrace();
+        }
+
+        return user;
     }
 }
