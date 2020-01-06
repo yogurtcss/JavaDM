@@ -15,7 +15,7 @@ public class UserDaoImpl implements UserDao {
     public User findByUsername(String username) {
         String sql = "select * from tab_user where username=?";
         //查询单条记录的，就用queryForObject
-        /* 不能这样 直接把查询结果赋值为 新的实例对象user！
+        /* 【坑】不能这样 直接把查询结果赋值为 新的实例对象user！
         会报错 org.springframework.dao.EmptyResultDataAccessException:
         Incorrect result size: expected 1, actual 0
 
@@ -43,10 +43,14 @@ public class UserDaoImpl implements UserDao {
                     username
             );
         }catch( Exception e ){
-            e.printStackTrace();
+            // e.printStackTrace(); //不输出报错信息
+
+            /* 【坑！！】template.queryForObject(...)
+            * 若查询为空，则会输出报错信息，
+            * 但还是能正常执行的
+            *  */
         }
 
-        System.out.println( "从userDaoImpl查询的："+user );
         return user;
     }
 
