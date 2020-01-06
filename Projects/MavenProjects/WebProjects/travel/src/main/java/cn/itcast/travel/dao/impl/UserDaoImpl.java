@@ -14,11 +14,38 @@ public class UserDaoImpl implements UserDao {
     public User findByUsername(String username) {
         String sql = "select * from tab_user where username=?";
         //查询单条记录的，就用queryForObject
+        /* 不能这样 直接把查询结果赋值为 新的实例对象user！
+        会报错 org.springframework.dao.EmptyResultDataAccessException:
+        Incorrect result size: expected 1, actual 0
+
+        错误的源代码为：
         User user = template.queryForObject( //直接查询出来的，就是User类型了
                 sql,
                 new BeanPropertyRowMapper<User>(User.class),
                 username
         );
+
+        正确：————以后都要养成这个习惯！
+        先新建一个实例对象user，初始化赋值为null，并使用 try...catch写法！
+        *  */
+        /* 不能这样 直接把数据库查询结果赋值为 新的实例对象user！
+        * 正确：————以后都要养成这个习惯！
+        * 先实例化一个对象A，初始化赋值为 null
+        * 然后在 try...catch...中 把 从数据库中查询而得的“对象”rst 赋值给 A
+        *  */
+        User user = null; //先实例化一个对象A，初始化赋值为 null
+        try{
+            //然后在 try...catch...中 把 从数据库中查询而得的“对象”rst 赋值给 A
+            user = template.queryForObject( //直接查询出来的，就是User类型了
+                    sql,
+                    new BeanPropertyRowMapper<User>(User.class),
+                    username
+            );
+        }catch( Exception e ){
+            e.printStackTrace();
+        }
+
+        System.out.println( "从userDaoImpl查询的："+user );
         return user;
     }
 
