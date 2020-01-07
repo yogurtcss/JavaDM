@@ -117,7 +117,8 @@ public class UserDaoImpl implements UserDao {
             user = template.queryForObject(
                     sql,
                     new BeanPropertyRowMapper<User>(User.class),
-                    user.getUsername(), user.getPassword()
+                    //2020-01-07 15:07:14
+                    username, password //我佛了这里我传错参数了……
             );
         }catch( Exception e ){
             e.printStackTrace();
