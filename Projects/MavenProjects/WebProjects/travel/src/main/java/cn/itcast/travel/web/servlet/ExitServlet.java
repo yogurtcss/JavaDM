@@ -19,9 +19,9 @@ public class ExitServlet extends HttpServlet {
         * session.invalidate()：销毁整个会话session，此 session中所有的用户状态属性都将不存在。
         *  */
 
-        //---2.跳转到登陆页面
+        //---2.跳转到登陆页面，重定向时，必需带上虚拟目录！
         //String request实例对象.getContextPath()方法：获取虚拟目录
-        response.sendRedirect( request.getContextPath()+"/Login.html" );
+        response.sendRedirect( request.getContextPath()+"/login.html" );
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
