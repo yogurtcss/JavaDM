@@ -61,8 +61,12 @@ public class LoginServlet extends HttpServlet {
         }
         if( userFromSQL!=null && userFromSQL.getStatus().equals("Y") ){ //此用户激活状态为Y，激活喽！
             info.setFlag( true ); //无异常
-            //在服务器中保存此用户对象的全部信息！！注意，键名是 成功登录的用户！"user_successfulLogin"
+            //登录成功后，在服务器中保存此用户对象的全部信息！！注意，键名是 成功登录的用户！"user_successfulLogin"
             request.getSession().setAttribute( "user_successfulLogin", userFromSQL );
+            /* 在index.html的header.html中：实现效果 欢迎回来，XXX用户
+            * 已登录用户的信息，被储存在服务器的session中，
+            * 通过ajax请求，从session中拿到这个已登录用户的信息！
+            *  */
         }
 
         //---5.正式返回数据response
