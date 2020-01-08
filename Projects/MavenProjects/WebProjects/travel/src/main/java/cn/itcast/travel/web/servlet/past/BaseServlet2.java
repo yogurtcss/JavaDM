@@ -23,9 +23,10 @@ public class BaseServlet2 extends HttpServlet {
 
         //---3.通过this关键字，拿到方法对象method
         try { //使用IDEA 快速帮我生成try...catch
+            //谁调用我service()方法，我this就指向谁 ——反射成功的关键
             Method method = this.getClass().getMethod( methodName, HttpServletRequest.class, HttpServletResponse.class );
             //---4.invoke执行方法：各模块下的各方法，形参列表也是 HttpServletRequest req, HttpServletResponse resp
-            //这里直接使用父类的形参 req、resp即可！
+            //这里直接使用父类的形参 req、resp即可！  //传入真正的形参
             method.invoke( this, req, resp );
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
