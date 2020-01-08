@@ -47,7 +47,10 @@ public class UserServiceImpl implements UserService {
         * 【通过网址访问某个servlet时，开头的localhost要带上端口号8080】，否则提示找不到这个servlet！
         * 报错：The requested URL /travel/activeUserServlet was not found on this server.
         *  */
-        String content = "<a href='http://localhost:8080/travel/activeUserServlet?code="+user.getCode()+"'>点击激活[来自黑马旅游网]</a>";
+
+        //String content = "<a href='http://localhost:8080/travel/activeUserServlet?code="+user.getCode()+"'>点击激活[来自黑马旅游网]</a>";
+        //优化：提交的地址是 /模块名/方法名
+        String content = "<a href='http://localhost:8080/travel/user/active?code="+user.getCode()+"'>点击激活[来自黑马旅游网]</a>";
         //正式发送邮件
         MailUtils.sendMail( user.getEmail(), content, "激活邮件" );
         //返回注册标志为true
