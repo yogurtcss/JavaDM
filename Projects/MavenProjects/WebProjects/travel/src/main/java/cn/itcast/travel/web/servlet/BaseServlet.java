@@ -129,11 +129,11 @@ public class BaseServlet extends HttpServlet {
             Method method = this.getClass().getMethod( methodName, HttpServletRequest.class, HttpServletResponse.class  );
             /* Method实例对象method.invoke(
                 【此method表示的方法】所在类的 真正实例对象obj,
-                【此method表示的方法】的传入形参(可变参数)
+                【此method表示的方法】的传入形参(可变参数)     //传入真正的形参
               );
 
               在这里，此method所属的实例对象就是 当前类的实例对象this (如UserServlet实例对象下的add方法)
-              传入形参是 HttpServletRequest req, HttpServletResponse resp
+              传入形参是 HttpServletRequest req, HttpServletResponse resp  //传入真正的形参
               直接用 父类BaseServlet的传入形参即可！！
 
             * */
