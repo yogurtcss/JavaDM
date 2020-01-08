@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 // @WebServlet("/BaseServlet") //注意，这个BaseServlet(基础servlet)不需要被访问到！！只是根据模块名分发方法而已
 public class BaseServlet extends HttpServlet {
@@ -87,7 +89,8 @@ public class BaseServlet extends HttpServlet {
         /* 注意到，每个模块对应的servlet类中：
         * 每个方法的【修饰符均被提前修改为public】、返回值均为void、传入的形参列表均一样！
         * 只是方法名不一样而已！
-        * 这样获取方法对象就很容易了
+        * 这样获取方法对象就很容易了——形参列表相同，每个方法对象 传入 形参类型.class 都是一样的
+        * Method getMethod( String name方法名   [, 类<?>... parameterTypes 各形参的.class，是可选的] );
         *
         * 利用反射：获取 【此模块对应的servlet的字节码对象ccc (即Class 类_类型实例对象ccc)】，——>如何获取？巧妙！this
         *        ——这是成功调取反射方法执行 模块对应Servlet 的关键；
@@ -112,12 +115,31 @@ public class BaseServlet extends HttpServlet {
         * this就指向 子类UserServlet！！
         *  */
         //这是谁？cn.itcast.travel.web.servlet.UserServlet@1db44e0b
+        System.out.println( "【关键】这时候，子类UserServlet调用了 子类未重写的、只在父类中的service()方法， (this指向的是调用父类service()方法的子类哦！)" );
         System.out.println( "【关键】这时候 BaseServlet中重写的service()方法就在 UserServlet中被调用了！" );
         System.out.println( "this："+this+"就指向 子类UserServlet！！" );
 
         //---4.执行这个方法
+        /* Class<?> currClass = this.getClass(); //this指向的是当前子类；this.getClass()获取当前子类的字节码Class对象
+        *
+        * Method getMethod( String name方法名   [, 类<?>... parameterTypes 各形参的.class，是可选的] );
+        *  */
+        //形参列表相同，每个方法对象 传入 形参类型.class 都是一样的
+        try { //使用 IDEA 帮我捕获异常
+            Method method = this.getClass().getMethod( methodName, HttpServletRequest.class, HttpServletResponse.class  );
+            /* Method实例对象method.invoke(
+                【此method表示的方法】所在类的 真正实例对象obj,
+                【此method表示的方法】的传入形参(可变参数)
+              );
 
+              在这里，此method所属的实例对象就是 当前类的实例对象this (如UserServlet实例对象下的add方法)
+              传入形参是 HttpServletRequest req, HttpServletResponse resp
+              直接用 父类BaseServlet的传入形参即可！！
 
-
+            * */
+            method.invoke( this, req, resp ); //这里也是需要捕获异常
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 }
