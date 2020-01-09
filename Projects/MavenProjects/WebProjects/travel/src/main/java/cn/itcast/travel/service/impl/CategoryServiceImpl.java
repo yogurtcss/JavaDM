@@ -77,8 +77,17 @@ public class CategoryServiceImpl implements CategoryService {
             //list原本是List接口类型的，需向下转型为ArrayList类型，才能用list.add()方法
             list = new ArrayList<Category>();
             for( Tuple one : category_withScores_redis ){
-                //新建一个实例对象Category c，作为list列表中的泛型！！
-                Category c = new Category();
+                /* 集合Set的泛型为 Tuple元组
+                * Tuple类中：
+                * private成员变量 byte[] element;  --元素是字节数组嗷！而Tuple类中，在获取这个对象element时，已经转为字符串类型了
+                * private成员变量 Double score; --双精度型
+                *
+                * 而Tuple类中，在获取这个对象element时，已经转为字符串类型了
+                * public String getElement() {...}
+                * 直接获取分数：
+                * public double getScore() {...}
+                *  */
+                Category c = new Category(); //新建一个实例对象Category c，作为list列表中的泛型！！
                 c.setCname( one.getElement() ); //把名字放进c对象中！
                 c.setCid( (int)one.getScore() ); //强制类型转换为int，把分数存入【实例对象c】的cid属性中！！
                 list.add(c); //添加这个实例对象Category c
