@@ -6,6 +6,7 @@ import cn.itcast.travel.domain.Category;
 import cn.itcast.travel.service.CategoryService;
 import cn.itcast.travel.util.JedisUtil;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,39 @@ public class CategoryServiceImpl implements CategoryService {
         Jedis jedis = JedisUtil.getJedis(); //获取到某个jedis连接对象
 
         //---1.从redis中查询：使用sortedset 排序查询
-        Set<String> category_redis = jedis.zrange( "category", 0, -1 );
+        //注意，这里查询的是 sorted_set， 是【set！】 所以返回的是 Set接口 类型的数据嗷！
+
+        // Set<String> category_redis = jedis.zrange( "category", 0, -1 );
+
+        /* 在header.html中，把后台返回的数据：
+        * 通过each方法，动态生成<li>标签，把data.cid数据塞进每个<li>标签中
+        *
+        * 初始时会发现：地址栏传过来的cid全是0，为啥？
+        * 因为：后台返回的数据是查询redis缓存的，
+        * 而查询redis缓存中的语句是 zrange( "category", 0, -1, )，只查询的cname，没有查询出分数！
+        *  //redis命令行中： zrange "category" 0 -1  withscores
+        *
+        * 改正：查询redis缓存时 带上分数！(cid)
+        * Set<Tuple元组> tuples = zrangeWithScores( "category",0,-1 )
+        *
+        *  */
+        // 查询sortedset时：使查询结果携带分数cid！！
+        Set<Tuple> category_withScores_redis = jedis.zrangeWithScores( "category", 0, -1 );
+        /* 集合Set的泛型为 Tuple元组
+        * Tuple类中：
+        * private成员变量 byte[] element;  --元素是字节数组嗷！而Tuple类中，在获取这个对象element时，已经转为字符串类型了
+        * private成员变量 Double score; --双精度型
+        *
+        * 而Tuple类中，在获取这个对象element时，已经转为字符串类型了
+        * public String getElement() {...}
+        * 直接获取分数：
+        * public double getScore() {...}
+        *  */
 
         List<Category> list = null; //最终要返回的结果 集合list，注意，这是List接口类型的数据！
         //---2.判断需查询的集合是否为空
-        if( category_redis==null || category_redis.size()==0 ){ //------2.1 如果为空，则从本地数据库mysql中查询，然后将数据存入redis中
+        //------2.1 如果为空，则从本地数据库mysql中查询，然后将数据存入redis中
+        if( category_withScores_redis==null || category_withScores_redis.size()==0 ){
             System.out.println( "从数据库中查询..." );
             try{
                 /* 若查询的缓存中没有数据category：这是第一次查询，就直接从数据库中查询得到List接口类型的数据list，并返回这list数据
@@ -47,10 +76,11 @@ public class CategoryServiceImpl implements CategoryService {
             System.out.println( "从redis中查询..." );
             //list原本是List接口类型的，需向下转型为ArrayList类型，才能用list.add()方法
             list = new ArrayList<Category>();
-            for( String one : category_redis ){
+            for( Tuple one : category_withScores_redis ){
                 //新建一个实例对象Category c，作为list列表中的泛型！！
                 Category c = new Category();
-                c.setCname( one ); //把名字放进c对象中！
+                c.setCname( one.getElement() ); //把名字放进c对象中！
+                c.setCid( (int)one.getScore() ); //强制类型转换为int，把分数存入【实例对象c】的cid属性中！！
                 list.add(c); //添加这个实例对象Category c
             }
         }
