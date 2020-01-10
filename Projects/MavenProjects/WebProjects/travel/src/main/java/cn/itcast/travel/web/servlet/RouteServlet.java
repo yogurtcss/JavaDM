@@ -33,13 +33,15 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         int currentPage = 0; //当前页码，整型，若前端没有传递过来，则默认为第一页
         if( currentPageStr!=null && currentPageStr.length()>0 ){ //判断str是否为空，且str长度是否大于0
             currentPage = Integer.parseInt( currentPageStr ); //将字符串型的currentPage转为整型
+        }else{
+            currentPage = 1; //当前页码，整型，若前端没有传递过来，则默认为第一页
         }
         //------强制类型转换pageSizeStr
         int pageSize = 0; //每页显示条数，整型，若前端没有传递过来，则默认为 每页显示5条记录
         if( pageSizeStr!=null && pageSizeStr.length()>0 ){ //判断str是否为空，且str长度是否大于0
             pageSize = Integer.parseInt( pageSizeStr ); //将字符串型的pageSize转换为整型
         }else{
-            pageSize = 5;
+            pageSize = 5; //每页显示条数，整型，若前端没有传递过来，则默认为 每页显示5条记录
         }
 
         //---3.调用service层，查询出pageBean对象
