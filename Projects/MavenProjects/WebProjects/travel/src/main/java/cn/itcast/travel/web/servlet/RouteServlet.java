@@ -26,21 +26,22 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         //---2.前端传过来的形参都是字符串型的，需处理接收的字符串参数，做强制类型转换嗷！
         //------强制类型转换cid
         int cid = 0; //类别id，整型
-        if( cidStr!=null && cidStr.length()>0 ){ //判断字符串str是否为空，且字符串str长度是否大于0
+        if( cidStr!=null && cidStr.length()>0 && !cidStr.equals("null") ){ //判断字符串str是否为空，且字符串str长度是否大于0
             cid = Integer.parseInt( cidStr ); //将字符串型的cid转为整型
-        }
+        } //cid是必需传入的！(在route_list.html中的地址栏传过来的)
+
         //------强制类型转换currentPage
         int currentPage = 0; //当前页码，整型，若前端没有传递过来，则默认为第一页
         if( currentPageStr!=null && currentPageStr.length()>0 ){ //判断str是否为空，且str长度是否大于0
             currentPage = Integer.parseInt( currentPageStr ); //将字符串型的currentPage转为整型
-        }else{
+        }else{ //若前端没有把currentPageStr传递过来
             currentPage = 1; //当前页码，整型，若前端没有传递过来，则默认为第一页
         }
         //------强制类型转换pageSizeStr
         int pageSize = 0; //每页显示条数，整型，若前端没有传递过来，则默认为 每页显示5条记录
         if( pageSizeStr!=null && pageSizeStr.length()>0 ){ //判断str是否为空，且str长度是否大于0
             pageSize = Integer.parseInt( pageSizeStr ); //将字符串型的pageSize转换为整型
-        }else{
+        }else{ //若前端没有把pageSizeStr传递过来
             pageSize = 5; //每页显示条数，整型，若前端没有传递过来，则默认为 每页显示5条记录
         }
 
