@@ -5,8 +5,10 @@ import cn.itcast.travel.domain.Route;
 import java.util.List;
 
 public interface RouteDao {
-    public int findTotalCount( int cid ); //根据cid查询总记录数
+    public abstract int findTotalCount( int cid, String rname ); //根据cid查询总记录数
 
     //根据 cid、start、pageSize查询当前页的数据集合
-    public List<Route> findByPage( int cid, int start, int pageSize );
+    public abstract List<Route> findByPage( int cid, int start, int pageSize, String rname );
+
+    public Route findOne(int rid);
 }
