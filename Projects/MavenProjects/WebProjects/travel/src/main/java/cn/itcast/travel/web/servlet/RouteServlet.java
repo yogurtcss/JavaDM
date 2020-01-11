@@ -62,6 +62,7 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         * <p><a href="route_detail.html?rid='   +route.rid+    '">查看详情</a></p>
         * 传输了 route.rid 这个请求参数
         *
+        * 在RouteServlet中：
         * RouteService这个service层中，实现了 findOne方法 --查询某个商品的详情信息
         * 在这里直接查询出来，回写给前端
         *  */
