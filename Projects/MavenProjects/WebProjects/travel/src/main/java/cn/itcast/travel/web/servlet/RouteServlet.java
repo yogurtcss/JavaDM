@@ -2,19 +2,23 @@ package cn.itcast.travel.web.servlet;
 
 import cn.itcast.travel.domain.PageBean;
 import cn.itcast.travel.domain.Route;
+import cn.itcast.travel.domain.User;
+import cn.itcast.travel.service.FavoriteService;
 import cn.itcast.travel.service.RouteService;
+import cn.itcast.travel.service.impl.FavoriteServiceImpl;
 import cn.itcast.travel.service.impl.RouteServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/route/*") //为 注解的servlet模板 修改的代码，加个斜杠。servlet名字首字母小写嗷！
 public class RouteServlet extends BaseServlet { //继承基类BaseServlet
-    private RouteService service = new RouteServiceImpl(); //service层
+    private RouteService Rservice = new RouteServiceImpl(); //service层：RouteService
+    private FavoriteService Fservice = new FavoriteServiceImpl(); //service层：FavoriteService
+
     //修饰符改为public，返回值不变，方法名为pageQuery
     public void pageQuery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          //---1.接收参数
@@ -48,7 +52,7 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         }
 
         //---3.调用service层，查询出pageBean对象
-        PageBean<Route> pb_final = service.pageQuery( cid, currentPage, pageSize, rname );
+        PageBean<Route> pb_final = Rservice.pageQuery( cid, currentPage, pageSize, rname );
         System.out.println( "pb_final是空的吗"+pb_final==null );
         //---4.将数据转为JSON对象，并填入 流中
         writeValueToResponse( response, pb_final ); //BaseServlet中，自定义的方法嗷！
@@ -68,9 +72,32 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         *  */
         String rid = request.getParameter( "rid" );
         //---调用service层
-        Route route_final = service.findOne( rid );
+        Route route_final = Rservice.findOne( rid );
         //---在这里直接查询出来，回写给前端
         writeValueToResponse( response, route_final );
     }
+
+    //判断当前登录用户是否收藏过该线路
+    public void isFavorite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        //---1.获取线路id
+        String rid = request.getParameter( "rid" );
+        //---2.获取当前登陆的用户
+        /* 在LoginServlet中：我用的键名是 user_successfulLogin ！！
+        * request.getSession().setAttribute( "user_successfulLogin", userFromSQL );
+        *  */
+        User user = (User)request.getSession().getAttribute( "user_successfulLogin" );
+        int uid; //用户id
+        if( user==null ){ //用户未登录
+            uid = 0;
+        }else{ //用户已登录
+            uid = user.getUid();
+        }
+        //---3.调用service层 查询 该uid的用户是否收藏了 rid的商品
+        boolean flag = Fservice.isFavorite( rid, uid );
+        //---4.写回客户端
+        writeValueToResponse( response, flag );
+    }
+
+
 
 }
