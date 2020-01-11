@@ -36,7 +36,7 @@ public class RouteServiceImpl implements RouteService {
             //不处理
         }
         pb_final.setTotalCount( totalCount ); //设置当前类别cid的 总记录数
-
+        System.out.println( "currentPage是空的吗？"+currentPage );
         pb_final.setCurrentPage( currentPage ); //设置当前cid类别下的 当前页的当前页码
         pb_final.setPageSize( pageSize ); //当前cid类别下的 当前页的显示的条数
 
