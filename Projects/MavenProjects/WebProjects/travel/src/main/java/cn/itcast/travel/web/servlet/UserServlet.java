@@ -171,7 +171,7 @@ public class UserServlet extends BaseServlet { //继承BaseServlet，等候方�
         response.getWriter().write( json ); //正式返回数据
     }
 
-    //找已登录的某用户
+    //获取当前已登录用户的信息
     public void findOne( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         /* index.html 首页的 header.html 头部中，
          * 【已登录的用户，被储存在服务器的session中！
