@@ -77,7 +77,7 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         writeValueToResponse( response, route_final );
     }
 
-    //判断当前登录用户是否收藏过该线路
+    //判断当前登录用户是否收藏过该线路 2020-01-11 20:40:37
     public void isFavorite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         //---1.获取线路id
         String rid = request.getParameter( "rid" );
@@ -98,6 +98,22 @@ public class RouteServlet extends BaseServlet { //继承基类BaseServlet
         writeValueToResponse( response, flag );
     }
 
-
-
+    //添加收藏 2020-01-11 20:41:07
+    public void addFavorite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        //获取线路id
+        String rid = request.getParameter( "rid" );
+        //获取当前登录的用户
+        /* 在LoginServlet中：我用的键名是 user_successfulLogin ！！
+        * request.getSession().setAttribute( "user_successfulLogin", userFromSQL );
+        *  */
+        User user = (User)request.getSession().getAttribute( "user_successfulLogin" );
+        //判断user是否为空，取uid喽
+        int uid;
+        if( user!=null ){ //用户不为空时
+            uid = user.getUid();
+            Fservice.add( rid, uid ); //用户不为空时，才能添加收藏
+        }else{ //未登录时，不做操作
+            return;
+        }
+    }
 }
