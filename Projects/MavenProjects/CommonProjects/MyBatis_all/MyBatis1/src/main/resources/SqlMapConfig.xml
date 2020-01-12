@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- Config的约束，结束 -->
+
+
+
+<!-- mybatis的主配置 configuration标签 -->
+<configuration>
+    <!--  <environments>标签	用来设置 mybatis的环境
+
+    注意，(1)先看小的内层标签：<environment />标签 用来【配置单独某个数据源的环境】，其属性id(此id名可任意命名)用来标识一个数据源；
+    (2)再看最外层的大标签：<environments />标签中的default属性：表示在默认的情况下我们将启用的数据源；(从<environment />子标签的id中选择嗷！)
+    ▲ 总结：<environments />大标签下的 【每个 <environment />小标签都是每个数据源的配置环境】；
+    <environments />大标签下 可以有多个 【不同id值】的 <environment />小标签 (小标签的属性id标识某个数据源)；
+    在最外层的 <environments />大标签中，通过 default属性 指定 子标签中的【某个id的数据源】；
+    ▲ 使用时，先写 <environment />子标签的id属性，这样 <environments />大标签才能选择【某个子标签的id值】为 总default属性的值！
+
+    <environments> 是用来配置 mybatis 的环境的，在和 Spring 整合前是由 mybatis 自己管理的，
+    但是和 Spring 整合后，这些配置都将被废弃掉，
+
+    -->
+    <environments default="mysql"> <!-- 大标签中，选择 mysql的数据源 -->
+        <environment id="mysql"> <!-- 每个单独的环境id任意命名 -->
+            <!-- 通过type属性 配置事务的类型 -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- <transactionManager /> 标签，配置事务，其 type属性有三个值：
+                - JDBC 采用 JDBC 管理事务，在独立编码中我们经常使用
+                - MANAGED 采用容器方式管理事务，在 JNDI 数据源中使用
+                - 自定义 由使用者自定义数据库事务管理方法，适用于某些特殊场景
+
+                <transactionManager /> 标签体 一般为空嗷！
+            -->
+
+            <!-- 通过type属性 指定数据源的类型，一般是 连接池数据库 POOLED
+            <dataSource />标签 配置一个数据源链接等相关信息，通过type属性 配置数据库连接方式：
+            - POOLED 连接池数据库
+            - UNPOOLED 非连接池数据库
+            - JNDI JNDI 数据源
+            - 自定义数据源
+
+            <dataSource />标签体中，通过<property标签> 填写 配置连接数据库的4个基本信息
+
+            -->
+            <dataSource type="POOLED">
+                <!-- <dataSource />标签体中，通过<property标签> 填写 配置连接数据库的4个基本信息
+                1.指定数据库厂商的驱动 com.mysql.jdbc.Driver
+                2.指定数据库连接的url(端口号、数据库名)
+                3.进入数据库的用户名
+                4.进入数据库的密码
+                -->
+                <property name="driver" value="com.mysql.jdbc.Driver" /> <!-- 容易忘记 -->
+                <!-- 我的端口号是5306，数据库是db1 -->
+                <property name="url" value="jdbc:mysql://localhost:5306/db1" /> <!-- 容易忘记 -->
+                <property name="username" value="root" />
+                <property name="password" value="root" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- <mappers />大标签 【与<environments />大标签同理的】
+        <mappers />大标签 下，可以有 多个<mapper />小标签：即指定 一堆堆的映射配置.xml文件
+
+        ▲ 每个 <mapper />小标签，通过resource属性 指定 【某个持久层接口dao的映射配置文件】的位置
+
+        ▲ 在src/main/java/resources目录下，创建 某个持久层接口dao的映射配置文件.xml ：
+        1.创建位置：此xml文件的【全前缀包名】  必需与  持久层接口dao的【全前缀包名】 一致
+        2.文件名：此xml文件名 与 持久层接口dao 名字相同！
+
+          如某UserDao.java的 【全前缀包名】 为 pers.yo.mybatis1.dao
+          则resources目录下 与此UserDao进行映射的xml文件名为 UserDao.xml，
+          且：UserDao.xml的 【全前缀包名】 也必需为 pers.yo.mybatis1.dao
+          //即在 resources目录下，【一级一级地】创建 pers文件夹(目录)、yo文件夹(目录)、.mybatis1文件夹(目录)、dao文件夹，
+          //并【在resources目录下的】 pers/yo/mybatis1/dao目录下 新建名为UserDao.xml的配置文件
+        -->
+    <mappers>
+        <!-- 每个 <mapper />小标签，通过resource属性 指定 【某个持久层接口dao的映射配置文件】的位置 -->
+        <mapper resource="pers/yo/mybatis1/dao/UserDao.xml" />
+    </mappers>
+
+
+</configuration>
