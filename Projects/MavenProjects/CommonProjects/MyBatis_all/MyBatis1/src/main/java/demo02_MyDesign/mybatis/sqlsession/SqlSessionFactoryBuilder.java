@@ -1,6 +1,7 @@
 package demo02_MyDesign.mybatis.sqlsession;
 
 import demo02_MyDesign.mybatis.cfg.Configuration;
+import demo02_MyDesign.mybatis.sqlsession.defaults.DefaultSqlSessionFactory;
 import demo02_MyDesign.mybatis.utils.XMLConfigBuilder;
 
 import java.io.InputStream;
@@ -11,9 +12,8 @@ public class SqlSessionFactoryBuilder {
      * @param config
      * @return
      */
-    public SqlSession build( InputStream config ){
-        Configuration cofig = XMLConfigBuilder.loadConfiguration( config );
-        //return( new DefaultSqlSessionFactory(cfg) )
-        return null;
+    public SqlSessionFactory build( InputStream config ){
+        Configuration cfg = XMLConfigBuilder.loadConfiguration( config );
+        return( new DefaultSqlSessionFactory(cfg) );
     }
 }

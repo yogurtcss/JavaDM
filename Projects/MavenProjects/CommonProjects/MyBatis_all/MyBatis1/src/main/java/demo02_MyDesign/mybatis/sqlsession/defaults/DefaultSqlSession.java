@@ -27,20 +27,18 @@ public class DefaultSqlSession implements SqlSession {
      * @return
      */
     @Override
-    public <T> T getMapper(Class<T> daoInterfaceClass) {
+    public <T> T getMapper(Class<T> daoInterfaceClass) { //传入形参的就是接口了……
         T rst = (T) Proxy.newProxyInstance(
                 //真实对象的类加载器
                 daoInterfaceClass.getClassLoader(),
                 //被代理对象实现的接口 数组
-                daoInterfaceClass.getInterfaces(),
+                new Class[]{ daoInterfaceClass },
 
                 //处理器
                 new MapperProxy( cfg.getMappers(), connection )
         );
 
         return rst;
-
-
     }
 
     @Override
