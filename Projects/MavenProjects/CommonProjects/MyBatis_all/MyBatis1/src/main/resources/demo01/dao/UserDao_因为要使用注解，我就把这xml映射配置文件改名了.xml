@@ -22,11 +22,12 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 -->
 
 <!-- 持久层映射配置中mapper标签的 namespace属性取值为 【持久层接口dao的全限定类名】 -->
-<mapper namespace="pers.yo.mybatis1.dao.UserDao"> <!-- 这里就是 此xml文件与持久层接口映射 的关键步骤！ -->
+<!-- namespace= "pers.yo.mybatis1.dao.UserDao" -->
+<mapper namespace="demo01.dao.UserDao"> <!-- 这里就是 此xml文件与持久层接口映射 的关键步骤！ -->
     <!-- 配置：查询所有 的操作
     SQL语句的配置标签 <select>,<insert>,<delete>,<update> 的 id 属性必须和 【持久层接口dao的方法名相同】。
     -->
-    <select id="findAll" resultType="pers.yo.mybatis1.domain.User">
+    <select id="findAll" resultType="demo01.domain.User">
         select * from user
         <!--  resultType属性：用于指定结果集的类型。
         parameterType 属性 用于指定传入参数的类型。

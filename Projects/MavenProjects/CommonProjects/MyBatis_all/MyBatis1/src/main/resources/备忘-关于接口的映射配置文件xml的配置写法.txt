@@ -1,0 +1,16 @@
+<!-- <mappers />大标签 【与<environments />大标签同理的】
+        <mappers />大标签 下，可以有 多个<mapper />小标签：即指定 一堆堆的映射配置.xml文件
+
+        ▲ 每个 <mapper />小标签，通过resource属性 指定 【某个持久层接口dao的映射配置文件】的位置
+
+        ▲ 在src/main/java/resources目录下，创建 某个持久层接口dao的映射配置文件.xml ：
+        1.创建位置：此xml文件的【全前缀包名】  必需与  持久层接口dao的【全前缀包名】 一致
+        2.文件名：此xml文件名 与 持久层接口dao 名字相同！
+
+          如某UserDao.java的 【全前缀包名】 为 pers.yo.mybatis1.dao
+          则resources目录下 与此UserDao进行映射的xml文件名为 UserDao_因为要使用注解，我就把这xml映射配置文件改名了.xml，
+          且：UserDao.xml的 【全前缀包名】 也必需为 pers.yo.mybatis1.dao
+          //即在 resources目录下，【一级一级地】创建 pers文件夹(目录)、yo文件夹(目录)、.mybatis1文件夹(目录)、dao文件夹，
+          //并【在resources目录下的】 pers/yo/mybatis1/dao目录下 新建名为UserDao.xml的配置文件
+
+-->
