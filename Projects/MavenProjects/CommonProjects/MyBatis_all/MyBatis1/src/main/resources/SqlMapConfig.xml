@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!-- Config的约束，结束 -->
 
+<!-- MyBatis 核心配置文件 SqlMapConfig.xml -->
 
 <!-- 2020-01-12 17:04:33
 <?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
@@ -15,14 +16,111 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
 <!-- MyBatis的主配置 configuration标签 -->
 <configuration>
+    <!-- 2020-01-13 21:23:43
+    <properties />标签：
+    1.可以在此<properties />标签内部，直接填写连接数据库的配置信息；
+    2.【或者】通过<properties />标签的resource属性 或 url属性，引用外部xxx.properties配置文件中的配置信息
+
+
+    //1.可以在此<properties />标签内部，直接填写连接数据库的配置信息；
+     <properties>
+        //如果外部.properties配置文件有该属性，则内部定义属性被外部属性覆盖
+        <property name="driver" value="com.mysql.jdbc.Driver"> </property>
+        <property name="url" value="jdbc:mysql://localhost:3306/eesy_mybatis"> </property>
+        <property name="username" value="root"></property>
+        <property name="password" value="1234"></property>
+     </properties>
+     ▲ 建议：不要在<properties />标签体内添加任何属性值，而应将属性值定义在 外部的.properties文件中。
+
+
+     //2.【或者】通过<properties />标签的resource属性 或 url属性，引用外部xxx.properties配置文件中的配置信息
+     /* 将数据连接单独配置在 db.properties 中，只需要在 SqlMapConfig.xml 中加载 db.properties 的属性值，
+     好处：在 SqlMapConfig.xml 中就不需要对数据库连接参数进行硬编码。
+
+     ▲ 数据库连接参数只配置在 db.properties中，方便对参数进行统一管理，
+     【其它 xml可以引用该 db.properties】中的配置信息。
+     * */
+
+     <properties />标签中的两个属性
+     (1)resource属性：【常用】
+        默认读取【在类路径ClassPath路径下】的文件
+        resource属性的读取路径：src /main /resources总目录下 ——(或resources总目录下的子目录)
+
+        ▲ 将 .properties配置文件直接放在 src /main /resources总目录下 ——(或resources总目录下的子目录)
+        即可通过 resource属性读取到这个.properties配置文件
+
+     (2)url属性：是要求按照Url的写法来写地址
+        URL：Uniform Resource Locator(定位器) 统一资源定位符。 它的写法：
+             http:// localhost: 8080       /mybatisserver/demo1Servlet
+             协议      主机      端口        URI——带前面的斜杠！！
+
+       ▲ request.getRequestURI() 得到的是 /XXX/aa.jsp
+
+       URI:Uniform Resource Identifier 统一资源标识符，唯一标识一个资源
+
+
+    ▲ MyBatis将按照下面的顺序来加载 <properties />标签中的属性，
+    1.在 <properties />标签体内定义的属性优先读取。
+    2.然后读取 <properties />标签中 resource 或 url 加载的属性，它会覆盖已读取的同名属性。
+    3.最后读取 parameterType 传递的属性，它会覆盖已读取的同名属性。
+    -->
+
+
+    <!-- resource属性的读取路径：src /main /resources总目录下 ——(或resources总目录下的子目录) -->
+    <properties resource="props/jdbcConfig.properties" />
+
+    <!-- 使用 <typeAliases /> 大标签：为【某个类或某个包】起别名，它只能配置domain中类的别名
+    alias 别名。其复数形式+es，即 alias_es
+
+    ▲ <typeAliases /> 大标签下的
+    一、子标签1： <typeAlias  _末尾无es /> ——单词末尾没有es！！
+       <typeAlias type属性="实体类的全限定类名" alias属性="你指定别名"  />
+       如<typeAlias type="com.itcast.User"  alias="user" />
+       ▲ 注：使用此法指定别名后，是严格区分大小写的！！ 此处的别名就是你所指定的小写的user，而不是大写的User！！
+
+
+    二、子标签2： <package name="某个包名" /> 【批量地】为某个包下的所有实体类设置默认的别名，
+    MyBatis默认的设置别名的方式就是：去除类所在的包后的 简单的类名
+    如：<package name="cn.itcast" />    → 在cn.itcast包下的User实体类的别名就会被默认设置成User
+    // cn.itcast.User这个实体类的别名就会被默认设置成User
+    -->
+    <typeAliases>
+
+        <!-- 【批量地】为 demo03_CRUD.domain包下的所有实体类设置默认的别名 -->
+        <package name="demo03_CRUD.domain" />
+    </typeAliases>
+
+
     <environments default="mysql" > <!-- 大标签的default属性 从子标签的id中任选一个嗷 -->
         <environment id="mysql" >
-            <transactionManager type="JDBC"></transactionManager>
+            <!-- 指定 使用jdbc事务管理 -->
+            <transactionManager type="JDBC"/>
+
+            <!-- 指定 使用数据库连接池 -->
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver" /> <!-- 指定驱动 -->
-                <property name="url" value="jdbc:mysql://localhost:5306/db1" /> <!-- 指定数据库连接的url，使用db1数据库 -->
-                <property name="username" value="root" /> <!-- 登录数据库的 用户名 -->
-                <property name="password" value="root" /> <!-- 登录数据库的 密码 -->
+
+             <!-- 2020-01-13 22:43:56
+             当时，未通过 <properties />标签引入外部的.properties配置文件时，
+             还是使用 “硬编码”的形式 引入数据库的连接参数
+                <property name="driver" value="com.mysql.jdbc.Driver" />  //指定驱动
+                <property name="url" value="jdbc:mysql://localhost:5306/db1" />  //指定数据库连接的url，使用db1数据库
+                <property name="username" value="root" />  //登录数据库的 用户名
+                <property name="password" value="root" />  //登录数据库的 密码
+             -->
+
+             <!-- 2020-01-13 22:46:31
+             现在，通过<properties />标签引入外部的 db.properties配置文件时，
+             【其它 xml可以引用该 db.properties】中的配置信息。
+
+             类似JQ的写法：
+             name="XXX"   value="${jdbc.XXX}" //类似JQ的写法
+             如 name="driver" value="${jdbc.driver}"
+             -->
+                <!-- value属性的值：类似JQ的写法 -->
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
             </dataSource>
         </environment>
     </environments>
