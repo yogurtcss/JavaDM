@@ -1,7 +1,7 @@
-package pers.yo.mybatis1.dao;
+package demo01.dao;
 
 import org.apache.ibatis.annotations.Select;
-import pers.yo.mybatis1.domain.User;
+import demo01.domain.User;
 
 import java.util.List;
 
