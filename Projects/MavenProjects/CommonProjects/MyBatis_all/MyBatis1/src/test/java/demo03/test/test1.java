@@ -104,8 +104,8 @@ public class test1 {
     }
 
     @Test
-    public void testFindByName(){
-        System.out.println( dao_proxy.findByName("小二王") );
+    public void testFindByName(){ //SQL语句中 like 模糊查询，传入的字符串必需 带百分号！
+        System.out.println( dao_proxy.findByName("%王%") );
     }
 
     @Test
