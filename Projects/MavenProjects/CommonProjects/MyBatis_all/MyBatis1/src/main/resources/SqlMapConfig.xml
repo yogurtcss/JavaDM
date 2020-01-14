@@ -131,6 +131,14 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
         <!-- 使用映射配置文件的方式，resource指向的是 映射配置文件的地址 -->
         <mapper resource="demo02_MyDesign/dao/UserDao.xml" />
+
+        <!-- 2020-01-14 15:24:30
+        一切准备就绪了，但是忘记在总配置文件SqlMapConfig.xml这里，加上 demo03_CRUD.dao.UserDao的映射配置文件！！
+        这样就会报错：Type interface demo03_CRUD.dao.UserDao is not known to the MapperRegistry
+
+        原因：SqlMapConfig.xml配置文件的<mappers />标签中缺失某个映射配置文件
+        -->
+        <mapper resource="demo03_CRUD/dao/UserDao.xml" />
     </mappers>
 
 </configuration>
