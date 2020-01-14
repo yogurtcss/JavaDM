@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- Config的约束，结束 -->
+
+
+<!-- 2020-01-12 17:04:33
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
+<?xml version="1.0" encoding="UTF-8"?>  必须是 XML 文件的第一个元素且前面不能空格。
+
+xml文件中第一个元素前面不能为空！！！！！！！！！！！！
+<?xml ... ?> 前面不能有空格！！
+-->
+
+<!-- MyBatis的主配置 configuration标签 -->
+<configuration>
+    <environments default="mysql" > <!-- 大标签的default属性 从子标签的id中任选一个嗷 -->
+        <environment id="mysql" >
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" /> <!-- 指定驱动 -->
+                <property name="url" value="jdbc:mysql://localhost:5306/db1" /> <!-- 指定数据库连接的url，使用db1数据库 -->
+                <property name="username" value="root" /> <!-- 登录数据库的 用户名 -->
+                <property name="password" value="root" /> <!-- 登录数据库的 密码 -->
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!-- 使用注解方式 -->
+<!--        <mapper class="demo02_MyDesign.dao.UserDao" />-->
+
+        <!-- 使用映射配置文件的方式，resource指向的是 映射配置文件的地址 -->
+        <mapper resource="demo02_MyDesign/dao/UserDao.xml" />
+    </mappers>
+
+</configuration>
