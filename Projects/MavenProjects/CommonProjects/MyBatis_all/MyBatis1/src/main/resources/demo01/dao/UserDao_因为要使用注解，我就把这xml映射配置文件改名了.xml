@@ -25,7 +25,7 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 <!-- namespace= "pers.yo.mybatis1.dao.UserDao" -->
 <mapper namespace="demo01.dao.UserDao"> <!-- 这里就是 此xml文件与持久层接口映射 的关键步骤！ -->
     <!-- 配置：查询所有 的操作
-    SQL语句的配置标签 <select>,<insert>,<delete>,<update> 的 id 属性必须和 【持久层接口dao的方法名相同】。
+    SQL语句的配置标签 <select />、<insert />、<delete />、<update /> 的 id 属性必须和 【持久层接口dao的方法名相同】。
     -->
     <select id="findAll" resultType="demo01.domain.User">
         select * from user
