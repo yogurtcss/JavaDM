@@ -227,7 +227,8 @@ namespace命名空间，作用就是对sql进行分类化管理，理解sql隔�
 
     <!-- 2020-01-14 20:40:59  从这里开始，感觉渐入佳境了 -->
     <select id="findByName" parameterType="String" resultMap="userMap" >
-        select * from user where username=#{name}; <!-- name 见名知意 -->
+        <!-- SQL语句中 like 模糊查询，传入的字符串必需 带百分号！ -->
+        select * from user where username like #{name}; <!-- name 见名知意 -->
     </select>
 
     <!-- 【有点特殊】接口中的此方法，无形参传入，返回值为int！！ -->
