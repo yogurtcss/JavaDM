@@ -143,6 +143,8 @@ namespace命名空间，作用就是对sql进行分类化管理，理解sql隔�
         <!-- 关于 sql语句的 #{} 字符：
         1.若parameterType是一个 POJO或JavaBean：则 #{} 既有占位符 ?的作用、也有替换 ? 的作用：
         #{} 就是调用【传入形参parameterType中的实例对象 的get方法】
+        不是取成员变量，而是取属性！！
+        属性：getXXXYYY()方法中的 XXXYYY字段
 
         SQL语句中：insert into user(...列名) value( 真正插入数据库的值 )
         #{userName} 表示 实例对象user.getUserName，
