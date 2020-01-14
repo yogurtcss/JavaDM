@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 关于mapper的约束 -->
+
+<!-- 2020-01-12 17:04:33
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
+<?xml version="1.0" encoding="UTF-8"?>  必须是 XML 文件的第一个元素且前面不能空格。
+
+xml文件中第一个元素前面不能为空！！！！！！！！！！！！
+<?xml ... ?> 前面不能有空格！！
+-->
+
+<!-- 2020-01-14 09:34:13 什么是 POJO？
+一般在 web应用程序中 建立一个【数据库的映射对象A】时，我们只能称此实例对象A为 POJO。
+POJO (Plain Old Java Object) 这名字 强调它是一个普通的Java对象 ——不继承某父类、不实现某接口、没有任何注解
+【而不是一个特殊的对象】
+
+简而言之，当一个 POJO 可序列化、有一个无参的构造函数、使用 getter和setter 方法来访问属性时，
+此POJO 【升级为】 一个JavaBean(标准的Java类)
+-->
+
+
+<!-- 映射器 Mapper：将此 配置文件.xml 与接口UserDao 建立映射
+
+▲ 映射器是 MyBatis 中最重要、最复杂的组件，它由一个接口和对应的 XML文件(或注解)组成。
+它可以配置以下内容：
+1.描述映射规则。
+2.提供 SQL 语句，并可以配置 SQL 参数类型、返回类型、缓存刷新等信息。
+3.配置缓存。
+4.提供动态 SQL。
+
+▲ 映射器的主要作用：将SQL查询到的结果映射为一个 POJO，
+或者将 POJO 的数据插入到数据库中，并定义一些关于缓存等的重要内容。
+
+注意，开发只是一个接口，而不是一个实现类。初学者可能会产生一个很大的疑问，那就是接口不是不能运行吗？
+是的，接口不能直接运行。MyBatis 运用了动态代理技术使得接口能运行起来，
+入门阶段只要懂得 MyBatis 会为这个接口生成一个【代理对象】，代理对象会去处理相关的逻辑即可。
+
+
+
+▲ 如果 注解方式配置mybatis 和 XML方式 同时定义时，XML方式将覆盖掉注解方式，
+所以 MyBatis 官方推荐使用的是 XML方式。
+-->
+
+
+
+<!-- Mapper映射文件中：
+1.mapper为根元素节点；
+2.一个namespace对应一个dao；
+namespace属性值为 dao的全限定类名
+namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离
+注意：使用mapper代理方法开发，namespace有特殊重要的作用
+-->
+<mapper namespace="demo03_CRUD.dao.UserDao"> <!-- 将此UserDao.xml 与接口UserDao 建立映射 -->
+
+    <!-- 2020-01-14 09:48:01
+    2020-01-14 09:48:01
+    在 映射文件 UserDao.xml中：
+    1.当实体类中的字段与数据库表中的字段【完全相同】时，可以将 resultMap 标签中的关联关系忽略不写。
+    何为相同？大小写完全相同、下划线完全相同 如下：
+
+    数据库db1的user表中的字段                    User实体类中的属性
+    user                                       user
+    id                                         id
+    user_name                                  user_name
+
+
+    2.当实体类中的字段与数据库表中的字段不相同时，就需要在 resultMap 标签中
+    将实体类字段与数据库字段一一进行关联映射，或者开启驼峰规则，让它自动转换。
+
+    【背景】
+    当前demo03_CRUD的实体类User中的属性：userId、userName、userAddress、userSex、userBirthday;
+    而我的数据库db1中user表的字段为：id、username、address、sex、birthday
+    没有前缀 user！！此时表的字段与实体类属性名不完全相同！所以要用到 resultMap 标签了
+    -->
+
+    <!-- 大标签 <resultMap />：配置 【select语句查询结果】的列名和实体类的属性名 的对应关系
+    一、大标签 <resultMap />的属性：
+    type="(待封装的、与查询结果相对应的)实体类的全限定类名"；
+    id="表示这个映射resultMap的名字，可自定义名字；应表明这个映射是从哪个表中select出来的。如 从某张表T中，select出来的结果，封装为XXX实例对象"
+    /* 名字表意而已，没有其他作用。
+    真正的映射：在 子标签中，【针对表T】的各列名 与实体类的各属性名 手动进行一一映射
+    * */
+
+    二、子标签：
+    (1) <id />标签：主键字段的对应；
+    (2) <result />标签：非主键字段的对应
+    每个子标签都有的两个属性：property="(待封装的)实体类中的属性名"；  column="数据库中某张表的字段名(列名)"
+    1.主键字段的对应
+    <id property="XXX" column="YYY" />
+    2.非主键字段的对应
+    <result property="AAA" column="BBB"  />
+    -->
+
+    <!-- 2020-01-14 10:11:10
+    为这个 结果集起名为 userMap，
+    表示 从user表中select出来的结果，封装为 demo03_CRUD包.domain包.User的实例对象
+    名字表意而已，没有其他作用。
+    真正的映射：在 子标签中，【针对表T】的各列名 与实体类的各属性名 手动进行一一映射
+    -->
+    <resultMap type="demo03_CRUD.domain.User" id="userMap" >
+        <!--
+        property属性：当前demo03_CRUD的实体类User中的属性：userId-主键对应的属性、userName、userAddress、userSex、userBirthday;
+        column属性：而我的数据库db1中user表的字段为：id-主键、username、address、sex、birthday
+        -->
+        <!-- 主键字段的对应 -->
+        <id property="userId" column="id" />
+        <!-- 非主键字段的对应 -->
+        <result property="userName" column="username" />
+        <result property="userAddress" column="address" />
+        <result property="userSex" column="sex" />
+        <result property="userBirthday" column="birthday" />
+    </resultMap>
+
+    <!-- 关于 SQL语句的配置标签
+    <select /> 标签
+    1.id属性：与【持久层接口dao的某个方法名】相同
+    2.resultType：指定 这条SQL返回的结果类型，与parameterType一样，可以是系统定义的别名，也可以是类的全限定名
+    3.resultMap：指定 此SQL返回结果的【映射规则】 为 【上文已定义的 id值为XXX的映射规则】：
+    SQL语句的配置标签 <select />、<insert />、<delete />、<update /> 的 id 属性必须和 【持久层接口dao的方法名相同】。
+    -->
+
+    <!-- <select />标签中，id为 持久层接口dao的某个方法名，
+    resultMap 指定使用 id名为userMap的映射规则
+    -->
+    <select id="findAll" resultMap="userMap" >
+        select * from user;     <!-- SQL语句的末尾，可以加分号，也可以省略分号 -->
+    </select>
+
+    <!-- insert标签
+    1.id属性：与【持久层接口dao的某个方法名】相同
+    2.parameterType属性：此方法传入形参(的对象) 的【全限定类名】或【已定义好的 类的别名】
+      如果 接口中的方法传入形参是基本数据类型，此处也要传入 基本数据类型的包装类【全限定类名】！！
+      如 接口中的方法传入形参是基本数据类型，此处parameterType="java.lang.Integer" //包装类的全限定类名！！
+
+     接口中的saveUser方法：public abstract void saveUser( User user ); //保存用户，传入形参为 User实例对象
+     而我早在 demo03_CRUD.dao.UserDao.xml 映射配置文件中，已经设置了 User类的别名为 user了
+    -->
+    <insert id="saveUser" parameterType="user" >
+        <!-- 关于 sql语句的 #{} 字符：
+        1.若parameterType是一个 POJO或JavaBean：则 #{} 既有占位符 ?的作用、也有替换 ? 的作用：
+        #{} 就是调用【传入形参parameterType中的实例对象 的get方法】
+
+        SQL语句中：insert into user(...列名) value( 真正插入数据库的值 )
+        #{userName} 表示 实例对象user.getUserName，
+        #{userAddress} 表示 实例对象user.getAddress，
+        ...以此类推
+
+        //get到值以后，就插入数据库中咯
+
+        2.若parameterType不是一个 POJO或JavaBean，而是 其他数据类型(如 基本数据类型、或String等)
+        此时的 #{任意名字} 就相当于 一个占位符，类似 JDBC 中的 ? 问号
+        #{}中内容的写法：可以随意写名字。
+        如：parameterType="java.lang.String", 此时的 #{...} 可以写为 #{name}
+
+        -->
+        insert into user(username,address,sex,birthday) values(
+            #{userName}, #{userAddress}, #{userSex}, #{userBirthday}
+        );
+
+<!--        insert into user(username,address,sex,birthday) values(-->
+<!--        #{userName}, #{userAddress}, #{userSex}, #{userXXXXXXXXXXXX}-->
+<!--         &lt;!&ndash; 显然这个#{userXXXXXXXXXXXX} 是错误的！因为user实例对象中没有getXXXXXXXXXXXX的方法！ &ndash;&gt;-->
+<!--        );-->
+
+
+
+        <!-- <insert />标签中的 子标签：<selectKey />标签
+
+        ▲ SELECT LAST_INSERT_ID() 这个SQL语句：获取插入记录后返回的自增id 的值 (主键的值)
+
+        <selectKey />标签 ：将 SELECT LAST_INSERT_ID()的结果 ——即返回的主键的值 放入 【传入实体类】的 主键属性(如userId) 中
+        <selectKey />标签体中 填写 SELECT LAST_INSERT_ID() 这个SQL语句，才能正确执行！
+        1.keyProperty属性：实体类中 主键的属性名，这里是 user 中的id，因为它跟数据库的主键对应
+        2.keyColumn属性：数据库中某个表的 【主键的字段名称】(主键所在列名)。
+        3.resultType属性：主键的数据类型。
+          写法：用Java的数据类型来写，加引号！
+          如 resultType="int" 或 resultType="String"
+        4.order属性：
+          -大写 AFTER  表示   SELECT LAST_INSERT_ID() 在insert执行之后执行。多用于 自增主键，
+          -小写 BEFORE 表示   SELECT LAST_INSERT_ID() 在insert执行之前执行，这样的话就拿不到主键了，这种适合 【主键不是自增的类型】
+        -->
+        <selectKey keyProperty="userId" keyColumn="id" resultType="int" order="AFTER">
+            select last_insert_id();
+        </selectKey>
+
+
+    </insert>
+
+
+
+
+</mapper>
