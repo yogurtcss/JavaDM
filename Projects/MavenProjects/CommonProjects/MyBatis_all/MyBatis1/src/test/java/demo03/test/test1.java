@@ -26,6 +26,17 @@ public class test1 {
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is); //根据 构建者对象，创建SqlSessionFactory工厂对象
         session = factory.openSession(); //根据工厂，生成一个 数据库会话对象
         dao_proxy = session.getMapper( UserDao.class ); //在数据库会话对象中，由 接口的字节码Class对象，生成UserDao的代理对象
+
+        /*
+        SqlSessionFactoryBuilder 用于创建 SqlSessionFactory，
+        SqlSessionFactory 一旦创建完成就不需要 SqlSessionFactoryBuilder 了，
+        因为 SqlSession 是通过 SqlSessionFactory 生产，
+        所以可以将 SqlSessionFactoryBuilder 当成一个工具类使用，
+        最佳使用范围是方法范围即方法体内局部变量。
+
+
+
+        *  */
     }
 
     @After //用于在测试方法执行之后执行
@@ -66,6 +77,30 @@ public class test1 {
         System.out.println( "保存操作之后："+user+"，多了一个自增ID："+user.getUserId() );
     }
 
+    @Test
+    public void testUpdate(){
+        User user = new User();
+        //设置 将要被更新数据 的用户ID
+        user.setUserId(49); //被更新数据的用户ID为 49
+        user.setUserName("我佛了我佛了");
+        user.setUserAddress("佛佛佛佛佛佛佛佛");
+        user.setUserSex("哈");
+        user.setUserBirthday(new Date());
+
+        dao_proxy.updateUser( user );
+        System.out.println( "ID为："+user.getUserId()+" 的用户，其数据更新完成！" );
+    }
+
+    @Test
+    public void testDelete(){
+        dao_proxy.deleteUser( 55 );
+        System.out.println( "删除完成！" );
+    }
+
+    @Test
+    public void testFindById(){
+        System.out.println( dao_proxy.findById(46) );
+    }
 
 
 
