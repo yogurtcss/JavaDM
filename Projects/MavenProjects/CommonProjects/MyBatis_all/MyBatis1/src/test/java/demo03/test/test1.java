@@ -1,6 +1,7 @@
 package demo03.test;
 
 import demo03_CRUD.dao.UserDao;
+import demo03_CRUD.domain.QueryVo;
 import demo03_CRUD.domain.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -102,6 +103,31 @@ public class test1 {
         System.out.println( dao_proxy.findById(46) );
     }
 
+    @Test
+    public void testFindByName(){
+        System.out.println( dao_proxy.findByName("小二王") );
+    }
 
+    @Test
+    public void testFindTotal(){
+        System.out.println( "数据库中user表的总行数为："+dao_proxy.findTotal() );
+    }
 
+    @Test
+    public void testFindUserByVo(){
+        QueryVo vo = new QueryVo();
+        //随便定义的一个user实例对象
+        User user = new User();
+        user.setUserName( "A01" );
+        user.setUserAddress( "北京" );
+        user.setUserSex( "女" );
+        //为vo对象设置属性 user
+        vo.setUser( user );
+
+        /* 在 映射配置文件UserDao.xml中，我是这样写SQL语句：
+        根据用户的地址，查询这个用户
+        select * from user where address=#{user.userAddress};
+        *  */
+        System.out.println( "testFindUserByVo()的结果："+dao_proxy.findUserByVo(vo) );
+    }
 }
