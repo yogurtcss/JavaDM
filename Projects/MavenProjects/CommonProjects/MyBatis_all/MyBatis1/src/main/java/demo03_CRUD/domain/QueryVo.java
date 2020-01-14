@@ -1,6 +1,8 @@
 package demo03_CRUD.domain;
 
 /* 2020-01-14 19:51:52
+QueryVo.java中：
+
 ViewObject 表现层对象，简称 VO对象
 
 POJO普通对象中的属性(成员变量)一般为 基本数据类型，
