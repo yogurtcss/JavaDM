@@ -183,7 +183,7 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
     -->
     <select id="findUserInIds" parameterType="demo04_DynamicSQL.domain.QueryVo" resultMap="userMap" >
-        select * from user where id in
+        select * from user
         <!-- 2020-01-15 17:27:27
         1.collection属性的值 是 【传入形参parameterType中的属性A，该属性A必需为list集合或array数组】
         如 传入形参parameterType为 QueryVo实例对象
@@ -194,9 +194,13 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
         2.item="XXXXXXXX" 说明 表示被迭代的元素value的别名是可任意的
         -->
-        <foreach collection="ids" item="XXXXXXXX" index="index"   open="("  separator=","  close=")" >
-            #{XXXXXXXX}
-        </foreach>
+        <where> <!-- 表示where关键字 -->
+            <!-- 原SQL语句的后半部分：open= 以 and id in( 开头 -->
+            <foreach collection="ids" item="XXXXXXXX" index="index"   open="and id in ("  separator=","  close=")" >
+                #{XXXXXXXX}
+            </foreach>
+        </where>
+
     </select>
 
 
