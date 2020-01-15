@@ -92,17 +92,94 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
     user 查询的条件：有可能有用户名，有可能有性别，也有可能有地址，还有可能是都有
     -->
     <select id="findUserByCondition" parameterType="demo04_DynamicSQL.domain.QueryVo" resultMap="userMap" >
-        select * from user where 1=1
-        <if test=" userName!=null and userName!='' " >
-            and username=#{userName}
-        </if>
-        <if test=" userSex!=null and userSex!='' " >
-            and sex=#{userSex}
-        </if>
-        <if test=" userAddress!=null and userAddress!='' " >
-            and address=#{userAddress}
-        </if>
+        <!-- select * from user where 1=1 -->
+
+        <!-- 2020-01-15 16:45:07
+        Mybatis中，之前拼条件时的写法：where 1=1，现在也可以使用 <where /> 标签
+        直接用 <where />标签 包住里面的一堆<if />标签即可，写法：
+
+        <where>
+            ...包住里面的一堆<if />标签...
+        </where>
+
+
+        <where />标签 自动识别：只有在一个以上的 if 条件有值的情况下才去插入 “WHERE” 子句；
+        而且，若最后的内容是 “AND” 或 “OR” 开头的，<where />标签也知道如何将他们去除。
+
+        再也不用 where 1=1 拼条件啦!
+        -->
+
+        select * from user
+        <!-- 直接用 <where />标签 包住里面的一堆<if />标签即可 -->
+        <where>
+            <if test=" userName!=null and userName!='' " >
+                and username=#{userName}
+            </if>
+            <if test=" userSex!=null and userSex!='' " >
+                and sex=#{userSex}
+            </if>
+            <if test=" userAddress!=null and userAddress!='' " >
+                and address=#{userAddress}
+            </if>
+        </where>
+
+
     </select>
+
+    <!-- <foreach /> 标签的总结
+
+    /* 2020-01-15 17:16:03
+    看懂了 <foreach /> 标签的用法了！
+    核心：生成 in字段后面的内容： (value1,value2,value3,…)，然后拼入原本的SQL语句中！
+    把 集合list或数组array中的每个元素 都 “一一放进SQL语句 in字段后面的 ()括号中，每个元素都以英文逗号, 分隔开”
+
+    select * from user表 where XXX in (value1,value2,value3,…)  //最好不要用空格隔开！
+    <foreach /> 标签，就是生成 in字段后面的内容： (value1,value2,value3,…)
+      开头是左括号(
+      中间的value是 集合list或数组array中的每个元素
+      分隔符是英文逗号,
+      结尾是右括号)
+
+
+    <foreach> 标签有循环的功能，可以用来生成有规律的 SQL 语句，主要属性有：
+      1.collection：被迭代的变量的【数据类型】，如 集合list或数组array
+         (1)如果传入的是单参数且参数类型是一个 List 的时候，collection 属性值为 list
+         (2)如果传入的是单参数且参数类型是一个 array 数组的时候，collection 的属性值为 array
+
+      2.item：在迭代过程中，代表 集合每一个元素的【变量名 或称 别名】，
+         用于在 <foreach />标签体中的内容：表示被迭代的元素value！
+
+      3.index：在迭代过程中，代表 每次迭代到的位置 的【变量名】 ——较少用
+
+      ——以下开始拼串环节！
+      4.open：表示该语句以什么开始：开头是左括号(
+      5.separator：表示每次迭代之间以什么符号作为分隔符：中间的value是 集合list或数组array中的每个元素
+      6.close：表示该语句以什么结束：结尾是右括号)
+
+     示例：
+     <select id="selectPostIn" resultType="domain.blog.Post">
+        SELECT * FROM POST P WHERE ID in
+        <foreach
+              collection="list"
+              item="item别名"
+              index="index"
+
+              open="("
+              separator=","
+              close=")"   >
+
+            // 别名，用在<foreach />标签体中的内容：表示被迭代的元素value！
+            #{item}
+
+        <//foreach>  //为了复制进xml中的注释，我在结束标签这里搞了两条斜杠//
+    <//select>
+
+    *  */
+
+    -->
+
+
+
 
 
 
