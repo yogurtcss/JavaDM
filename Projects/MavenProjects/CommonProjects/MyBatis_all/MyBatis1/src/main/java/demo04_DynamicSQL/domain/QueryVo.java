@@ -5,7 +5,7 @@ import java.util.List;
 public class QueryVo {
     //QueryVo的属性 可以是一个 实体类的实例对象user嗷！
     private User user;
-    private List<Integer> id;
+    private List<Integer> ids;
 
     public User getUser() {
         return user;
@@ -15,11 +15,11 @@ public class QueryVo {
         this.user = user;
     }
 
-    public List<Integer> getId() {
-        return id;
+    public List<Integer> getIds() {
+        return ids;
     }
 
-    public void setId(List<Integer> id) {
-        this.id = id;
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
     }
 }
