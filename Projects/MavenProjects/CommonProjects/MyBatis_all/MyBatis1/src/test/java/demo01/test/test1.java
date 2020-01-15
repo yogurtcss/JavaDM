@@ -25,14 +25,14 @@ public class test1 {
         (1)类加载器：只能读取类路径classpath下的配置文件
         (2)ServletContext对象的 getRealPath()
         *  */
-        InputStream is = Resources.getResourceAsStream("props/SqlMapConfig_demo1.xml");
+        InputStream is = Resources.getResourceAsStream("props/SqlMapConfig_xml/SqlMapConfig_demo1.xml");
 
         //2.创建SqlSessionFactory工厂的【构建者对象】
         SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
         /* 创建SqlSessionFactory实例对象 工厂factory时，
         使用了 构建者模式 ——即 隐藏【对象的创建细节】。让使用者直接调用方法即可拿到对象
         *  */
-        //3.使用构建者对象，创建工厂对象SqlSessionFactory
+        //3.使用构建者对象，传入配置文件的字节输入流，创建工厂对象SqlSessionFactory
         SqlSessionFactory factory = builder.build( is );  //builder就是构建者
 
         //4.使用工厂生产 SqlSession实例对象
