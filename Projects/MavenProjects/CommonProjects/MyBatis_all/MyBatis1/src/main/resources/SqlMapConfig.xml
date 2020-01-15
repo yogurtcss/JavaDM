@@ -72,6 +72,11 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
     <!-- 使用 <typeAliases /> 大标签：为【某个类或某个包】起别名，它只能配置domain中类的别名
     alias 别名。其复数形式+es，即 alias_es
 
+    2020-01-15 09:44:36  别名用在什么地方？可用在以下两个属性中：
+    1.parameterType 指定输入参数的类型
+    2.resultType 指定输出结果的映射类型
+
+
     ▲ <typeAliases /> 大标签下的
     一、子标签1： <typeAlias  _末尾无es /> ——单词末尾没有es！！
        <typeAlias type属性="实体类的全限定类名" alias属性="你指定别名"  />
@@ -88,6 +93,8 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
         <!-- 【批量地】为 demo03_CRUD.domain包下的所有实体类设置默认的别名 -->
         <package name="demo03_CRUD.domain" />
+        <!-- 2020-01-15 09:42:09 为实体类User设置 默认的别名 -->
+        <package name="demo04_DynamicSQL.domain" />
     </typeAliases>
 
 
@@ -139,6 +146,9 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
         原因：SqlMapConfig.xml配置文件的<mappers />标签中缺失某个映射配置文件
         -->
         <mapper resource="demo03_CRUD/dao/UserDao.xml" />
+
+        <!-- 2020-01-15 09:12:40 -->
+        <mapper resource="demo04_Condition/dao/UserDao.xml" />
     </mappers>
 
 </configuration>
