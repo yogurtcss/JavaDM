@@ -23,7 +23,7 @@ public class test1 {
 
     @Before //用于在测试方法执行之前执行
     public void init() throws IOException {
-        //使用Resources工具类。从类路径加载 SQL Map 配置文件（如 sqlMap-config.xml）
+        //使用Resources工具类，从类路径加载 SQL Map 配置文件（如 sqlMap-config.xml）
         is = Resources.getResourceAsStream( "SqlMapConfig.xml" ); //读取总配置文件SqlMapConfig.xml
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is); //根据 构建者对象，创建SqlSessionFactory工厂对象
         session = factory.openSession(); //根据工厂，生成一个 数据库会话对象
