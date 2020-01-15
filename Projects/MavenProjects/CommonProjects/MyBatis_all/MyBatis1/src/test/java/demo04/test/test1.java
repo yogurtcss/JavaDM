@@ -2,7 +2,7 @@ package demo04.test;
 
 
 /* 2020-01-15 09:59:56  测试类
-* init()：读取SqlMapConfig.xml、创建SqlSession实例对象
+* init()：读取SqlMapConfig.xml、创建SqlSession实例对象、和持久层接口UserDao的代理对象dao_proxy
 * destroy()：提交事务(成批SQL语句，确保能操作到数据库)，释放资源
 *  */
 
@@ -30,10 +30,9 @@ public class test1 {
         * 再由 SqlSessionFactory工厂 生产出 session数据库会话对象： factory.openSession()
         * 那我一步到位吧
         *  */
-        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-
         session = new SqlSessionFactoryBuilder().build(is).openSession();
     }
+
 
 
 }
