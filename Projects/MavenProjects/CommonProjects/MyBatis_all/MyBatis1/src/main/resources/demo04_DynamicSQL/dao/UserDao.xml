@@ -75,6 +75,11 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
         * 如 传入形参parameterType 为 User实例对象user
         * 则 if标签中，test属性的 OGNL表达式 所获取的值 是User实例对象的 属性名！
         * 如 userName、userAddress
+        *
+        * 2020-01-15 19:23:28
+        * 如果传入的形参是 QueryVo实例对象vo，则 test属性中获取到真正的 userName为：
+        * ——vo属性的属性 就是userName
+        * 写法：test=" 属性user.属性userName!=null "
         *  */
 
         * */
