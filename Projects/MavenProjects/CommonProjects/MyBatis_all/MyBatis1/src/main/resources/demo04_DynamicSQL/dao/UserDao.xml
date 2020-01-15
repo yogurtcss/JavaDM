@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 关于mapper的约束 -->
+
+<!-- 2020-01-12 17:04:33
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
+<?xml version="1.0" encoding="UTF-8"?>  必须是 XML 文件的第一个元素且前面不能空格。
+
+xml文件中第一个元素前面不能为空！！！！！！！！！！！！
+<?xml ... ?> 前面不能有空格！！
+-->
+
+<mapper namespace="demo04_DynamicSQL.dao.UserDao">
+    <!-- 2020-01-15 09:16:14
+    我佛了，实体类 User的列名还是 与数据库db1中user表的列名不一致！
+    要手动在 UserDao.xml 中 写 <resultMap />标签了
+
+    2020-01-15 09:49:35
+    注意，实体类User的 基本数据类型 改用 包装类了！
+    在 UserDao.xml配置文件中，注意 parameterType="包装类全类名"！！
+    -->
+    <resultMap id="userMap" type="demo04_Dynamic.domain.User">
+        <!-- 主键的映射 -->
+        <id property="userId" column="id" />
+        <!-- 非主键的映射 -->
+        <result property="userName" column="username" />
+        <result property="userAddress" column="address" />
+        <result property="userSex" column="sex" />
+        <result property="userBirthday" column="birthday" />
+    </resultMap>
+
+
+
+
+</mapper>
+
