@@ -21,7 +21,7 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
     注意，实体类User的 基本数据类型 改用 包装类了！
     在 UserDao.xml配置文件中，注意 parameterType="包装类全类名"！！
     -->
-    <resultMap id="userMap" type="demo04_Dynamic.domain.User">
+    <resultMap id="userMap" type="demo04_DynamicSQL.domain.User">
         <!-- 主键的映射 -->
         <id property="userId" column="id" />
         <!-- 非主键的映射 -->
@@ -31,6 +31,78 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
         <result property="userBirthday" column="birthday" />
     </resultMap>
 
+    <select id="findAll" resultMap="userMap" >
+        select * from user;
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="userMap" >
+        <!-- 当传入的形参是基本数据类型、或包装类、或字符串String时，这里的#{...}变量名是任意的 -->
+        select * from user where id = #{uuuuid};
+    </select>
+
+    <select id="findByName" parameterType="java.lang.String" resultMap="userMap" >
+        <!-- 当传入的形参是基本数据类型、或包装类、或字符串String时，这里的#{...}变量名是任意的 -->
+        select * from user where username like #{uuuuuname};
+    </select>
+
+    <select id="findUserByVo" parameterType="demo04_DynamicSQL.domain.QueryVo" resultMap="userMap" >
+        <!-- 传入形参是Vo对象时：真正使用的是 vo属性(-user实例对象)的属性(-user实例对象的属性) -->
+        select * from user where id = #{user.userId};
+    </select>
+
+
+    <!-- 2020-01-15 10:51:49
+    OGNL表达式
+    OGNL是 Object Graphic Navigation Language (对象图导航语言) 的缩写
+      -支持对象方法调用，如：×××.doSomeSpecial();
+      -支持类静态的方法调用和值访问，表达式的格式
+
+
+    ▲ 什么时候用到<if />标签？
+    (1)当 传入的形参parameterType为某个实例对象user时，可用 <if />标签对 实例对象user的属性进行判空操作；
+
+    (2)而当 传入的形参parameterType为 基本数据类型、或包装类、或字符串String型时，不需要用 <if />标签进行判空！
+    ——这样 test= "OGNL表达式" 这里就写不出来了……
+    因为这里的OGNL表达式就是取 传入的形参parameterType=某个实例对象user中的属性
+
+    <if />标签：
+    <if test=" 符合OGNL要求的判断表达式；表达式结果可以是 true 或 false " >
+        /* test属性中的 OGNL判断表达式怎么写？
+        *  List<E> SqlFactorySession实例对象.selectList( String SQL语句， Object parameter传入的形参  )
+
+        * if标签中，test属性的 OGNL表达式 所获取的值是 你传入形参parameterType 中的属性！
+        *
+        * 如 传入形参parameterType 为 User实例对象user
+        * 则 if标签中，test属性的 OGNL表达式 所获取的值 是User实例对象的 属性名！
+        * 如 userName、userAddress
+        *  */
+
+        * */
+
+        /* 动态拼接SQL语句：利用到了SQL语句中的CONCAT( "字符串1", "字符串2",...  )函数
+        SQL语句中的 CONCAT函数：将两个(或多个)字符串直接连接为一个字符串
+          -直接将多个字符串粘在一起(无分隔符！)，变成一个字符串
+        * */
+        and username like CONCAT( '%', #{userName}, '%' ) //多个字符串粘在一起(无分隔符！) %#{userName}%
+    </if>
+    -->
+
+
+    <!-- 来了，来了！
+    user 查询的条件：有可能有用户名，有可能有性别，也有可能有地址，还有可能是都有
+    -->
+    <select id="findUserByCondition" parameterType="demo04_DynamicSQL.domain.QueryVo" resultMap="userMap" >
+        select * from user where 1=1
+        <if test=" userName!=null and userName!='' " >
+            and username=#{userName}
+        </if>
+        <if test=" userSex!=null and userSex!='' " >
+            and sex=#{userSex}
+        </if>
+        <if test=" userAddress!=null and userAddress!='' " >
+            and address=#{userAddress}
+        </if>
+    </select>
 
 
 
