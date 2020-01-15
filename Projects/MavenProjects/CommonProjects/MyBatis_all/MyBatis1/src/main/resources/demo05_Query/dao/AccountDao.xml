@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 关于mapper的约束 -->
+
+<!-- 2020-01-12 17:04:33
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
+<?xml version="1.0" encoding="UTF-8"?>  必须是 XML 文件的第一个元素且前面不能空格。
+
+xml文件中第一个元素前面不能为空！！！！！！！！！！！！
+<?xml ... ?> 前面不能有空格！！
+-->
+
+<mapper namespace="demo05_Query.dao.AccountDao">
+    <!-- 2020-01-15 21:40:29  association 关联映射
+    //注：<association />标签体内容可以为空的！
+    <association property="【实体类中的属性】——用来 连接 数据库某个列"
+               column="【被连接的】数据库中的某一列(或某几列)的列名或者列别名"
+                       //指定连接某几列时的写法： column=" {prop1-属性1=col1-列名1, prop2=col2,...} "
+               select="全限定类名写法：包名.接口.某个连接查询的方法名"
+                       //如：select="com.ssm.dao.CardDao.queryCardById"
+    />
+    -->
+
+    <!-- 2020-01-15 21:59:17 前情回顾 AccountDao.java中：
+    /* 查询所有账户，同时还要获取到当前账户的所属用户信息
+    * 返回值 list集合中的【泛型Account类——就包含着所属用户的信息，因为一个account对应一个user，所以account类中要有一个user】
+    * public abstract List<Account> findAll();
+    *  */
+    因此，需要定义 AccountDao 的 返回值<resultMap />标签
+    -->
+    <resultMap id="accountUserMap" type="account" > <!-- Account类的别名，默认设置为account -->
+        <!-- Account类中的属性： id、uid、money ——全是包装类
+        数据库db1中的account表的列名：id、uid、money
+        -->
+        <id property="id" />
+    </resultMap>
+
+</mapper>
