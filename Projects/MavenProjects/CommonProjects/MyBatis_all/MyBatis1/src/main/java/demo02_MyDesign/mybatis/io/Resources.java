@@ -12,8 +12,6 @@ Resources工具类(直接调用其中的静态方法)   —— org.apache.ibatis
 
 *  */
 
-
-
 public class Resources {
     public static InputStream getResourceAsStream( String filePath ){
         return( Resources.class.getClassLoader().getResourceAsStream(filePath) );
