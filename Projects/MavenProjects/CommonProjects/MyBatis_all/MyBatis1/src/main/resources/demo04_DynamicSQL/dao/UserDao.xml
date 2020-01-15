@@ -177,7 +177,22 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
     *  */
 
     -->
+    <select id="findUserInIds" parameterType="demo04_DynamicSQL.domain.QueryVo" resultMap="userMap" >
+        select * from user where id in
+        <!-- 2020-01-15 17:27:27
+        1.collection属性的值 是 【传入形参parameterType中的属性A，该属性A必需为list集合或array数组】
+        如 传入形参parameterType为 QueryVo实例对象
+        需要被迭代的集合是 QueryVo实例对象中的 属性 【集合ids】
+        所以，collection="ids" 而不是 collection="list" ！！
+        所以，若写成 collection="idsdfasdjf"，会报错：
+        There is no getter for property named 'idsdfasdjf' in 'class demo04_DynamicSQL.domain.QueryVo'
 
+        2.item="XXXXXXXX" 说明 表示被迭代的元素value的别名是可任意的
+        -->
+        <foreach collection="ids" item="XXXXXXXX" index="index"   open="("  separator=","  close=")" >
+            #{XXXXXXXX}
+        </foreach>
+    </select>
 
 
 
