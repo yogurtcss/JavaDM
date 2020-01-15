@@ -2,7 +2,7 @@ package demo02_MyDesign.mybatis.io;
 
 import java.io.InputStream;
 
-//此Resources类的功能：使用类加载器，读取配置文件
+//此Resources工具类类的功能：使用类加载器，读取配置文件
 
 /* 2020-01-15 10:06:29
 Resources工具类(直接调用其中的静态方法)   —— org.apache.ibatis.io.Resources
