@@ -14,13 +14,49 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
 <mapper namespace="demo05_Query.dao.AccountDao">
     <!-- 2020-01-15 21:40:29  association 关联映射
-    //注：<association />标签体内容可以为空的！
-    <association property="【实体类中的属性】——用来 连接 数据库某个列"
-               column="【被连接的】数据库中的某一列(或某几列)的列名或者列别名"
+    在查询结果result中，如果某两个对象是一对一关系，则应在结果映射resultMap标签中 使用 <association />标签，
+
+    需要分清楚：property是谁？column是谁？
+    property：属性——某个实体类中，被关联映射的属性
+    column：列名(别名)—— 在数据库db的某张表中，【被关联映射的属性property】指定要对应的 的列名(别名)
+
+    现在：Account类中的有一个属性 为User实例对象，
+    而在数据库db1的account表中，与属性User相对应的列名为 user
+    所以，关联映射标签中property、column写法为：
+    property="User类的全限定类名 或User类的别名"
+    column="user列名 或别名"
+
+    <resultMap id=... type=...>
+        /* 第1种写法：<association />标签中，嵌套 某个外部已定义的<resultMap />标签
+        一次性查询出所有结果的相关字段，对查询结果集result中
+        数据库db中某张表【各字段】   按外部已定义的“映射规则”(即<resultMap />标签)
+        映射到 【某实例对象的各属性(变量)】中
+        * */
+        <association property="属性——某个实体类中，被关联映射的属性"
+                     column="列名(别名)—— 在数据库db的某张表中，【被关联映射的属性property】指定要对应的 的列名(别名)"
+                     [ javaType="把sql语句查询出的结果集，封装给哪个类的对象（可以省略）-这里书写的是 全类名或类的别名" ]
+                     resultMap="映射结果集，所使用的映射规则 -在外部已定义的“映射规则”(即<resultMap />标签) id名"    >
+
+            /* <association />标签中的内容，实际上就是resultMap的内容：<id />标签、<result />标签
+            当指定了 resultMap属性时，<association />标签中的内容可以为空
+            * */
+        </association>
+    </resultMap>
+
+
+    <resultMap id=... type=... >
+        //第2种写法：<association />标签嵌套中 select的方法名，这种方式实为嵌套一个子查询语句查出关联的实体数据。
+        //但会产生 N+1 问题，在多次循环中不好，建议在 java 层面进行业务分离
+
+        <association property="某个实体类中，被关联映射的属性"
+               column="列名(别名)—— 在数据库db的某张表中，【被关联映射的属性property】指定要对应的 的列名(别名)"
                        //指定连接某几列时的写法： column=" {prop1-属性1=col1-列名1, prop2=col2,...} "
                select="全限定类名写法：包名.接口.某个连接查询的方法名"
                        //如：select="com.ssm.dao.CardDao.queryCardById"
-    />
+        />
+    </resultMap>
+
+
     -->
 
     <!-- 2020-01-15 21:59:17 前情回顾 AccountDao.java中：
@@ -30,11 +66,53 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
     *  */
     因此，需要定义 AccountDao 的 返回值<resultMap />标签
     -->
+    <!-- User类的属性名 也和 user表列名一致…… -->
+    <resultMap id="userMap" type="user">
+        <id property="id" column="id"  />
+        <result property="username" column="username" />
+        <result property="address" column="address" />
+        <result property="sex" column="sex" />
+        <result property="birthday" column="birthday" />
+    </resultMap>
+
+
+    <!-- 2020-01-16 10:16:12
+    一旦使用了<resultMap />标签，意味着：你放弃了系统默认定义的映射规则，而使用自定义的映射规则
+    所以，使用了<resultMap />标签，其标签体内不能为空！
+    即使是 实体类属性名和 表中列名 完全一致，也要按规则写进来！！
+    -->
     <resultMap id="accountUserMap" type="account" > <!-- Account类的别名，默认设置为account -->
         <!-- Account类中的属性： id、uid、money ——全是包装类
         数据库db1中的account表的列名：id、uid、money
         -->
-        <id property="id" />
+        <id property="id" column="id" />
+        <result property="uid" column="uid" />
+        <result property="money" column="money" />
+
+        <association property="user" column="uid" javaType="user" resultMap="userMap" />
     </resultMap>
+
+
+
+    <select id="findAll" resultMap="accountUserMap" >
+        select *
+        from
+            account as biao01,
+            user as biao02
+        where
+            biao01.uid=biao02.id;
+    </select>
+
+    <!-- 查询所有账户，并且带有用户名称和地址信息 -->
+    <select id="findAllAccount" resultType="AccountUser" > <!-- AccountUser类的默认别名就是 AccountUser -->
+        select biao01.*, username,address
+        from
+            account as biao01,
+            user as biao02
+        where
+            biao01.uid=biao02.id;
+    </select>
+
+
 
 </mapper>
