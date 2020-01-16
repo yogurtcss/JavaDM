@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 关于mapper的约束 -->
+
+<!-- 2020-01-12 17:04:33
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
+<?xml version="1.0" encoding="UTF-8"?>  必须是 XML 文件的第一个元素且前面不能空格。
+
+xml文件中第一个元素前面不能为空！！！！！！！！！！！！
+<?xml ... ?> 前面不能有空格！！
+-->
+
+<!-- 2020-01-16 14:56:10
+多对多的映射：分别在 “多者” 所在实体类 互相添加属性 【集合对象】；
+然后分别在各自的 xml配置文件中，使用 <collection />标签进行映射即可
+-->
+
+<mapper namespace="demo05_Query.dao.UserDao2">
+    <resultMap id="roleMap" type="Role" >
+        <!-- 实体属性与列名完全不一样，手动映射 -->
+        <id property="roleId" column="rid" />
+        <result property="roleName" column="role_name" />
+        <result property="roleDesc" column="role_desc" />
+    </resultMap>
+
+    <resultMap id="userMap" type="User"  >
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="address" column="address" />
+        <result property="sex" column="sex" />
+        <result property="birthday" column="birthday" />
+
+        <!-- 一对多的关联映射：<collection />标签。其属性与<asscociation />标签类似，
+        但是 <collection />标签中的column属性，是可省略的，一般与 select 属性结合使用。
+
+        ofType属性：【在property属性指定的集合】中的 每个元素的数据类型 ——填写类的全限定类名 或类的别名
+        在这里，在property属性指定的集合为accounts，集合中的泛型是 account实例对象，直接写类的别名
+        -->
+        <collection property="roles" ofType="role" resultMap="roleMap" />
+    </resultMap>
+
+    <select id="findAll" resultMap="userMap" >
+        select *
+        from
+            (user as biao01)
+            left join  (user_role as biao02)  on   (biao01.id=biao02.uid)
+            left join  (role as biao03)       on   (biao03.id=biao02.rid);
+    </select>
+
+</mapper>
