@@ -72,9 +72,8 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
     <!-- 使用 <typeAliases /> 大标签：为【某个类或某个包】起别名，它只能配置domain中类的别名
     alias 别名。其复数形式+es，即 alias_es
 
-    2020-01-15 09:44:36  别名用在什么地方？可用在以下两个属性中：
-    1.parameterType 指定输入参数的类型
-    2.resultType 指定输出结果的映射类型
+    2020-01-15 09:44:36  别名用在什么地方？
+    当用到此类时，就可以直接使用此类的别名
 
 
     ▲ <typeAliases /> 大标签下的
@@ -85,16 +84,25 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
 
 
     二、子标签2： <package name="某个包名" /> 【批量地】为某个包下的所有实体类设置默认的别名，
-    MyBatis默认的设置别名的方式就是：去除类所在的包后的 简单的类名
+    MyBatis默认的设置别名的方式就是：去除类所在的包后的 简单的类名，【不区分大小写了】
     如：<package name="cn.itcast" />    → 在cn.itcast包下的User实体类的别名就会被默认设置成User
-    // cn.itcast.User这个实体类的别名就会被默认设置成User
+    // cn.itcast.User这个实体类的别名就会被默认设置成User —— 而user也是合法的【不区分大小写了】
     -->
     <typeAliases>
 
         <!-- 【批量地】为 demo03_CRUD.domain包下的所有实体类设置默认的别名 -->
-        <package name="demo03_CRUD.domain" />
-        <!-- 2020-01-15 09:42:09 为实体类User设置 默认的别名 -->
-        <package name="demo04_DynamicSQL.domain" />
+<!--        <package name="demo03_CRUD.domain" />     -->
+
+
+
+        <!-- 2020-01-15 09:42:09 为实体类User设置 默认的别名
+        为之前的包设置的默认别名，要先注释掉嗷！
+        因为我domain下的User类名字都相同，系统都会起一样默认的别名！！冲突啦！
+        -->
+<!--        <package name="demo04_DynamicSQL.domain" />     -->
+
+        <!-- 系统起的默认别名：Account、User -->
+        <package name="demo05_Query.domain" />
     </typeAliases>
 
 
@@ -148,7 +156,15 @@ xml文件中第一个元素前面不能为空！！！！！！！！！！！�
         <mapper resource="demo03_CRUD/dao/UserDao.xml" />
 
         <!-- 2020-01-15 09:12:40 -->
-        <mapper resource="demo04_Condition/dao/UserDao.xml" />
+        <mapper resource="demo04_DynamicSQL/dao/UserDao.xml" />
+
+        <!-- 2020-01-15 19:50:44
+        使用 <package name=".xml文件所在的包名。如 demoXX.dao 【用点号】，不是斜杠！" />
+        直接指定一个包去扫描-内包含多个Mapper配置的xml文件
+        -->
+        <package name="demo05_Query.dao" />
+
+
     </mappers>
 
 </configuration>
