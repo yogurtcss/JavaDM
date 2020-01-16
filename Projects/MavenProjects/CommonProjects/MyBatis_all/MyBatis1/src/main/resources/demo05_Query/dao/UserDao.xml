@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 关于mapper的约束 -->
+
+<!-- 2020-01-12 17:04:33
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 必需在xml文件的第一行！！
+<?xml version="1.0" encoding="UTF-8"?>  必须是 XML 文件的第一个元素且前面不能空格。
+
+xml文件中第一个元素前面不能为空！！！！！！！！！！！！
+<?xml ... ?> 前面不能有空格！！
+-->
+
+<!-- 2020-01-15 19:56:38
+实体类User的属性名终于和数据库db1中user表的列名相同了
+不用在配置文件xml中写 <resultMap />标签了
+-->
+
+<mapper namespace="demo05_Query.dao.UserDao">
+    <resultMap id="accountMap" type="account" >
+        <id property="id" column="id" />
+        <result property="uid" column="uid" />
+        <result property="money" column="money" />
+    </resultMap>
+
+    <resultMap id="userAccountMap" type="user" >
+        <id property="id" column="id"  />
+        <result property="username" column="username" />
+        <result property="address" column="address" />
+        <result property="sex" column="sex" />
+        <result property="birthday" column="birthday" />
+
+        <!-- 一对多的关联映射：<collection />标签。其属性与<asscociation />标签类似，
+        但是 <collection />标签中的column属性，是可省略的，一般与 select 属性结合使用。
+
+        ofType属性：【在property属性指定的集合】中的 每个元素的数据类型 ——填写类的全限定类名 或类的别名
+        在这里，在property属性指定的集合为accounts，集合中的泛型是 account实例对象，直接写类的别名
+        -->
+        <collection property="accounts" ofType="account" resultMap="accountMap" />
+    </resultMap>
+
+
+    <select id="findAll" resultMap="userAccountMap" >
+        select *
+        from
+            user as biao01
+            left join
+            account as biao02
+            on biao01.id=biao02.uid
+    </select>
+
+</mapper>
