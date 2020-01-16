@@ -4,12 +4,12 @@ import demo05_Query.domain.User;
 
 import java.util.List;
 
-public interface UserDao {
+public interface UserDao2 {
     /**
      * 查询所有用户，同时获取到用户下所有账户的信息
      * @return
      */
-    List<User> findAll();
+    public abstract List<User> findAll();
 
 
     /**
@@ -17,5 +17,5 @@ public interface UserDao {
      * @param userId
      * @return
      */
-    User findById(Integer userId);
+    public abstract User findById(Integer userId);
 }
