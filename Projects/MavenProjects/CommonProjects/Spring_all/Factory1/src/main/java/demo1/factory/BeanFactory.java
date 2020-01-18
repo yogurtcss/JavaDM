@@ -3,56 +3,81 @@ package demo1.factory;
 import java.io.InputStream;
 import java.util.*;
 
-/*
-public interface Enumeration<E> { // Enumeration枚举类，是一个接口
-    //Enumeration接口中的方法：只能读取Enumeration枚举类中的数据，而不能修改数据
-    boolean hasMoreElements(); //此枚举中，是否包含更多的元素(与迭代器中的hasNext()方法类似)
-    E nextElement(); //如果此枚举对象至少还有一个可提供的元素，则返回【取出】此枚举的下一个元素
-}
-
-*  */
-
 public class BeanFactory {
-    //定义一个Properties对象
-    private static Properties props;
+    /* properties集合中：
+     * 键：类的名称，如accountDao
+     * 值：某个类的【全限定类名】 包名.类名 demo1.dao.impl.AccountDaoImpl
+     *  */
+    private static Properties props; //定义一个Properties实例对象
+    /* Map集合中：——称之为 “容器”
+     * 键：类的名称
+     * 值：此类对应的 实例对象Object
+     *  */
+    private static Map<String, Object> beansMap;
 
-    //定义一个Map,用于存放我们要创建的对象。我们把它称之为容器
-    private static Map<String,Object> beans;
-
-    //使用静态代码块为Properties对象赋值
-    static {
-        try {
-            //实例化对象
+    static{
+        try{
+            //实例化 props集合
             props = new Properties();
-            //获取properties文件的流对象
-            InputStream in = BeanFactory.class.getClassLoader().getResourceAsStream("props/bean.properties");
-            props.load(in);
-            //实例化容器
-            beans = new HashMap<String,Object>();
-            //取出配置文件中所有的Key
-            Enumeration keys = props.keys();
-            //遍历枚举
-            while (keys.hasMoreElements()){
-                //取出每个Key
-                String key = keys.nextElement().toString();
+            InputStream is = BeanFactory.class.getClassLoader().getResourceAsStream( "props/bean.properties" );
+            System.out.println( is==null );
+            /* properties集合中：
+             * 键：类的名称，如accountDao
+             * 值：某个类的【全限定类名】 包名.类名 demo1.dao.impl.AccountDaoImpl
+             *  */
+            props.load( is );
+
+            //实例化 map容器
+            beansMap = new HashMap<>();
+            /* 取出properties集合中的所有键名：
+             * 枚举中的泛型 是Object类型，不应只写Object，应该写全类名 java.lang.Object
+             * 因为 org.omg.CORBA包下的 Object 是接口！ org.omg.CORBA.Object
+             * 如果只写 Object，
+             * IDEA不知道你所指的Object是 java.lang.Object类 还是 org.omg.CORBA.Object接口！
+             *  */
+            Enumeration<java.lang.Object> keys = props.keys();
+            while( keys.hasMoreElements() ){
+                /* 取出每个key：类的名称
+                 * keys.nextElement() 返回的是Object类型，
+                 * 需向下转型为String：  (String)keys.nextElement()
+                 * 或直接变为String型：  keys.nextElement().toString()
+                 *  */
+                String key = keys.nextElement().toString(); //key是 类的名称
+                System.out.println( key );
                 //根据key获取value
-                String beanPath = props.getProperty(key);
-                //反射创建对象
-                Object value = Class.forName(beanPath).newInstance();
-                //把key和value存入容器中
-                beans.put(key,value);
+                String beanPath = props.getProperty( key );
+                System.out.println( beanPath );
+                /* 由反射reflect：全类名的方法Class.forName("全类名") 创建实例对象obj_reflect：
+                 * 需强制类型转换为 Object类型！
+                 *  */
+                Object obj_reflect = Class.forName( beanPath ).newInstance();
+                System.out.println( "------" );
+                System.out.println( "obj_reflect是空的吗？" );
+                System.out.println( obj_reflect==null );
+                System.out.println( "------" );
+                /* Map集合中：——称之为 “容器”
+                 * 键：类的名称
+                 * 值：此类对应的 实例对象Object
+                 *  */
+                beansMap.put( key, obj_reflect );
             }
-        }catch(Exception e){
-            throw new ExceptionInInitializerError("初始化properties失败！");
+        }catch( Exception e ){
+            e.printStackTrace();
         }
     }
 
-    /**
-     * 根据bean的名称获取对象
-     * @param beanName
-     * @return
-     */
-    public static Object getBean(String beanName){
-        return beans.get(beanName);
+    //由工厂生成出来的 实例对象是 Object类型的，需要向下转型为自己要的类型嗷！
+    public static Object getBean( String beanName ){
+        //直接在 “容器” beansMap中，根据 传入的类名(键名) 拿到这个实例对象
+
+//        System.out.println( "---------------" );
+//        System.out.println( "BeansMap中的所有obj_reflect：" );
+//        Set<String> keySet = beansMap.keySet();
+//        for( String one : keySet ){
+//            System.out.println( beansMap.get(one) );
+//        }
+
+//        System.out.println( "BeansMap中："+beansMap.get(beanName) );
+        return( beansMap.get(beanName) );
     }
 }
