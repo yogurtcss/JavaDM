@@ -12,9 +12,10 @@ public class Client {
         for( int i=0; i<4; i++ ){
             //通过BeanFactory工厂，创建服务层实例对象
             AccountService service = (AccountService) BeanFactory.getBean("accountService");
-            //service.saveAccount();
-            service.test();
-//            AccountDao dao = (AccountDao)BeanFactory.getBean( "accountDao" );
+            service.saveAccount();
+
+            //以下正常运行
+//            AccountDao dao = (AccountDao) BeanFactory.getBean("accountDao");
 //            dao.saveAccount();
         }
     }
