@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 2020-01-18 19:47:43 xml首行必定是约束
+    如何赋值 Spring框架中 beans.xml的固定约束？
+    在 已收藏的 /docs/spring-framework-reference/index.html 中
+    点击 Core，然后ctrl+F 搜索 xmlns，就能找到这些约束了
+    记住要把 末尾的闭合标签</beans> 带进来！
+    -->
+
+
+    <!--
+    Spring 配置文件是用于指导 Spring工厂进行 Bean 生产、依赖关系注入（装配）及 Bean 实例分发的 "图纸"。
+
+    <bean />标签：声明一个 bean 对象，
+    【并将该对象添加到 应用上下文——ApplicationContext实例对象 中，可通过<bean/>标签的id值从应用上下文ApplicationContext中取出这个bean】；
+
+    目的：在初始化对象时，并将对象保存在 spring 上下文中，
+    并在用户需要时，将对象交给用户使用；这也是 IOC 控制反转的核心；
+
+    基础形态：
+    <bean id="此bean对象的唯一标识，一般是实例名称"  class="此bean所在类的全限定类名"  >
+        <property name="bean类中的属性名" value="此属性为基本数据类型时：直接指定属性值" />
+        <property name="bean类中的属性名" ref="此属性为实例对象时，表示对其他bean实例的引用；在当前配置文件里<bean/>标签的id" />
+        <property name="bean类中 要初始化为null的属性名X">
+            <null />  //null标签用于 对此属性X 赋值为null
+        </property>
+    </bean>
+
+    //从 工厂类的【一般工厂方法-private成员方法】中 获取工厂产出的实例对象
+    //【并将该对象添加到 应用上下文——ApplicationContext实例对象 中，可通过<bean/>标签的id值从应用上下文ApplicationContext中取出这个bean】；
+    <bean id="此bean对象的唯一标识X，一般是实例名称"
+          factory-bean="产出此bean X的工厂类 ——其所对应的<bean />标签的id值"   //factory-bean 对应的类必须交由 spring 管理。——它有<bean />标签
+          factory-method="产出此bean X所调用的方法"
+    />
+
+    //从 某个类(如 工厂类、工具类) 的【static静态方法】中 直接获取实例对象
+    //【并将该对象添加到 应用上下文——ApplicationContext实例对象 中，可通过<bean/>标签的id值从应用上下文ApplicationContext中取出这个bean】；
+    <bean id="此bean对象的唯一标识X，一般是实例名称"
+          class="产出此bean X的类(如 工厂类、工具类) 的全限定类名" //它之前未交由spring管理——它没有<bean />标签
+          factory-method="产出此bean X所调用的方法"
+    />
+
+    ——————————————————————————————————————————————————————————————————————
+    //2020-01-19 11:55:51
+    //在 bean.xml 配置<bean />标签前，先在这个类中提前写好带参的构造方法
+    public AccountServiceImpl( String name, Integer age, Date birthday ){
+        this.name = name;
+        this.age = age;
+        this.birthday = birthday;
+    }
+
+    构造方法的注入
+    优势：在获取bean对象时，注入数据是必须的操作，否则对象无法创建成功。
+    弊端：改变了bean对象的实例化方式，使我们在创建对象时，如果用不到这些数据，也必须提供。
+    <bean id="此bean对象的唯一标识X，一般是实例名称" class="产出此bean X的类(如 工厂类、工具类) 的全限定类名" >
+        <constructor-arg
+            index="下标；从0开始"
+            type="构造参数的类型：若是包装类或String，则需要写全类名；
+                  若是基本数据类型如int，则直接写对应的小写字母即可(int)"
+            value="构造参数的值：基本数据类型"
+       />
+
+        <constructor-arg
+            index="下标，从0开始"
+            type="构造参数的类型：若是包装类或String，则需要写全类名；
+                  若是基本数据类型如int，则直接写对应的小写字母即可(int)"
+            ref="构造参数的值：此属性为实例对象时，
+                 表示对其他bean实例的引用；在当前配置文件里<bean/>标签的id"
+        />
+
+        <constructor-arg name="参数名(必需是唯一的，不可重名参数)" value或ref="..." />
+    </bean>
+
+
+    ——————————————————————————————————————————————————————————————————————
+    //2020-01-19 12:54:21
+    //在 bean.xml 配置<bean />标签前，先在本类中提供这些setter方法
+    public void setName(String name) {  this.name = name; }
+    public void setAge(Integer age) { this.age = age; }
+    public void setBirthday(Date birthday) { this.birthday = birthday; }
+
+    set方法注入
+    优势：创建对象时没有明确的限制，可以直接使用默认构造函数
+    弊端：如果有某个成员必须有值，则获取对象是有可能set方法没有执行。
+
+    <bean id="此bean标签的id值" class="此类的全类名">
+        <property
+            name="你要set的那个属性名XXX；默认是调用setXXX()方法"
+            value="基本数据类型或String"
+        />
+
+        <property
+            name="你要set的那个属性名YYY；默认是调用setYYY()方法"
+            ref="示对其他bean实例的引用；在当前配置文件里<bean/>标签的id"
+        />
+    </bean>
+
+
+    ——————————————————————————————————————————————————————————————————————
+    //2020-01-19 13:04:22
+    复杂类型的注入/集合类型的注入：大标签<property属性 name="你要set的那个属性名XXX；默认是调用setXXX()方法">
+    用于给List结构集合注入的标签：
+        list array set  ——子标签都是   <value> value的内容在子标签体内嗷！</value>
+    用于个Map结构集合注入的标签:
+         map ——子标签   <entry key="XX" value="YY" />
+         props ——子标签   <prop key="XX"> value的内容在子标签体内嗷！</prop>
+    结构相同，标签可以互换
+
+    //在 bean.xml 配置<bean />标签前，先在本类中提供这些setter方法
+    成员变量：
+    private String[] myStrs;
+    private List<String> myList;
+    private Set<String> mySet;
+    private Map<String,String> myMap;
+    private Properties myProps;
+    然后为他们提供 setter方法
+    //
+
+
+
+    -->
+    <!-- 【建立<bean />标签，就是——】把 “创建对象”的工作 交给spring来管理
+    【并将该对象添加到 应用上下文——ApplicationContext实例对象 中，可通过<bean/>标签的id值从应用上下文ApplicationContext中取出这个bean】；
+    -->
+<!--    <bean id="accountDao" class="demo1.dao.impl.AccountDaoImpl" />-->
+<!--    <bean id="accountService" class="demo1.service.impl.AccountServiceImpl" />-->
+
+    <bean id="accountService" class="demo1.service.impl.AccountServiceImpl" >
+        <constructor-arg name="name" type="java.lang.String" value="冲啊" />
+        <!-- type为包装类时，要写全类名
+        虽然在xml中写的value是字符串型的"123"，但spring会按type自动转换为所需的类型
+        -->
+        <constructor-arg index="1" type="java.lang.Integer" value="123" />
+        <constructor-arg index="2" ref="now" />
+        <constructor-arg index="3" type="int" value="0" />  <!-- type为基本数据类型时，直接写对应的字母小写 如int -->
+    </bean>
+    <!-- 配置一个日期对象，<bean />标签id为now，等会要传给某个ref属性嗷！ -->
+    <bean id="now" class="java.util.Date" />
+
+    <bean id="accountService2" class="demo1.service.impl.AccountServiceImpl2"  >
+        <property name="age" value="123" />
+        <property name="birthday" ref="now" />
+        <property name="name" value="我佛辣！" />
+    </bean>
+
+    <bean id="accountService3" class="demo1.service.impl.AccountServiceImpl3">
+        <property name="myList" > <!--  用于给List结构集合注入的标签：list、array、set -->
+            <list>
+                <value>我佛了！</value>
+            </list>
+        </property>
+        <property name="myStrs" >
+            <array>
+                <value>我是MyStr！</value>
+            </array>
+        </property>
+        <property name="mySet" >
+            <set>
+                <value>我是mySet！</value>
+            </set>
+        </property>
+        <property name="myMap" >
+            <map>
+                <entry key="0" value="a" />
+                <entry key="1" value="b" />
+            </map>
+        </property>
+        <property name="myProps" >
+            <props>
+                <prop key="00">aa</prop>
+                <prop key="01">bb</prop>
+            </props>
+        </property>
+
+    </bean>
+
+
+</beans>
