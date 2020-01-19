@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 2020-01-19 16:19:24
+    ▲ 使用注解必需依赖的JAR包是 spring-aop 这个包；Maven已经贴心地放进来了
+    ▲ 使用 Spring注解方式时：配置文件xml的首行需要更改为 注解的约束
+    在收藏的index.html中， core - 按ctrl+F搜索 xmlns:context - 然后复制这一段约束即可
+    -->
+
+    <!-- 告知spring在创建容器时要扫描的包 context:component-scan，
+    配置所需要的标签不是在beans的约束中，
+    而是一个名称为context名称空间和约束中
+    -->
+    <context:component-scan base-package="demo2_annoioc" />
+
+</beans>
+
+
+
+
+
+
