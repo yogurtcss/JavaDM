@@ -1,6 +1,6 @@
-package demo1.dao.impl;
+package demo1_xml.dao.impl;
 
-import demo1.dao.AccountDao;
+import demo1_xml.dao.AccountDao;
 
 public class AccountDaoImpl implements AccountDao {
     @Override

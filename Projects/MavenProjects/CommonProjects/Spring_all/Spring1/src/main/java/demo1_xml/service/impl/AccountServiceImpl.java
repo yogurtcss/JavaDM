@@ -1,8 +1,7 @@
-package demo1.service.impl;
+package demo1_xml.service.impl;
 
 
-import demo1.dao.AccountDao;
-import demo1.service.AccountService;
+import demo1_xml.service.AccountService;
 
 import java.util.Date;
 
@@ -19,7 +18,7 @@ public class AccountServiceImpl implements AccountService {
 //        System.out.println( "对象创建辽！" );
 //    }
 
-    //在 bean.xml 配置<bean />标签前，先在这个类中提前写好带参的构造方法
+    //在 bean_xml.xml 配置<bean />标签前，先在这个类中提前写好带参的构造方法
     public AccountServiceImpl( String name, Integer age, Date birthday, int INT ){
         this.name = name;
         this.age = age;

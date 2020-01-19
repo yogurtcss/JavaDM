@@ -1,4 +1,4 @@
-package demo1.dao;
+package demo1_xml.dao;
 
 public interface AccountDao {
     void saveAccount();

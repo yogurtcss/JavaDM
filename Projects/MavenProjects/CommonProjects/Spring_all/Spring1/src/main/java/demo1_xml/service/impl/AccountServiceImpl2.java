@@ -1,7 +1,7 @@
-package demo1.service.impl;
+package demo1_xml.service.impl;
 
 
-import demo1.service.AccountService;
+import demo1_xml.service.AccountService;
 
 import java.util.Date;
 
@@ -17,7 +17,7 @@ public class AccountServiceImpl2 implements AccountService {
 //        System.out.println( "对象创建辽！" );
 //    }
 
-    //在 bean.xml 配置<bean />标签前，先在本类中提供这些setter方法
+    //在 bean_xml.xml 配置<bean />标签前，先在本类中提供这些setter方法
     public void setName(String name) {
         this.name = name;
     }
