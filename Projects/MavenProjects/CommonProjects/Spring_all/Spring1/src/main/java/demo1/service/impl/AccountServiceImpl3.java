@@ -50,4 +50,14 @@ public class AccountServiceImpl3 implements AccountService {
         System.out.println(myProps);
     }
 
+    @Override
+    public String toString() {
+        return "AccountServiceImpl3{" +
+                "myStrs=" + Arrays.toString(myStrs) +
+                ", myList=" + myList +
+                ", mySet=" + mySet +
+                ", myMap=" + myMap +
+                ", myProps=" + myProps +
+                '}';
+    }
 }
