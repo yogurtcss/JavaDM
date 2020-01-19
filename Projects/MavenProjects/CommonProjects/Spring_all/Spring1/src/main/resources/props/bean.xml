@@ -176,8 +176,6 @@
                 <prop key="01">bb</prop>
             </props>
         </property>
-
     </bean>
-
 
 </beans>
