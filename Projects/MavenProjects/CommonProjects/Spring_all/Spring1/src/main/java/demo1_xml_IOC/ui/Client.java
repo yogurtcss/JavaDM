@@ -1,6 +1,6 @@
-package demo1_xml.ui;
+package demo1_xml_IOC.ui;
 
-import demo1_xml.service.AccountService;
+import demo1_xml_IOC.service.AccountService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,7 +29,7 @@ public class Client {
         * File SystemXml Application Context 好长啊！
         *  */
         //---1.读取配置文件：获取核心容器对象(应用上下文ApplicationContext)
-        ApplicationContext ac = new ClassPathXmlApplicationContext("props/bean_xml.xml"); //接口回调，向上转型
+        ApplicationContext ac = new ClassPathXmlApplicationContext("props/bean_xml_IOC.xml"); //接口回调，向上转型
         //---2.根据id 获取bean对象
         /* Object getBean( String name  -要获取的JavaBean的名字(id值) )
          *  返回值是Object类型的，需要向下转型为自己需要的类型！

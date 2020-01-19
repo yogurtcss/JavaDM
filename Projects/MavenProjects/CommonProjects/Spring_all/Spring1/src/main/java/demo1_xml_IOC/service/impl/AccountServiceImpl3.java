@@ -1,7 +1,7 @@
-package demo1_xml.service.impl;
+package demo1_xml_IOC.service.impl;
 
 
-import demo1_xml.service.AccountService;
+import demo1_xml_IOC.service.AccountService;
 
 import java.util.*;
 
@@ -19,7 +19,7 @@ public class AccountServiceImpl3 implements AccountService {
 //        System.out.println( "对象创建辽！" );
 //    }
 
-    //在 bean_xml.xml 配置<bean />标签前，先在本类中提供这些setter方法
+    //在 bean_xml_IOC.xml 配置<bean />标签前，先在本类中提供这些setter方法
     public void setMyStrs(String[] myStrs) {
         this.myStrs = myStrs;
     }
