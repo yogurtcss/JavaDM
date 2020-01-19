@@ -5,6 +5,8 @@ import demo2_annoioc.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * 账户的业务层实现类
  *
@@ -43,12 +45,14 @@ import org.springframework.stereotype.Service;
  *          细节：@Autowired 后不需要 getter()和 setter()方法，Spring 也会自动注入
  *
  *      Qualifier:
- *          作用：在按照类中注入的基础之上再按照名称注入。它在给类成员注入时不能单独使用。但是在给方法参数注入时可以（稍后我们讲）
+ *          作用： @Autowired 和 @Qualifier("XXX") 两个注解结合起来使用，可以根据名字和类型注入
+ *                它在给类成员注入时不能单独使用。但是在给方法参数注入时可以（稍后我们讲）
  *          属性：value：用于指定注入bean的id。
  *
  *      Resource
  *          作用：直接按照bean的id注入。它可以独立使用
- *          属性：name：用于指定bean的id。
+ *          属性：name 用于指定bean的id。
+ *          //必需写全 name="某个bean的id"，不能省略name=！！因为它不是value属性！
  *
  *      以上三个注入都只能注入其他bean类型的数据，而基本类型和String类型无法使用上述注解实现。
  *      另外，集合类型的注入只能通过XML来实现。
@@ -79,7 +83,8 @@ import org.springframework.stereotype.Service;
 @Service( "accountService" )
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired //自动注入
+    //@Autowired //自动注入
+    @Resource( name="accountDao1" ) //必需写全 name="某个bean的id"，不能省略name=！！因为它不是value属性！
     private AccountDao accountDao1;
     /* 我已在 AccountDaoImpl1 --dao的实现类 加了注解 @Repository("accountDao1")
     * 同时，我也在 AccountDaoImpl2 --dao的实现类上，也加了注解 @Repository("accountDao2")
