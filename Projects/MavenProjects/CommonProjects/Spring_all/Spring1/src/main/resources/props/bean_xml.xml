@@ -47,7 +47,7 @@
 
     ——————————————————————————————————————————————————————————————————————
     //2020-01-19 11:55:51
-    //在 bean.xml 配置<bean />标签前，先在这个类中提前写好带参的构造方法
+    //在 bean_xml.xml 配置<bean />标签前，先在这个类中提前写好带参的构造方法
     public AccountServiceImpl( String name, Integer age, Date birthday ){
         this.name = name;
         this.age = age;
@@ -79,7 +79,7 @@
 
     ——————————————————————————————————————————————————————————————————————
     //2020-01-19 12:54:21
-    //在 bean.xml 配置<bean />标签前，先在本类中提供这些setter方法
+    //在 bean_xml.xml 配置<bean />标签前，先在本类中提供这些setter方法
     public void setName(String name) {  this.name = name; }
     public void setAge(Integer age) { this.age = age; }
     public void setBirthday(Date birthday) { this.birthday = birthday; }
@@ -111,7 +111,7 @@
          props ——子标签   <prop key="XX"> value的内容在子标签体内嗷！</prop>
     结构相同，标签可以互换
 
-    //在 bean.xml 配置<bean />标签前，先在本类中提供这些setter方法
+    //在 bean_xml.xml 配置<bean />标签前，先在本类中提供这些setter方法
     成员变量：
     private String[] myStrs;
     private List<String> myList;
@@ -130,7 +130,7 @@
 <!--    <bean id="accountDao" class="demo1.dao.impl.AccountDaoImpl" />-->
 <!--    <bean id="accountService" class="demo1.service.impl.AccountServiceImpl" />-->
 
-    <bean id="accountService" class="demo1.service.impl.AccountServiceImpl" >
+    <bean id="accountService" class="demo1_xml.service.impl.AccountServiceImpl" >
         <constructor-arg name="name" type="java.lang.String" value="冲啊" />
         <!-- type为包装类时，要写全类名
         虽然在xml中写的value是字符串型的"123"，但spring会按type自动转换为所需的类型
@@ -142,13 +142,13 @@
     <!-- 配置一个日期对象，<bean />标签id为now，等会要传给某个ref属性嗷！ -->
     <bean id="now" class="java.util.Date" />
 
-    <bean id="accountService2" class="demo1.service.impl.AccountServiceImpl2"  >
+    <bean id="accountService2" class="demo1_xml.service.impl.AccountServiceImpl2"  >
         <property name="age" value="123" />
         <property name="birthday" ref="now" />
         <property name="name" value="我佛辣！" />
     </bean>
 
-    <bean id="accountService3" class="demo1.service.impl.AccountServiceImpl3">
+    <bean id="accountService3" class="demo1_xml.service.impl.AccountServiceImpl3">
         <property name="myList" > <!--  用于给List结构集合注入的标签：list、array、set -->
             <list>
                 <value>我佛了！</value>
