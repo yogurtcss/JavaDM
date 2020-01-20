@@ -5,6 +5,9 @@ import demo3_myxmlioc.domain.Account;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 /* Dbutils 三个核心功能介绍
@@ -33,8 +36,9 @@ int update (String sql, Object params)：
 int update (String sql, Object params [])：执行插入、更新或删除（DML）操作。
 
 * */
-
+@Repository( "accountDaoImpl" )
 public class AccountDaoImpl implements AccountDao {
+    @Autowired
     private QueryRunner qr;
 
     public void setQr(QueryRunner qr) {
@@ -92,7 +96,7 @@ public class AccountDaoImpl implements AccountDao {
         try{
             qr.update(
                     "update account set name=?, money=? where id=? ",
-                    account.getName(),  account.getName(),  account.getId()
+                    account.getName(),  account.getMoney(),  account.getId()
             );
         }catch( Exception e ){
             e.printStackTrace();
