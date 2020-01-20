@@ -41,6 +41,7 @@ public class AccountDaoImpl implements AccountDao {
     @Autowired
     private QueryRunner qr;
 
+    //加了@Autowired注解后，set方法就不是必需的了
     public void setQr(QueryRunner qr) {
         this.qr = qr;
     }
