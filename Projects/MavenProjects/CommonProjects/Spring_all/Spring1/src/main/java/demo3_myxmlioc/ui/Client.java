@@ -1,6 +1,5 @@
 package demo3_myxmlioc.ui;
 
-import demo3_myxmlioc.domain.Account;
 import demo3_myxmlioc.service.AccountService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,7 +10,7 @@ public class Client {
         //xml配置写法
         //ApplicationContext ac = new ClassPathXmlApplicationContext( "props/bean_demo3_xmlioc.xml" );
         //注解写法
-        ApplicationContext ac = new ClassPathXmlApplicationContext("props/bean_demo3_annoioc.xml");
+        ApplicationContext ac = new ClassPathXmlApplicationContext("xmls/bean_demo3_annoioc.xml");
         AccountService as = ac.getBean( "accountServiceImpl", AccountService.class );
         System.out.println( "as.findAllAccount()方法："+as.findAllAccount() );
         System.out.println( "as.findAccountById()方法："+as.findAccountById(1) );
