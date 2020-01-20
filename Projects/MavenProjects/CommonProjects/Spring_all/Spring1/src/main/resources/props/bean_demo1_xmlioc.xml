@@ -35,7 +35,8 @@
 
     //从 工厂类的【一般工厂方法-private成员方法】中 获取工厂产出的实例对象
     //【并将该对象添加到 应用上下文——ApplicationContext实例对象 中，可通过<bean/>标签的id值从应用上下文ApplicationContext中取出这个bean】；
-    <bean id="此bean对象的唯一标识X，一般是实例名称"
+
+    <bean id="此bean对象的唯一标识X，一般是实例名称"       // id 首字母应小写
           factory-bean="产出此bean X的工厂类 ——其所对应的<bean />标签的id值"   //factory-bean 对应的类必须交由 spring 管理。——它有<bean />标签
           factory-method="产出此bean X所调用的方法"
     />
@@ -92,7 +93,9 @@
 
     <bean id="此bean标签的id值" class="此类的全类名">
         <property
-            name="你要set的那个属性名XXX；默认是调用setXXX()方法"
+            name="你要set的那个属性名XXX。默认是调用setXXX()方法"
+                  - 写法是 对setXXX()方法 去掉set 取后半部分，然后首字母小写
+                  - 如 类中是 setSex()方法，在这里 写法为 name="sex" //去掉set 取后半部分，然后首字母小写
             value="基本数据类型或String"
         />
 
