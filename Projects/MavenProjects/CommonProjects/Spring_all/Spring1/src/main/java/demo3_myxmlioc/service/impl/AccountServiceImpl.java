@@ -13,6 +13,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountDao aDao;
 
+    //加了@Autowired关键字后，set方法就不是必需的了
     public void setaDao(AccountDao aDao) {
         this.aDao = aDao;
     }
