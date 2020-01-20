@@ -77,16 +77,37 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void saveAccount(Account account) {
-
+        try{
+            qr.update(
+                    "insert into account(name,money) values(?,?) ",
+                    account.getName(), account.getMoney()
+            );
+        }catch( Exception e ){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updateAccount(Account account) {
-
+        try{
+            qr.update(
+                    "update account set name=?, money=? where id=? ",
+                    account.getName(),  account.getName(),  account.getId()
+            );
+        }catch( Exception e ){
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void deleteAccount(Integer acccountId) {
-
+    public void deleteAccount(Integer accountId) {
+        try{
+            qr.update(
+                    "delete from account where id=? ",
+                    accountId
+            );
+        }catch( Exception e ){
+            e.printStackTrace();
+        }
     }
 }
