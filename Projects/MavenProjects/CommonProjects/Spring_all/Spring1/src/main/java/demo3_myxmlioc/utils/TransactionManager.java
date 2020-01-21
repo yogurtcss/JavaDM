@@ -10,7 +10,8 @@ public class TransactionManager {
     //开启事务
     public void beginTransaction(){
         try{
-            connUtils.getThreadConnection();
+            //不准你自动提交事务，我来手动提交事务嗷！
+            connUtils.getThreadConnection().setAutoCommit(false);
         }catch( Exception e ){
             e.printStackTrace();
         }
