@@ -50,26 +50,73 @@ public class AccountServiceImpl_OLD implements AccountService {
 
     @Override
     public Account findAccountById(Integer accountId) {
-        return( aDao.findAccountById(accountId) );
+        Account a = null;
+        try{
+            tsManager.beginTransaction(); //开启事务
+            a = aDao.findAccountById( accountId ); //处理结果
+            tsManager.commit(); //提交事务
+        }catch( Exception e ){
+            tsManager.rollback(); //回滚事务
+            e.printStackTrace();
+        }
+        return a;
     }
 
     @Override
     public void saveAccount(Account account) {
-        aDao.saveAccount(account);
+        try{
+            tsManager.beginTransaction();
+            aDao.saveAccount( account );
+            tsManager.commit();
+        }catch( Exception e ){
+            tsManager.rollback();
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updateAccount(Account account) {
-        aDao.updateAccount(account);
+        try{
+            tsManager.beginTransaction();
+            aDao.updateAccount( account );
+            tsManager.commit();
+        }catch( Exception e ){
+            tsManager.rollback();
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteAccount(Integer accountId) {
-        aDao.deleteAccount(accountId);
+        try{
+            tsManager.beginTransaction();
+            aDao.deleteAccount( accountId );
+            tsManager.commit();
+        }catch( Exception e ){
+            tsManager.rollback();
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void transfer(String sourceName, String targetName, Float money) {
+        try{
+            tsManager.beginTransaction();
+            Account source = aDao.findAccountByName( sourceName ); //转出者
+            Account target = aDao.findAccountByName( targetName ); //转入者
+            source.setMoney( source.getMoney()-money ); //转出者 减钱
+            target.setMoney( target.getMoney()+money ); //转入者 加钱
+            aDao.updateAccount( source ); //更新转出者的信息
 
+            int i = 1/0; //手动制造异常
+
+            aDao.updateAccount( target ); //更新转入者的信息
+            tsManager.commit(); //提交事务
+        }catch( Exception e ){
+            tsManager.rollback(); //回滚
+            e.printStackTrace();
+        }finally{
+            tsManager.release();
+        }
     }
 }
