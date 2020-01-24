@@ -135,7 +135,7 @@
 <!--    <bean id="accountDao" class="demo1.dao.impl.AccountDaoImpl" />-->
 <!--    <bean id="accountService" class="demo1.service.impl.AccountServiceImpl" />-->
 
-    <bean id="accountService" class="demo1_xmlioc.service.impl.AccountServiceImpl" >
+    <bean id="accountService" class="demo3_xmlioc.service.impl.AccountServiceImpl" >
         <constructor-arg name="name" type="java.lang.String" value="冲啊" />
         <!-- type为包装类时，要写全类名
         虽然在xml中写的value是字符串型的"123"，但spring会按type自动转换为所需的类型
@@ -147,13 +147,13 @@
     <!-- 配置一个日期对象，<bean />标签id为now，等会要传给某个ref属性嗷！ -->
     <bean id="now" class="java.util.Date" />
 
-    <bean id="accountService2" class="demo1_xmlioc.service.impl.AccountServiceImpl2"  >
+    <bean id="accountService2" class="demo3_xmlioc.service.impl.AccountServiceImpl2"  >
         <property name="age" value="123" />
         <property name="birthday" ref="now" />
         <property name="name" value="我佛辣！" />
     </bean>
 
-    <bean id="accountService3" class="demo1_xmlioc.service.impl.AccountServiceImpl3">
+    <bean id="accountService3" class="demo3_xmlioc.service.impl.AccountServiceImpl3">
         <property name="myList" > <!--  用于给List结构集合注入的标签：list、array、set -->
             <list>
                 <value>我佛了！</value>
