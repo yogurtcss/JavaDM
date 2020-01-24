@@ -38,4 +38,9 @@ public interface AccountService {
     //2020-01-21 10:03:43
     public abstract void transfer(String sourceName,String targetName,Float money);
 
+    /* 2020-01-24 11:54:18
+    * test()方法只是连接点，而不是切入点
+    * 因为test()方法没有被增强
+    *  */
+    //public abstract void test();
 }
