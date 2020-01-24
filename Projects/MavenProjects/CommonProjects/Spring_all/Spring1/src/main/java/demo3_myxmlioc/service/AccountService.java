@@ -34,4 +34,8 @@ public interface AccountService {
      * @param accountId
      */
     void deleteAccount(Integer accountId);
+
+    //2020-01-21 10:03:43
+    public abstract void transfer(String sourceName,String targetName,Float money);
+
 }
