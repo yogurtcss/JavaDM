@@ -1,6 +1,11 @@
 package demo3_xmlioc;
 
+import demo3_myxmlioc.service.AccountService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,7 +23,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *   当我们使用spring 5.x版本的时候，要求junit的jar必须是4.12及以上
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( locations="classpath:xmls/bean_demo3_xmlioc.xml" )
+@ContextConfiguration( locations="classpath:xmls/bean_demo3_annoioc.xml" )
 public class testTransfer {
+
+    @Autowired
+    @Qualifier( "proxyAccountService" )
+    private AccountService as;
+
+    @Test
+    public void testTransfer(){
+        //aaa向bbb转钱
+        as.transfer( "aaa","bbb", 100f );
+    }
 
 }
