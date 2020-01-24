@@ -34,4 +34,7 @@ public interface AccountDao {
      * @param accountId
      */
     void deleteAccount(Integer accountId);
+
+    //2020-01-21 21:47:51
+    Account findAccountByName(String accountName);
 }

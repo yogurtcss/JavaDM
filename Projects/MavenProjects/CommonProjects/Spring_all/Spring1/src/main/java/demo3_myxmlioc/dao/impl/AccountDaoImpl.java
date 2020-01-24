@@ -2,6 +2,7 @@ package demo3_myxmlioc.dao.impl;
 
 import demo3_myxmlioc.dao.AccountDao;
 import demo3_myxmlioc.domain.Account;
+import demo3_myxmlioc.utils.ConnectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -36,21 +37,41 @@ int update (String sql, Object params)：
 int update (String sql, Object params [])：执行插入、更新或删除（DML）操作。
 
 * */
-@Repository( "accountDaoImpl" )
+
 public class AccountDaoImpl implements AccountDao {
-    @Autowired
+
     private QueryRunner qr;
+    //2020-01-23 17:03:34
+    private ConnectionUtils connUtils;
 
     //加了@Autowired注解后，set方法就不是必需的了
     public void setQr(QueryRunner qr) {
         this.qr = qr;
     }
 
+    /* 2020-01-23 16:57:22
+     因为每次从 连接池中取得的都是 “新的连接对象”，
+     而我希望dao每次都是用同一个连接对象！
+     就让dao的每个“数据库的操作”，都带上 connUtils.getThreadConnection(),
+     ——每次都从 连接工具类中取连接，这样使用的都是同一个连接对象了！
+    * */
+    public void setConnUtils(ConnectionUtils connUtils) {
+        this.connUtils = connUtils;
+    }
+
     @Override
     public List<Account> findAllAccount() {
         List<Account> list = null;
         try{ //数据库 结果集的赋值，在try...catch中进行！！
+            /* 2020-01-23 16:57:22
+            因为每次从 连接池中取得的都是 “新的连接对象”，
+            而我希望dao每次都是用同一个连接对象！
+            就让dao的每个“数据库的操作”，都带上 connUtils.getThreadConnection(),
+            ——每次都从 连接工具类中取连接，这样使用的都是同一个连接对象了！
+            *  */
+
             list = qr.query(
+                    connUtils.getThreadConnection(),
                     "select * from account",
                     new BeanListHandler<Account>(Account.class)
             );
@@ -70,6 +91,7 @@ public class AccountDaoImpl implements AccountDao {
         Account a = null;
         try{
             a = qr.query(
+                    connUtils.getThreadConnection(),
                     "select * from account where id = ? ",
                     new BeanHandler<Account>(Account.class),
                     accountId
@@ -84,6 +106,7 @@ public class AccountDaoImpl implements AccountDao {
     public void saveAccount(Account account) {
         try{
             qr.update(
+                    connUtils.getThreadConnection(),
                     "insert into account(name,money) values(?,?) ",
                     account.getName(), account.getMoney()
             );
@@ -96,6 +119,7 @@ public class AccountDaoImpl implements AccountDao {
     public void updateAccount(Account account) {
         try{
             qr.update(
+                    connUtils.getThreadConnection(),
                     "update account set name=?, money=? where id=? ",
                     account.getName(),  account.getMoney(),  account.getId()
             );
@@ -108,11 +132,28 @@ public class AccountDaoImpl implements AccountDao {
     public void deleteAccount(Integer accountId) {
         try{
             qr.update(
+                    connUtils.getThreadConnection(),
                     "delete from account where id=? ",
                     accountId
             );
         }catch( Exception e ){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Account findAccountByName(String accountName) {
+        Account rst = null;
+        try{
+            rst = qr.query(
+                    connUtils.getThreadConnection(),
+                    "select * from account where name = ? ",
+                    new BeanHandler<Account>(Account.class),
+                    accountName
+            );
+        }catch( Exception e ){
+            e.printStackTrace();
+        }
+        return rst;
     }
 }
