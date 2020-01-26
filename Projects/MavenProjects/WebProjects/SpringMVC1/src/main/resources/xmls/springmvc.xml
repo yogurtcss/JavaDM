@@ -23,8 +23,8 @@
         value="WEB-INF/pages/" 不加斜杠，就代表在当前路径去找对应的文件，
 
         当不加斜杠时：
-        (1)如果类前加了一个 @RequestMapping (path) 注解的时候，就相当于多了一层路径，所以报404的错，
-        (2)而如果类前没有加 @RequestMapping (path = "/test") 注解，则表示方法的注解都在项目路径下去找，
+        (1)如果类前加了一个 @RequestMapping(path) 注解的时候，就相当于多了一层路径，所以报404的错，
+        (2)而如果类前没有加 @RequestMapping(path = "/test") 注解，则表示方法的注解都在项目路径下去找，
         -->
         <property name="prefix" value="/WEB-INF/pages/" /> <!-- 注意 value="/WEB-INF/pages/" 斜杠的坑嗷 -->
         <property name="suffix" value=".jsp" />
