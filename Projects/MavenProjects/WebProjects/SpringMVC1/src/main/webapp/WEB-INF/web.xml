@@ -26,6 +26,32 @@ JSP2.0 默认的 EL表达式是打开的！
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 
+
+  <!-- 2020-01-27 20:57:51
+  若 过滤器<filter />标签写在<servlet />标签的后面，则 </web-app>标签会飘红报错
+  原因：当前web.xml中配置的标签顺序有问题：过滤器<filter />标签要写在servlet的前面！
+  -->
+
+  <!-- 2020-01-27 18:00:05
+  配置：解决中文乱码的过滤器
+  发现配置了这过滤器标签，根本没用！
+  在Tomcat8的 虚拟机选项中，填入
+
+  -->
+<!--  <filter>-->
+<!--    <filter-name>characterEncodingFilter</filter-name>-->
+<!--    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>-->
+<!--    <init-param>-->
+<!--      <param-name>encoding</param-name>-->
+<!--      <param-value>UTF-8</param-value>-->
+<!--    </init-param>-->
+<!--  </filter>-->
+<!--  <filter-mapping>-->
+<!--    <filter-name>characterEncodingFilter</filter-name>-->
+<!--    <url-pattern>/*</url-pattern>-->
+<!--  </filter-mapping>-->
+
+
   <!-- 2020-01-26 20:02:06 -->
   <!-- SpringMVC的核心控制器 -->
   <servlet>
@@ -60,21 +86,8 @@ JSP2.0 默认的 EL表达式是打开的！
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
-  <!-- 2020-01-27 18:00:05
-  配置：解决中文乱码的过滤器
+  <!-- 2020-01-27 20:57:51
+  若 过滤器<filter />标签写在这里(<servlet />标签的后面)，则 </web-app>标签会飘红报错
+  原因：当前web.xml中配置的标签顺序有问题：过滤器<filter />标签要写在servlet的前面！
   -->
-  <filter>
-    <filter-name>characterEncodingFilter</filter-name>
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>characterEncodingFilter</filter-name>
-    <url-pattern>/*</url-pattern> <!-- 过滤任意路径！ -->
-  </filter-mapping>
-
 </web-app>
