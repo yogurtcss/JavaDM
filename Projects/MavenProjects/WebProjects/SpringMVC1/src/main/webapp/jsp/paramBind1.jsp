@@ -50,5 +50,21 @@
         ▲ 注意：后台方法中的形参名 要与 传递参数的键名 一致！！
         -->
 
+        <!-- 把数据封装到Account类中 -->
+        <form action="param/saveAccount" method="post">
+            <!-- <label> 标签的 for属性 与 相关元素的 id属性相同。 -->
+            <label for="usernameLabel">用户名</label>
+            <input type="text" name="username" id="usernameLabel" />
+            <label for="passwordLabel" >密码</label>
+            <input type="password" name="password" id="passwordLabel" />
+            <label for="moneyLabel" >金额</label>
+            <input type="text" name="money" id="moneyLabel" />
+            <label for="mynameLabel">姓名</label>
+            <input type="text" name="myname" id="mynameLabel" />
+            <label for="ageLabel" >年龄</label>
+            <input type="text" name="age" id="ageLabel" />
+
+            <input type="submit" value="提交" />
+        </form>
     </body>
 </html>
