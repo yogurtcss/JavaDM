@@ -1,0 +1,54 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: polic
+  Date: 2020/1/27
+  Time: 12:22
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>  <!-- JSP1.2版本，必需手动打开EL表达式   -->
+<!-- 复习JSP的指令
+指令
+* 作用：用于配置JSP页面，导入资源文件
+* 格式：<(空格)%@ 指令名称 属性名1=属性值1 属性名2=属性值2 ... %>
+-->
+<html>
+    <head>
+        <title>parameter bind1 参数绑定</title>
+    </head>
+    <body>
+
+        <!-- 2020-01-27 15:25:51
+        关于 SpringMVC中 jsp页面el表达式全不能用的问题如下：
+        (1)在 jsp 页面中使用 EL 表达式进行获取得不到数据，而是直接显示表达式的值，如直接显示 $(空格){message}
+        (2)使用虚拟目录时 $(空格){pageContext.request.contextPath}，不会跳到虚拟目录，
+        跳转的地址中直接显示  $(空格){pageContext.request.contextPath}！
+
+        原因：JSP1.2默认的 EL表达式是关闭的 —— 必须手动打开。<(空格)%@page isELIgnored="false" %>
+        JSP2.0 默认的 EL表达式是打开的！
+
+        ▲ 采用 JSP1.2 的 web.xml 配置信息为：
+            <!DOCTYPE web-app PUBLIC
+             "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+             "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+        ▲ 在这里，当前这个通过Maven骨架创建的 webapp工程的这个web.xml 采用的是JSP1.2版本！
+        此web.xml一开头的约束就是 JSP1.2的约束！我佛了！
+
+        解决：在需要使用EL表达式的那个jsp页面开头，手动打开EL表达式：<(空格)%@page isELIgnored="false" %>
+        -->
+
+
+        <%-- 请求参数绑定：href开头不要带斜杠啊！ --%>
+        <a href="${pageContext.request.contextPath}/param/testParam?username=hehe&password=enenen" >请求参数绑定</a>
+        <!-- href = param模块名/testParam方法名，指明：当匹配到/
+        在href跳转的链接中传递请求参数 username=hehe、password=enenen
+        在后台方法testParam中的形参username、password：就会【传入请求的参数】
+        public String testParam( String username, String password )
+        形参被赋值 username=hehe、password=enenen
+
+        ▲ 注意：后台方法中的形参名 要与 传递参数的键名 一致！！
+        -->
+
+    </body>
+</html>
