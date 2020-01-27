@@ -1,4 +1,4 @@
-package demo1.domain;
+package demo1_param.domain;
 
 import java.io.Serializable;
 import java.util.List;

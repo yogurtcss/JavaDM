@@ -1,7 +1,7 @@
-package demo1.controller;
+package demo1_param.controller;
 
-import demo1.domain.Account;
-import demo1.domain.User;
+import demo1_param.domain.Account;
+import demo1_param.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
