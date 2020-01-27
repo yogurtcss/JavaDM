@@ -50,19 +50,38 @@
         ▲ 注意：后台方法中的形参名 要与 传递参数的键名 一致！！
         -->
 
-        <!-- 把数据封装到Account类中 -->
+        <!-- 把数据封装到Account类中
+        2020-01-27 16:54:30 必需手动加上虚拟目录，不以斜杠开头！
         <form action="param/saveAccount" method="post">
+        //若action的路径开头没有带 $(空格){pageContext.request.contextPath}
+        直接写成 "param/saveAccount" ，那么真正跳转的路径是：
+        从当前的路径(虚拟目录/二级目录/三级目录) 开始跳转，而不是跳转到 虚拟目录！
+
+        如 我之前访问的地址为 【http://localhost:8080/SpringMVC1/jsp/】paramBind1.jsp
+        当 直接写成 "param/saveAccount" 时，跳转的路径是
+        【http://localhost:8080/SpringMVC1/jsp/】param/saveAccount
+        //【http://localhost:8080/SpringMVC1/jsp/】就是 当前的路径(虚拟目录/二级目录)！！
+
+        所以，HTML、jsp标签中，必需手动加上虚拟目录，以防此请求跳转到 非虚拟目录！
+        (因为 此jsp页面可能在 虚拟目录/二级目录/三级目录 下，需要手动让请求重定向到 虚拟目录！)
+        -->
+
+        <!-- 因为跳转前的jsp页面，是在 虚拟目录/二级目录/三级目录 下，
+        ( 【http://localhost:8080/SpringMVC1】/jsp/paramBind1.jsp )
+        因此 需要手动让请求重定向到 虚拟目录！
+        -->
+        <form action="${pageContext.request.contextPath}/param/saveAccount" method="post">
             <!-- <label> 标签的 for属性 与 相关元素的 id属性相同。 -->
             <label for="usernameLabel">用户名</label>
-            <input type="text" name="username" id="usernameLabel" />
+            <input type="text" name="username" id="usernameLabel" /> <br/>
             <label for="passwordLabel" >密码</label>
-            <input type="password" name="password" id="passwordLabel" />
+            <input type="password" name="password" id="passwordLabel" /> <br/>
             <label for="moneyLabel" >金额</label>
-            <input type="text" name="money" id="moneyLabel" />
+            <input type="text" name="money" id="moneyLabel" /> <br/>
             <label for="mynameLabel">姓名</label>
-            <input type="text" name="myname" id="mynameLabel" />
+            <input type="text" name="myname" id="mynameLabel" /> <br/>
             <label for="ageLabel" >年龄</label>
-            <input type="text" name="age" id="ageLabel" />
+            <input type="text" name="age" id="ageLabel" /> <br/>
 
             <input type="submit" value="提交" />
         </form>
