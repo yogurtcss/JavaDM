@@ -35,6 +35,13 @@ public class ParamController {
     }
 
     //请求参数绑定：把数据封装到 JavaBean类中
+
+    /* 参数绑定，两步骤：
+    * 1.在后台处理的方法中：注解@RequestMapping("/后台匹配的路径X")，return "后台指定跳转的页面名"
+    * 2.在前台JSP或HTML代码中：
+    * 提交请求的路径(跳转的路径)为 "${pageContext.request.contextPath}/后台匹配的路径X"
+    * 这样就会匹配到后台对应的方法，并执行，从而跳转到“后台指定跳转到的页面”
+    *  */
     @RequestMapping( "/saveAccount" )
     public String saveAccount( Account account ){
         System.out.println( "执行了..." );
