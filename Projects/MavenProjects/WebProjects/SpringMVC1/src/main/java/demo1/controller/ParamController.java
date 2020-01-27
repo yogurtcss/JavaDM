@@ -26,6 +26,14 @@ public class ParamController {
         形参被赋值 username=hehe、password=enenen
 
         ▲ 注意：后台方法中的形参名 要与 传递参数的键名 一致！！
+
+        2020-01-27 20:39:17
+        2020-01-27 20:39:17
+        <a href="${pageContext.request.contextPath}/anno/testRequestParam?name=哈哈哈啊" >RequestParam</a>
+        前台传递参数键名为name，后台方法中的形参名为username
+
+        当 后台方法中的形参名 要与 传递参数的键名 不一致时：
+        把注解 @RequestParam( name="前台传递参数键名" ) 加在后台方法的形参名上
         -->
         *  */
         System.out.println( "执行了..." );
