@@ -70,20 +70,32 @@
         ( 【http://localhost:8080/SpringMVC1】/jsp/paramBind1.jsp )
         因此 需要手动让请求重定向到 虚拟目录！
         -->
-        <form action="${pageContext.request.contextPath}/param/saveAccount" method="post">
-            <!-- <label> 标签的 for属性 与 相关元素的 id属性相同。 -->
-            <label for="usernameLabel">用户名</label>
-            <input type="text" name="username" id="usernameLabel" /> <br/>
-            <label for="passwordLabel" >密码</label>
-            <input type="password" name="password" id="passwordLabel" /> <br/>
-            <label for="moneyLabel" >金额</label>
-            <input type="text" name="money" id="moneyLabel" /> <br/>
-            <label for="mynameLabel">姓名</label>
-            <input type="text" name="myname" id="mynameLabel" /> <br/>
-            <label for="ageLabel" >年龄</label>
-            <input type="text" name="age" id="ageLabel" /> <br/>
+<%--        <form action="${pageContext.request.contextPath}/param/saveAccount" method="post">--%>
+<%--            <!-- <label> 标签的 for属性 与 相关元素的 id属性相同。 -->--%>
+<%--            <label for="usernameLabel">用户名</label>--%>
+<%--            <input type="text" name="username" id="usernameLabel" /> <br/>--%>
+<%--            <label for="passwordLabel" >密码</label>--%>
+<%--            <input type="password" name="password" id="passwordLabel" /> <br/>--%>
+<%--            <label for="moneyLabel" >金额</label>--%>
+<%--            <input type="text" name="money" id="moneyLabel" /> <br/>--%>
+<%--            <label for="mynameLabel">姓名</label>--%>
+<%--            <input type="text" name="myname" id="mynameLabel" /> <br/>--%>
+<%--            <label for="ageLabel" >年龄</label>--%>
+<%--            <input type="text" name="age" id="ageLabel" /> <br/>--%>
+<%--            <input type="submit" value="提交" />--%>
+<%--        </form>--%>
+
+
+        <form action="${pageContext.request.contextPath}/param/saveUser" >
+            <label for="unameLabel">用户名</label>
+            <input type="text" name="uname" id="unameLabel" />
+            <label for="ageLabel">年龄</label>
+            <input type="text" name="age" id="ageLabel" />
+            <label for="dateLabel">生日</label>
+            <input type="text" name="date" id="dateLabel" />
 
             <input type="submit" value="提交" />
         </form>
+
     </body>
 </html>
