@@ -43,6 +43,9 @@
         <br />
 
         <a href="${pageContext.request.contextPath}/anno/testSessionAttribute" >testSessionAttribute</a>
+        <br />
+
+        <a href="${pageContext.request.contextPath}/anno/getSessionAttribute" >getSessionAttribute</a>
 
 
 
