@@ -36,10 +36,15 @@
 
         <form action="${pageContext.request.contextPath}/anno/testModelAttribute" method="post">
             这是提交到anno/testModelAttribute的嗷 <br/>
-            用户姓名：<input type="text" name="username" /><br/>
-            用户年龄：<input type="text" name="age" /><br/>
+            用户姓名：<input type="text" name="username1" /><br/>
+            用户年龄：<input type="text" name="age1" /><br/>
             <input type="submit" value="提交" />
         </form>
+        <br />
+
+        <a href="${pageContext.request.contextPath}/anno/testSessionAttribute" >testSessionAttribute</a>
+
+
 
     </body>
 </html>
