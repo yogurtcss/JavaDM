@@ -114,6 +114,7 @@ public class AnnoController {
 
     @RequestMapping( "getSessionAttribute" )
     //本应是从 Model 中取值的，但是Model是接口类型，没有get方法！！
+    //此方法的返回值是String类型的！！
     public String getSessionAttribute( ModelMap mm ){ //正确：从Model接口的实现类ModelMap对象中取值！
         System.out.println( "getSessionAttribute..." );
         String rst = (String)mm.get("aaa"); //默认是键的值是Object类型的，需向下转型
