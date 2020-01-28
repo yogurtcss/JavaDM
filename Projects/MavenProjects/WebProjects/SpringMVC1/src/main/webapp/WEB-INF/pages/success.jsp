@@ -15,6 +15,7 @@
         <h3>入门成功辣！！</h3>
 
         <div>
+            <p> demo1_param的内容 </p>
             <p> 在success.jsp中，用EL表达式，在request域中，通过键名aaa可获取到这个值XXX：${requestScope.aaa} </p>
             <p> 在success.jsp中，用EL表达式，在session域中，通过键名aaa可获取到这个值XXX：${requestScope.aaa} </p>
         </div>
