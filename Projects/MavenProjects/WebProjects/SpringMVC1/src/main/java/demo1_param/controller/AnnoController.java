@@ -3,6 +3,7 @@ package demo1_param.controller;
 import demo1_param.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -108,6 +109,15 @@ public class AnnoController {
         * 在success用 EL表达式，通过键名aaa可获取到这个值XXX
         *  */
         model.addAttribute( "aaa", "哈哈哈哈哈哈" );
+        return "success";
+    }
+
+    @RequestMapping( "getSessionAttribute" )
+    //本应是从 Model 中取值的，但是Model是接口类型，没有get方法！！
+    public String getSessionAttribute( ModelMap mm ){ //正确：从Model接口的实现类ModelMap对象中取值！
+        System.out.println( "getSessionAttribute..." );
+        String rst = (String)mm.get("aaa"); //默认是键的值是Object类型的，需向下转型
+        System.out.println( rst );
         return "success";
     }
 }
