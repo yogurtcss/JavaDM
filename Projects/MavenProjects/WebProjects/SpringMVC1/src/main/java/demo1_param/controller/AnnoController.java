@@ -2,12 +2,18 @@ package demo1_param.controller;
 
 import demo1_param.domain.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
 
 @Controller
+/* @SessionAttributes注解，只能加在【控制器的类】上！
+* Spring MVC 把 暂存在model中对应的数据(键值对) 又储存到HttpSession中
+* 注意：里面要提前有一个model对象存储键值对，才能【进一步】存入session中啊！
+*  */
+@SessionAttributes( value={"aaa"} ) //把 model中已有的 "aaa"="XXX" 这个键值对，【进一步】存入sessionScope域对象中！
 @RequestMapping( "/anno" )
 public class AnnoController {
 
@@ -51,17 +57,17 @@ public class AnnoController {
         return "success";
     }
 
-    @ModelAttribute //当已知返回值类型时，@ModelAttribute注解加在 有返回值类型的方法上
-    //注意：@RequestParam 的name属性等价于value属性，而只写value属性时，可以省略 value= ，直接写 "前台传递参数键名" 即可
-    public User populateUser( @RequestParam(name="username") String username ){ //populate 填充
-        //模拟：根据前台传参键名username，从数据库中查询出完整的user对象
-        User user = new User();
-        user.setUname("哈哈");
-        user.setAge(20);
-        //---以上是用户提交的数据！
-        user.setDate( new Date() ); //填充populate、补全 这个缺失的date数据
-        return user;
-    }
+//        @ModelAttribute //当已知返回值类型时，@ModelAttribute注解加在 有返回值类型的方法上
+//        //注意：@RequestParam 的name属性等价于value属性，而只写value属性时，可以省略 value= ，直接写 "前台传递参数键名" 即可
+//        public User populateUser( @RequestParam(name="username") String username ){ //populate 填充
+//            //模拟：根据前台传参键名username，从数据库中查询出完整的user对象
+//            User user = new User();
+//            user.setUname("哈哈");
+//            user.setAge(20);
+//            //---以上是用户提交的数据！
+//            user.setDate( new Date() ); //填充populate、补全 这个缺失的date数据
+//            return user;
+//        }
 
 //    @RequestMapping( "/testModelAttribute" )
 //    //这里的user不用加@RequestParam注解，因为前台传参键名没有传user对象过来啊！
@@ -71,27 +77,37 @@ public class AnnoController {
 //    }
 
 
-    @ModelAttribute ////当未知返回值类型时，@ModelAttribute注解加在 无返回值类型的方法上
-    public void populateUser2( @RequestParam(name="username")String username, Map<String,User> map ){
-        //模拟：根据前台传参键名username，从数据库中查询出完整的user对象
-        User user = new User();
-        //---假设用户在前台提交的数据 用户名是哈哈，年龄20！
-        user.setUname("哈哈");
-        user.setAge(20);
-        //---以上是用户前台提交的数据！
-        user.setDate( new Date() ); //填充populate、补全 这个缺失的date数据
+//    @ModelAttribute ////当未知返回值类型时，@ModelAttribute注解加在 无返回值类型的方法上
+//    public void populateUser2( @RequestParam(name="username1")String username, Map<String,User> map ){
+//        //模拟：根据前台传参键名username，从数据库中查询出完整的user对象
+//        User user = new User();
+//        //---假设用户在前台提交的数据 用户名是哈哈，年龄20！
+//        user.setUname("哈哈");
+//        user.setAge(20);
+//        //---以上是用户前台提交的数据！
+//        user.setDate( new Date() ); //填充populate、补全 这个缺失的date数据
+//
+//        //--关键：在这个公共map中，提供已知键名"abc"，存入这个完整的user
+//        map.put( "abc", user );
+//        //无返回值
+//    }
+//
+//    @RequestMapping( "/testModelAttribute" )
+//    //这里的user不用加@RequestParam注解，因为前台传参键名没有传user对象过来啊！
+//    //注意：@ModelAttribute 的name属性等价于value属性，而只写value属性时，可以省略 value= ，直接写 "前台传递参数键名" 即可
+//    public String testModelAttribute( @ModelAttribute(name="abc") User user ){ //等待 @ModelAttribute注解预处理后的数据，填进来user
+//        System.out.println( user );
+//        return "success";
+//    }
 
-        //--关键：在这个公共map中，提供已知键名"abc"，存入这个完整的user
-        map.put( "abc", user );
-        //无返回值
-    }
 
-    @RequestMapping( "/testModelAttribute" )
-    //这里的user不用加@RequestParam注解，因为前台传参键名没有传user对象过来啊！
-    //注意：@ModelAttribute 的name属性等价于value属性，而只写value属性时，可以省略 value= ，直接写 "前台传递参数键名" 即可
-    public String testModelAttribute( @ModelAttribute(name="abc") User user ){ //等待 @ModelAttribute注解预处理后的数据，填进来user
-        System.out.println( user );
+    //加了@ModelAttribute注解的方法X是必需先执行的！调用其他方法前，先把它-方法X注释掉！
+    @RequestMapping( "/testSessionAttribute" )
+    public String testSessionAttribute( Model model ){
+        /* 底层会把 键名aaa-值XXX 这个键值对存储到 jsp页面的 request域对象中！
+        * 在success用 EL表达式，通过键名aaa可获取到这个值XXX
+        *  */
+        model.addAttribute( "aaa", "哈哈哈哈哈哈" );
         return "success";
     }
-
 }
