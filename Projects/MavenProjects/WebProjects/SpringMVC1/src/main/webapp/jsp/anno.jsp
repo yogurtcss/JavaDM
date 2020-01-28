@@ -19,14 +19,23 @@
     </head>
     <body>
         <a href="${pageContext.request.contextPath}/anno/testRequestParam?name=哈哈哈啊" >RequestParam</a>
-        <br>
+        <br />
 
         <a href="${pageContext.request.contextPath}/anno/testPathVariable/100" >
-            通过占位符获取请求参数。注意，我这里直接传了一个数字100：斜杠/100
+            通过占位符获取请求参数。注意，我这里直接传了一个数字100：斜杠/100 <br/>
         </a>
-        <br>
+        <br />
 
         <form action="${pageContext.request.contextPath}/anno/testRequestBody" method="post">
+            这是提交到anno/testRequestBody的嗷 <br/>
+            用户姓名：<input type="text" name="username" /><br/>
+            用户年龄：<input type="text" name="age" /><br/>
+            <input type="submit" value="提交" />
+        </form>
+        <br />
+
+        <form action="${pageContext.request.contextPath}/anno/testModelAttribute" method="post">
+            这是提交到anno/testModelAttribute的嗷 <br/>
             用户姓名：<input type="text" name="username" /><br/>
             用户年龄：<input type="text" name="age" /><br/>
             <input type="submit" value="提交" />
