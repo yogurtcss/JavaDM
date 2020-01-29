@@ -65,9 +65,10 @@ public class UserController {
         response.getWriter().write( "您好！" );
     }
 
-    @RequestMapping( "/testModelAndVied" )
-    public ModelAndView testModelAndVied(){
+    @RequestMapping( "/testModelAndView" )
+    public ModelAndView testModelAndView(){
         //---1.创建ModelAndView实例对象
+        //用作控制器方法的返回值
         ModelAndView mv = new ModelAndView();
         //模拟从数据库中查询出user实例对象
         User user = new User();
@@ -76,12 +77,21 @@ public class UserController {
         user.setAge( 30 );
 
         /* 把user对象存储到mv对象中，
-        * 同时也会把user对象存入request对象中
+        * 同时也会把user对象存入request对象中 --为什么？
+        *     因为ModelAndView类中 使用 ModelMap 存储属性(如这里的user对象)
+        *     而 ModelMap是Model接口的实现类，
+        *     SpringMVC 会把 ModelAndView 的 model 中数据放入到 request 域对象中
         *  */
         mv.addObject( "user",user );
-        //跳转到指定页面：success
+
+        //指定跳转页面的名字为 success
         mv.setViewName( "success" );
 
+        /* 当返回 ModelAndView实例对象时：
+        * 使用自定义springmvc.xml中配置的视图解析器：
+        * 为指定名字视图名success 添加前缀prefix、后缀suffix，
+        * 来跳转到指定页面
+        *  */
         return mv;
     }
 
@@ -92,7 +102,9 @@ public class UserController {
         //请求转发
         //return( "forward:/WEB-INF/pages/success.jsp" );
 
-        //重定向
+        /* 使用关键字redirect做重定向时：不用加虚拟目录名，springmvc自动帮你加了！
+        * 这是特殊情况！
+        *  */
         return( "redirect:/index.jsp" );
     }
 
