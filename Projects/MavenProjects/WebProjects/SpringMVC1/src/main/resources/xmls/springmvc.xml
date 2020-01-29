@@ -13,8 +13,20 @@
 
     <!-- springmvc.xml的约束 -->
 
-    <!-- 配置 spring创建容器时，要扫描的包 -->
-    <context:component-scan base-package="demo1" />
+    <!-- 配置 spring创建容器时，要扫描的包
+    每新增一个包，就要在springmvc.xml中增加扫描的包！！
+    -->
+    <context:component-scan base-package="demo1_param" />
+    <context:component-scan base-package="demo2_response" />
+
+    <!-- 2020-01-29 20:34:58
+    前端控制器：指定哪些静态资源不被拦截
+    location 是指webapp目录下的所在路径，mapping 是指要处理的映射
+    -->
+    <!-- 路径包含/js/， **表示任意资源 -->
+    <mvc:resources location="/js/" mapping="/js/**"  />
+<!--    <mvc:resources location="/css/" mapping="/css/**"/>-->
+<!--    <mvc:resources location="/images/" mapping="/images/**"/>-->
 
     <!-- 配置视图解析器 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
@@ -38,7 +50,7 @@
         <property name="converters">
             <set> <!-- 属性converters是set集合类型的 -->
                 <!-- 把自定义类型转换器配置进来嗷！ -->
-                <bean class="demo1.utils.StringToDateConverter" />
+                <bean class="demo1_param.utils.StringToDateConverter" />
             </set>
         </property>
     </bean>
