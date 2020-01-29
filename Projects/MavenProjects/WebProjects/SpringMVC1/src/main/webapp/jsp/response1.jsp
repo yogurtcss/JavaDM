@@ -39,9 +39,18 @@
                         //data : {"username":"hehe","password":"123","age":"30"}, //最外层没加引号
                         //data : "{ 'username':'hehe', 'password':'123', 'age':'30' }", //最外层用双引号。我佛了，我又写错了！
                         data : '{ "username":"hehe", "password":"123", "age":"30" }', //正确写法：最外层用单引号，里面的键名用双引号
+                        /* data是传给后台的数据 ——请求体数据
+                        * 那么，若后台方法的传入形参要想获得请求体数据data，则需要加注解@RequestBody
+                        * 这样后台方法的传入形参就能拿到请求体数据data了！
+                        *  */
+
                         dataType : "json", //设置 【接收到的响应数据的格式】
                         type : "post",
-                        //响应成功的回调函数
+
+                        /* 响应成功的回调函数
+                        * @ResponseBody注解 把返回的user对象转为json字符串，
+                        * 这返回响应的json字符串用于前台ajax请求的 响应成功回调函数success中！
+                        *  */
                         success: function(res){ //服务器端响应的json的数据res，进行解析
                             console.log( res );
                             console.log( res.username );
