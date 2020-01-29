@@ -108,13 +108,27 @@ public class UserController {
         return( "redirect:/index.jsp" );
     }
 
+
+    /* data : '{ "username":"hehe", "password":"123", "age":"30" }', //正确写法：最外层用单引号，里面的键名用双引号
+    * data是传给后台的数据 ——请求体数据
+    * 那么，若后台方法的传入形参要想获得请求体数据data，则需要加注解@RequestBody
+    * 这样后台方法的传入形参就能拿到请求体数据data了！
+    *
+    * 若前台传来的data数据中：键名与封装对象user的属性名完全一致，
+    * 那么此时在pom.xml中引入 jackson的相关依赖，
+    * 这样springmvc就会自动按照 请求参数与bean对象中属性 一一对应 地封装对象
+    *  */
     @RequestMapping( "/testAjax" )
-    public @ResponseBody User testAjax( @RequestBody User user ){
+    /* @ResponseBody注解 把返回的user对象转为json字符串，
+    * 这返回响应的json字符串用于前台ajax请求的 响应成功回调函数success中！
+    *  */
+    public @ResponseBody User testAjax( @RequestBody User user ){ //后台方法的传入形参加注解@RequestBody，以获得请求体数据data
         System.out.println( "testAjax方法执行了..." );
         /* 客户端发送ajax请求，传来json字符串
         * 后端把json字符串封装到user对象中
         *  */
         System.out.println( user );
+
 
         //做响应，模拟查询数据库
         user.setUsername( "hahahahah" );
@@ -122,5 +136,9 @@ public class UserController {
 
         //做响应
         return user;
+
+        /* @ResponseBody注解 把返回的user对象转为json字符串，
+        * 这返回响应的json字符串用于前台ajax请求的 响应成功回调函数success中！
+        *  */
     }
 }
