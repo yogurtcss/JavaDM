@@ -21,7 +21,7 @@
                     *  */
                     $.ajax( {
                         //url : "/SpringMVC1/user/textAjax", //手动加上虚拟目录名
-                        //而servlet映射、ajax请求路径 应加上斜杠/。因为/代表的是项目根目录 如@WebServlet("/login")
+                        //ajax请求路径：开头带上 /虚拟目录名！
                         url : "/SpringMVC1/user/testAjax", //我佛了，我写错了！
                         contentType : "application/json;charset=UTF-8",
                         /* 写法1   data : {"username":"hehe", "password":"123", "age":30},
