@@ -22,7 +22,9 @@ public class AccountController {
     @RequestMapping( "/findAll" )
     public String findAll( Model model ){
         System.out.println( "表现层：查询所有账户..." );
-        //调用service层的方法
+        /* 调用service层的方法
+        * 若调用service层的方法成功，说明 SpringMVC与Spring 整合成功
+        *  */
         List<Account> list = as.findAll();
         model.addAttribute( "list", list );
         return "list";
@@ -34,5 +36,4 @@ public class AccountController {
         //重定向
         response.sendRedirect( request.getContextPath()+"/account/findAll" );
     }
-
 }

@@ -2,10 +2,12 @@ package pers.yo.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 import pers.yo.domain.Account;
 
 import java.util.List;
 
+@Repository //@Repository 将 DAO 类声明为 Bean
 public interface AccountDao {
 
     @Select( "select * from account" )

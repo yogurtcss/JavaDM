@@ -1,0 +1,80 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+
+  <!-- 2020-01-30 14:24:00 -->
+  <!--解决中文乱码的过滤器-->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 2020-01-30 16:35:46
+   pom.xml中的依赖包spring-web ——
+   是web.xml中 使用“监听器” 来加载Spring框架配置文件applicationContext.xml 的关键依赖包
+
+   【复习】ServletContext域对象是 servlet的运行环境，“上下文对象”
+   当服务器(Tomcat)启动时，ServletContext域对象被创建；
+   当服务器(Tomcat)关闭时，ServletContext域对象被销毁；
+
+   监听器：监听ServletContext域对象的创建和销毁
+   关键：让这个“监听器”去加载Spring框架的配置文件applicationContext.xml
+
+   //不必自己写监听器，使用Spring提供的监听器即可
+
+   web.xml中 <filter />、<listener />、<servlet />的标签正确的先后顺序：
+     <filter />
+     <listener />
+     <servlet />
+
+     很好理解这个顺序的：
+     <filter />      ——先过滤
+     <listener />    ——监听ServletContext域对象(servlet应用上下文对象、上下文环境)的创建与销毁
+     <servlet />     ——正式搞servlet的创建
+
+   ▲ 若不按以上正确顺序写标签，
+   则web.xml 报错 The content of element type “web-app” must match
+   报这个错，也没关系……不管了！！
+   -->
+  <!-- 配置Spring的监听器，默认只加载【WEB-INF目录下的】applicationContext.xml配置文件 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 设置要加载的applicationContext.xml配置文件的位置 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:xmls/applicationContext.xml</param-value>
+  </context-param>
+  <!-- 这样，当启动服务器时，springmvc.xml和spring.xml都会同时被加载 -->
+
+
+  <!--配置前端控制器-->
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--加载springmvc.xml配置文件-->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:xmls/springmvc.xml</param-value>
+    </init-param>
+    <!--启动服务器，创建该servlet-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+</web-app>
