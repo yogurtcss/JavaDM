@@ -105,7 +105,7 @@ public class AnnoController {
     //加了@ModelAttribute注解的方法X是必需先执行的！调用其他方法前，先把它-方法X注释掉！
     @RequestMapping( "/testSessionAttribute" )
     public String testSessionAttribute( Model model ){
-        /* 底层会把 键名aaa-值XXX 这个键值对存储到 jsp页面的 request域对象中！
+        /* 底层会把 键名aaa-值XXX 这个键值对存储到 【目的地jsp页面】的 request域对象中！
         * 在success用 EL表达式，通过键名aaa可获取到这个值XXX
         *  */
         model.addAttribute( "aaa", "哈哈哈哈哈哈" );
