@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <environments default="mysql" >
+        <environment id="mysql" >
+            <!-- 事务类型 -->
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED" >
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://localhost:5306/db1" />
+                <property name="username" value="root" />
+                <property name="password" value="root" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 使用的是注解形式 -->
+    <mappers>
+        <!-- package 标签，通过 name 属性指定 mapper 接口所在的包名 ，
+        此时对应的映射文件必须与接口位于同一路径下，并且名称相同
+
+        如 mapper 接口采用注解的方式，则无需映射文件
+        -->
+        <package name="pers.yo.dao" />
+    </mappers>
+
+</configuration>
