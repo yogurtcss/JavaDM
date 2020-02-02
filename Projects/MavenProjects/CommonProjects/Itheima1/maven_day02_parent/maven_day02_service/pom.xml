@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>maven_day02_parent</artifactId>
+        <groupId>pers.yo</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>maven_day02_service</artifactId>
+
+    <!-- 2020-02-02 10:46:49
+    子模块的坐标 = 父工程<parent/>标签中的<groupId/>、<version/>  +
+                   子模块的<<artifactId/>
+
+    在maven_day02_service子模块中，
+    引入maven_day02_dao的坐标：
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>pers.yo</groupId>
+            <artifactId>maven_day02_dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>
