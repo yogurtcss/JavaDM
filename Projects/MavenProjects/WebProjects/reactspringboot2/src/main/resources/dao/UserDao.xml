@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- src/main/resources/dao目录下的：UserMapper.xml
+注意此Mapper接口对应的xml配置文件名字 要与 Mapper接口名 【相同】
+-->
+<mapper namespace="pers.yo.reactspringboot2.dao.UserDao">
+    <select id="findAll" resultType="pers.yo.reactspringboot2.domain.User" >
+        select * from user;
+    </select>
+</mapper>
