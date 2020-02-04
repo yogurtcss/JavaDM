@@ -11,7 +11,7 @@ import pers.yo.reactspringboot2.service.UserService;
 import java.util.List;
 
 @Controller
-@CrossOrigin
+@CrossOrigin //允许跨域请求
 @RequestMapping( "/user" )
 public class UserController {
 
