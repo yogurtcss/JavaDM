@@ -5,6 +5,11 @@
     <id column="menu_id" property="menuId" jdbcType="BIGINT" />
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <!-- 增加name的别名 parentName，注意也要在SysMenu的pojo类中加这个字段！！
+    并为此属性生成getter、setter方法！
+    -->
+    <result column="parentName" property="parentName" jdbcType="VARCHAR" />
+
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="perms" property="perms" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
@@ -255,4 +260,59 @@
       order_num = #{orderNum,jdbcType=INTEGER}
     where menu_id = #{menuId,jdbcType=BIGINT}
   </update>
+
+  <!-- bwcar1的映射配置文件xml中：新增的方法findMenuByPage -->
+  <!-- 要到服务层接口 MenuService新增 findMenuByPage方法！ -->
+  <select id="findMenuByPage" resultMap="BaseResultMap" parameterType="pers.yo.bwcar1.dto.QueryDTO" >
+    <!-- 注意，这个name的别名parentName原本在 BaseResultMap中是不存在的，需在BaseResultMap中手动添加！！ -->
+    select biao01.*,  biao02.name as parentName
+    from
+    sys_menu as biao01 left join
+    sys_menu as biao02 on
+    biao01.parent_id=biao02.menu_id
+    <where>
+      <if test=" search!=null and search!='' ">    <!-- searc字段不为null，且search补为空字段！ -->
+        <!-- 注意：paramterType传入形参的QueryDTO中，已【提前】设置了属性 search、sort和order 字段！
+        在这里就可以用ONGL表达式来取值了，未雨绸缪啊！
+        private String order;  //排序顺序，如asc升序、或desc降序
+        private String sort;   //排序的字段
+            注意到，order和sort都是稳定不变的字符串，【排序时】在OGNL表达式中用${}， 而不是用#{}
+        private String search; //模糊搜索的关键字 -->
+        and biao01.name like concat('%',#{search},'%')
+      </if>
+    </where>
+    <!-- 2020-02-07 12:27:44
+    注意SQL原本的语句！order 段不应该放在<where />中！！
+    -->
+    <if test=" sort!=null and sort!='' " >
+      <!-- #{}和${}的区别
+        1. #将传入的数据都当成一个字符串，会对自动传入的数据加一个双引号。如：
+        order by #user_id#，如果传入的值是111,那么解析成sql时的值为order by "111",
+        如果传入的值是id，则解析成的sql为order by "id".
+        ▲ #{}能防止SQL注入。
+
+        2. $将传入的数据直接显示生成在sql中。如：order by $user_id$，
+        如果传入的值是111,那么解析成sql时的值为order by user_id,
+        如果传入的值是id，则解析成的sql为order by id.
+
+        3.一般能用#的就别用$.
+        MyBatis排序时，使用order by 动态参数时需要注意：用${}而不是#{}
+
+        我们只是想直接在sql语句中插入一个不改变的字符串。
+        比如：ORDER BY，你可以这样来使用：ORDER BY ${columnName}
+        这里MyBatis不会修改或转义字符串。 -->
+      <!-- 注意：paramterType传入形参的QueryDTO中，已【提前】设置了属性 search、sort和order 字段！
+        在这里就可以用ONGL表达式来取值了，未雨绸缪啊！
+        private String order;  //排序顺序，如asc升序、或desc降序
+        private String sort;   //排序的字段
+          注意到，order和sort都是稳定不变的字符串，【排序时】在OGNL表达式中用${}， 而不是用#{}
+        private String search; //模糊搜索的关键字 -->
+
+      order by biao01.${sort} ${order}
+      <!-- 举例：order by  XXX字段(某列)   asc升序 -->
+    </if>
+  </select>
+  <!-- 要到服务层接口 MenuService新增 findMenuByPage方法！ -->
+
+
 </mapper>
