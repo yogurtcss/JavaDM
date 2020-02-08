@@ -34,6 +34,22 @@ public class MenuServiceImpl implements MenuService {
         if( (queryDTO.getSort()!=null)&&(!queryDTO.getSort().equals("")) ){ //查询字段不为null且不为空字符串
             queryDTO.setSort( "menu_id" ); //依据menu_id来排序
         };
+
+        /* 2020-02-08 14:47:17
+        从前端传过来的、输入至queryDTO中，也有排序字段(sort)，为什么还要将排序字段修改为字符串menu_id？
+        因为前端传来的排序字段sort是字符串 "menuId"，没有下划线；(见前端发送Ajax请求的代码段)
+        而数据库sys_menu表中的列名"menu_id"是有下划线的！！
+
+        //数据库sys_menu表中没有"menuId"的列名，只有 "menu_id"(带下划线)的列名；(select一下sys_menu表看看)
+
+        所以在后端这里，先接收到 字符串 "menuId"，然后转换为带下划线的字符串"menu_id"，
+        后续把字符串"menu_id"传给dao查询的方法：让数据库能按照正确的列名"menu_id"来排序！
+
+        以上所述，在bwcar视频第11集末尾，老师也有解释。
+
+        //这样，bwcar视频 第22集中出现的 queryDTO.setSort( "user_id" ) 也是同理解释的。
+        *  */
+
         List<SysMenu> menuByPage = sysMenuMapper.findMenuByPage( queryDTO );
         //关于PageInfo分页信息类的使用，见MD文档！
         PageInfo<SysMenu> pageInfo = new PageInfo<>(menuByPage); //new出一个分页信息类
