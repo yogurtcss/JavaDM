@@ -93,25 +93,27 @@ public class MenuServiceImpl implements MenuService {
         // menuId是主键id 即 primary key
         SysMenu sysMenu = sysMenuMapper.selectByPrimaryKey( menuId ); //注：dao接口中的这方法是由“逆向工程”设置好的！
         return( R.ok().put("menu",sysMenu) );
-        /*
-        *
+        /*  注意：(1) R.ok()的返回值是R；
+        (2) R的put()方法 返回值还是R！
+
+        R.ok().put("menu",sysMenu) //指的是：在成功返回的基础上添加(成功的)键值对信息！
+
+
+        public static R ok() {
+		    return new R();
+	    }
+
+	    public R put(String key, Object value) {
+            super.put(key, value);
+            return this;
+	    }
         *  */
     }
 
     @Override
     public R updateMenu(SysMenu sysMenu) {
-        return null;
+        int i = sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
+        return( i>0 ? (R.ok()):(R.error("修改失败！"))  ); //三目运算符
     }
-
-    @Override
-    public List<String> findPermsByUserId(Long userId) {
-        return null;
-    }
-
-    @Override
-    public R findUserMenu(Long userId) {
-        return null;
-    }
-
 
 }
