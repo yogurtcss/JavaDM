@@ -2,6 +2,7 @@ package pers.yo.bwcar1.realm;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import pers.yo.bwcar1.pojo.SysUser;
 import pers.yo.bwcar1.service.MenuService;
 import pers.yo.bwcar1.service.RoleService;
 import pers.yo.bwcar1.service.SysUserService;
+
+import java.util.List;
 
 @Component //【不要忘了！】此类 交给Spring容器来托管(由Spring容器生成bean对象)
 public class UserRealm extends AuthorizingRealm {
@@ -41,11 +44,12 @@ public class UserRealm extends AuthorizingRealm {
      */
     //注：AuthenticationInfo-接口类型，认证信息。即认证成功之后返回该信息。最常用的实现类是 SimpleAuthenticationInfo
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        //---向下转型为 【能直接使用的实现类】UsernamePasswordToken
-        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken)authenticationToken;
-        String username_in_token = usernamePasswordToken.getUsername(); //取出 token令牌中的 用户名
+        //---token从controller中调用login(UsernamePasswordToken)传递过来
+        //---向下转型为 【能直接使用的实现类】u_p_Token ——封装了从前端传递的用户名和密码(用户输入)
+        UsernamePasswordToken upToken = (UsernamePasswordToken)authenticationToken;
+        String username_in_token = upToken.getUsername(); //取出 token令牌中的 用户名
         //注意：public char[] getPassword()方法返回的是 字符数组char[]，需强制类型转换
-        String password_in_token = new String( usernamePasswordToken.getPassword() ); //取出 token令牌中的 密码
+        String password_in_token = new String( upToken.getPassword() ); //取出 token令牌中的 密码
 
         //根据令牌中的用户名username_in_token，从数据库中找到这个SysUser对象为su_in_SQL
         SysUser su_in_SQL = suService.findByUsername( username_in_token );
@@ -75,10 +79,19 @@ public class UserRealm extends AuthorizingRealm {
     @Override //Authorization 授权
     //principalCollection 身份(用户名)的集合
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        //---1.通过principals获取已经认证完毕的用户名(用户对象)
+        SysUser su = (SysUser)principalCollection.getPrimaryPrincipal();
+        Long userId = su.getUserId(); //获取用户ID
+        //---2.根据用户名(或用户ID)去数据库中查询该认证用户下角色(或权限信息)
+        List<String> roles_ByUserId = rService.findRolesByUserId( userId );
+        //---同时，根据用户ID查询用户的菜单权限
+        List<String> perms_ByUserId = mService.findPermsByUserId( userId );
 
-
-
-
-        return null;
+        //---3.把角色(或权限信息)封装进SimpleAuthorizationInfo
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.addRoles( roles_ByUserId );
+        info.addStringPermissions( perms_ByUserId );
+        //---4.返回AuthorizationInfo接口的实现类 SimpleAuthorizationInfo
+        return info;
     }
 }
