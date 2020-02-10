@@ -1,3 +1,5 @@
+//自定义的 UserRealm.java
+
 package pers.yo.bwcar1.realm;
 
 import org.apache.shiro.authc.*;
