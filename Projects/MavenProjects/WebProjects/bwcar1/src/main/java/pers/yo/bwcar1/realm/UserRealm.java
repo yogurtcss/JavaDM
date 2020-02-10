@@ -25,11 +25,15 @@ public class UserRealm extends AuthorizingRealm {
     private MenuService mService; //根据menu_id，查出权限perms
 
     @Override //Authentication 认证方式
-    /* 传入的形参：来自前端的令牌(暗号) authenticationToken
+    /* 总流程：Authenticator身份验证器 会把响应的 token 传入自定义的 Realm 域，并从 Realm 域获取身份验证信息info。
+     * 所以自定义Realm类返回的info 传给了 Authenticator身份验证器
+     *
+     * 传入的形参：来自前端的令牌(暗号) authenticationToken
      * 关于Token的解释，见 P0-4-2 Token令牌 MD文档
      *
      * 认证用户提交的信息AuthenticationToken对象，AuthenticationToken包含了身份和凭证。
-     * 如果认证成功，则返回AuthenticationInfo-接口类型 的实现类对象SimpleAuthenticationInfo
+     * 如果认证成功，则把 AuthenticationInfo-接口类型 的实现类对象SimpleAuthenticationInfo返回给Authenticator身份验证器
+     *
      * AuthenticationInfo 实现类对象SimpleAuthenticationInfo 代表了用户在Shiro中已经被认证过的账户数据。
      *
      * // 注：AuthenticationInfo-接口类型，认证信息。即认证成功之后返回该信息。最常用的实现类是 SimpleAuthenticationInfo
@@ -42,7 +46,10 @@ public class UserRealm extends AuthorizingRealm {
      * @see ConcurrentAccessException       并发访问异常(多点登录)
      * @see UnknownAccountException         账户未知
      */
-    //注：AuthenticationInfo-接口类型，认证信息。即认证成功之后返回该信息。最常用的实现类是 SimpleAuthenticationInfo
+
+    /* 注：AuthenticationInfo-接口类型，认证信息。即认证成功之后把【认证信息】返回给 Authenticator身份验证器
+    * AuthenticationInfo-接口类型 最常用的实现类是 SimpleAuthenticationInfo
+    *  */
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //---token从controller中调用login(UsernamePasswordToken)传递过来
         //---向下转型为 【能直接使用的实现类】u_p_Token ——封装了从前端传递的用户名和密码(用户输入)
@@ -72,12 +79,17 @@ public class UserRealm extends AuthorizingRealm {
                 //这里的用户密码 可以是令牌中的密码、也可以是数据库查出来的密码。因为认证成功说明令牌密码==数据库查出来的密码了！
                 this.getName()  //当前自定义Realm对象的名称，调用父类的getName()方法：直接this.getName()获取了！
         );
+        /* Authenticator身份验证器 会把响应的 token 传入自定义的 Realm 域，并从 Realm 域获取身份验证信息info。
+        * 所以自定义Realm类返回的info 传给了 Authenticator身份验证器
+        *  */
         return info;
     }
 
 
     @Override //Authorization 授权
-    //principalCollection 身份(用户名)的集合
+    /* principalCollection 身份(用户名)的集合
+    * Realm 根据用户身份查询权限数据，将权限数据返回给 Authorizer（授权器）
+    *  */
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //---1.通过principals获取已经认证完毕的用户名(用户对象)
         SysUser su = (SysUser)principalCollection.getPrimaryPrincipal();
@@ -91,7 +103,7 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRoles( roles_ByUserId );
         info.addStringPermissions( perms_ByUserId );
-        //---4.返回AuthorizationInfo接口的实现类 SimpleAuthorizationInfo
-        return info;
+        //---4.返回AuthorizationInfo接口的实现类 SimpleAuthorizationInfo，将权限数据返回给 Authorizer（授权器）
+        return info; // Realm 根据用户身份查询权限数据，将权限数据返回给 Authorizer（授权器）
     }
 }
