@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pers.yo.bwcar1.dto.DataGridResult;
 import pers.yo.bwcar1.dto.QueryDTO;
+import pers.yo.bwcar1.log.MyLog;
 import pers.yo.bwcar1.pojo.SysMenu;
 import pers.yo.bwcar1.service.MenuService;
 import pers.yo.bwcar1.utils.R;
+import pers.yo.bwcar1.utils.ShiroUtils;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+
+    @MyLog("菜单列表")
     @RequestMapping("/sys/menu/list")
     @ResponseBody
     /* 2020-02-07 11:57:25
@@ -32,11 +36,14 @@ public class MenuController {
         return( menuService.findMenu(queryDTO) );
     }
 
+
+    @MyLog("菜单删除")
     @RequestMapping("/sys/menu/del")
     @ResponseBody
     public R deleteMenu( @RequestBody List<Long> ids ){
         return menuService.deleteMenu(ids);
     }
+
 
     @RequestMapping("/sys/menu/select")
     @ResponseBody
@@ -44,11 +51,13 @@ public class MenuController {
         return menuService.selectMenu();
     }
 
+
     @RequestMapping( "/sys/menu/save" )
     @ResponseBody
     public R saveMenu( @RequestBody SysMenu sysMenu ){
         return menuService.saveMenu( sysMenu );
     }
+
 
     @RequestMapping( "/sys/menu/info/{menuId}" )
     /* 请求url中 代表请求参数的占位符 {XXX}，其中这里的XXX --由@PathVariable("XXX")来指定！
@@ -67,4 +76,15 @@ public class MenuController {
     public R updateMenu( @RequestBody SysMenu sysMenu ){
         return  menuService.updateMenu( sysMenu );
     }
+
+    //2020-02-10 19:27:11
+    @RequestMapping( "/sys/menu/user" )
+    @ResponseBody
+    public R userMenu(){
+        //用户登录成功后，用户的信息就存储在Shiro中
+        long userId = ShiroUtils.getUserId();
+        return menuService.findUserMenu( userId );
+    }
+
+
 }

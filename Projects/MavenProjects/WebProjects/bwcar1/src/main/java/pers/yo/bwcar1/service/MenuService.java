@@ -22,4 +22,8 @@ public interface MenuService {
     public abstract R findMenuById( Long menuId );
 
     public abstract R updateMenu( SysMenu sysMenu );
+
+    public abstract List<String> findPermsByUserId( Long userId );
+
+    public abstract R findUserMenu( Long userId );
 }

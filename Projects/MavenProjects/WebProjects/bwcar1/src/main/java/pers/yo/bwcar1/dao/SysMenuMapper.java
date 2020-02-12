@@ -1,6 +1,8 @@
 package pers.yo.bwcar1.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import pers.yo.bwcar1.dto.QueryDTO;
 import pers.yo.bwcar1.pojo.SysMenu;
@@ -38,4 +40,12 @@ public interface SysMenuMapper {
     public abstract int deleteMenu( List<Long> ids );
 
     public abstract List<SysMenu> findMenu();
+
+    public abstract List<String> findPermsByUserId( Long userId );
+
+    //2020-02-10 13:18:55  findDirMenuByUserId   findMenuNotButtonByUserId
+    // 用List装着 SQL语句的返回值-Map<String,Object>
+    public abstract List<Map<String,Object>> findDirMenuByUserId( Long userId );
+
+    public abstract List<Map<String,Object>> findMenuNotButtonByUserId( Long userId, Long parentId );
 }

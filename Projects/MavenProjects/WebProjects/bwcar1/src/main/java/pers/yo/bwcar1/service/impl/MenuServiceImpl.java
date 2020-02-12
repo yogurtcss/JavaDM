@@ -2,6 +2,7 @@ package pers.yo.bwcar1.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,7 +14,7 @@ import pers.yo.bwcar1.pojo.SysMenu;
 import pers.yo.bwcar1.service.MenuService;
 import pers.yo.bwcar1.utils.R;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -25,6 +26,8 @@ public class MenuServiceImpl implements MenuService {
     * 关于PageHelper工具类、PageInfo分页信息类的使用，见MD文档！
     *  */
     @Override
+    @RequiresPermissions( "sys:menu:list" ) //指定具有某种具体的权限
+    //具体的权限控制 @RequiresPermissions() 写在每个具体的子类ServiceImpl的每个方法上
     public DataGridResult findMenu(QueryDTO queryDTO) {
         /* 在你需要进行分页的 MyBatis 查询方法前调用 PageHelper.startPage 静态方法即可，
         * 紧跟在这个方法后的第一个MyBatis 查询方法会被进行分页。
@@ -131,5 +134,39 @@ public class MenuServiceImpl implements MenuService {
         int i = sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
         return( i>0 ? (R.ok()):(R.error("修改失败！"))  ); //三目运算符
     }
+
+    @Override
+    public List<String> findPermsByUserId(Long userId) {
+        List<String> permsByUserId = sysMenuMapper.findPermsByUserId(userId);
+        //permsByUserId的数据举例 sys:user:list,sys:user:info -- 每行以英文逗号 , 为分隔符
+        Set<String> set = new HashSet<>();
+        for( String s : permsByUserId ){
+            if( s!=null&&!s.equals("") ){
+                String[] split = s.split(",");
+                for( String s1:split ){
+                    set.add(s1);
+                }
+            }
+        }
+        List<String> perms = new ArrayList<>();
+        perms.addAll(set);
+        return perms;
+    }
+
+    @Override
+    public R findUserMenu(Long userId) {
+        List<Map<String,Object>> dirMenuByUserId = sysMenuMapper.findDirMenuByUserId( userId ); //查询用户的一级目录
+        //查询一级目录下的 子菜单
+        for( Map<String,Object> map : dirMenuByUserId ){ //取出每一个 “一级目录” map
+            Long menuId = Long.parseLong( map.get("menuId")+"" );
+            //查询一级目录下的 子菜单
+            List<Map<String,Object>> subList = sysMenuMapper.findMenuNotButtonByUserId( userId,menuId );
+            map.put( "list",subList ); //把此一级目录的子菜单，添加到该一级目录下
+        }
+        List<String> permsByUserId = this.findPermsByUserId(userId); //调用当前类MenuServiceImpl的findPermsByUserId()方法
+        //对这个R本身 连续put()两次：即对这个R本身连续添加 "menuList"、"permissions"键值对
+        return( R.ok().put("menuList",dirMenuByUserId).put("permissions",permsByUserId) );
+    }
+
 
 }

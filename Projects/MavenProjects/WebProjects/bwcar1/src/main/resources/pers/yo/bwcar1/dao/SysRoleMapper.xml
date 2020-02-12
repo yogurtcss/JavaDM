@@ -208,4 +208,30 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
+
+
+  <!-- 2020-02-08 17:06:21
+  根据用户ID查询角色名称：需要借助中间表 sys_user_role
+
+  2020-02-09 21:56:08
+  resultType="包装类的全类名！！如java.lang.String"
+  ！
+  -->
+  <select id="findRolesByUserId" parameterType="Long" resultType="java.lang.String" >
+    <!-- 因为传入的形参parameterType是基本数据类型(或包装类)
+    所以这里OGNL表达式#{XXX} 变量名是可任意的！
+    -->
+    select biao01.role_name
+    from
+        sys_role as biao01 left join
+        sys_user_role as biao02
+        on biao01.role_id=biao02.role_id
+    <where>
+      biao02.user_id=#{userId}
+      <!-- 因为传入的形参parameterType是基本数据类型(或包装类)
+      所以这里OGNL表达式#{XXX} 变量名是可任意的！
+      -->
+    </where>
+  </select>
+
 </mapper>

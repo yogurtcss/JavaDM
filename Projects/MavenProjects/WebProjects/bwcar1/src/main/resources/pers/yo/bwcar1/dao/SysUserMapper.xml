@@ -255,4 +255,34 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
+
+
+  <!-- 2020-02-08 13:17:59 -->
+  <select id="findByPage" resultMap="BaseResultMap" parameterType="pers.yo.bwcar1.dto.QueryDTO" >
+    <!-- 注意，<include />标签中引用到的 SQL代码段为：Base_Column_List (在上面！！能找到的。)
+    <sql id="Base_Column_List" >
+        user_id, username, password, email, mobile, status, create_user_id, create_time
+    </sql>  //实际上这就是 所有列 ！！ select * ！！
+    -->
+    select <include refid="Base_Column_List" />  <!-- 这句话相当于 select * 全部 -->
+    from sys_user
+    <where>
+      <if test=" search!=null and search!='' " >
+        and username like concat( '%',#{search},'%' )
+      </if>
+    </where>
+    <if test=" sort!=null and sort!='' " >  <!-- 排序字段的<if />标签不要写在<where />标签中啊！ -->
+        order by ${sort} ${order}
+    </if>
+  </select>
+
+  <select id="exportUser" resultType="java.util.Map" >
+    <!-- 注意，带下划线的列名要起别名(去掉下划线啊！) -->
+    select user_id as userId, username, email, mobile, create_time as createTime from sys_user;
+  </select>
+
+  <!-- 2020-02-08 16:02:44 -->
+  <select id="findByUsername" parameterType="String" resultMap="BaseResultMap" >
+    select * from sys_user where username=#{username}
+  </select>
 </mapper>

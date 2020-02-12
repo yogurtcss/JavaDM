@@ -9,6 +9,14 @@ public class SysMenu implements Serializable {
 
     private String name;
 
+    /* 2020-02-06 19:49:50
+    * 在SysMenuMapper.xml中的BaseResultMap中，
+    * 增加name的别名 parentName，注意也要在SysMenu的pojo类中加这个字段！！
+    * 并为此属性生成getter、setter方法！
+    * <result column="parentName" property="parentName" jdbcType="VARCHAR"
+    *  */
+    private String parentName;
+
     private String url;
 
     private String perms;
@@ -20,6 +28,15 @@ public class SysMenu implements Serializable {
     private Integer orderNum;
 
     private static final long serialVersionUID = 1L;
+
+    //2020-02-06 19:51:31
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
 
     public Long getMenuId() {
         return menuId;

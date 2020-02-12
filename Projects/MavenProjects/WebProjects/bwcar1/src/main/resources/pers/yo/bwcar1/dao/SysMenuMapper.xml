@@ -314,5 +314,85 @@
   </select>
   <!-- 要到服务层接口 MenuService新增 findMenuByPage方法！ -->
 
+  <!-- SysMenuMapper.xml需要到此xml配置文件对应的dao接口中，写这个id值对应的方法！ -->
+  <delete id="deleteMenu" parameterType="java.util.List">
+    <!--  select * from user表 where XXX in (value1,value2,value3,…)  //最好不要用空格隔开！
+    看懂了 <foreach /> 标签的用法了！
+    核心：生成 in字段后面的内容： (value1,value2,value3,…)，然后拼入原本的SQL语句中！
+    -->
+    delete from sys_menu where menu_id in
+    <foreach collection="list" item="oneID" open="(" separator="," close=")" >
+      #{oneID}
+    </foreach>
+  </delete>
+  <!-- 然后到此xml配置文件对应的dao接口中，写这个id值对应的方法！ -->
+
+
+  <!-- 2020-02-07 17:38:29 -->
+  <select id="findMenu" resultMap="BaseResultMap">
+    select * from sys_menu where type!=2
+  </select>
+
+  <!-- 2020-02-08 20:19:20
+  根据用户id，查询用户的【不重复的】菜单权限perms，
+  详细解析看test10_SpringBoot2.sql
+  -->
+  <select id="findPermsByUserId" parameterType="java.lang.Long" resultType="String" >
+    select distinct m.perms
+    from
+        sys_user as u
+        left join (sys_user_role as ur) on u.user_id=ur.user_id
+        left join (sys_role_menu as rm) on ur.role_id=rm.role_id
+        left join (sys_menu as m)       on rm.menu_id=m.menu_id
+    <where>
+      u.user_id=#{userId}
+    </where>
+  </select>
+
+  <!-- 2020-02-10 11:44:00
+  根据用户userID，查询此userID对应的一级目录(type=0)
+  需要用到的中间表：sys_menu、  sys_role_menu、  sys_user_role
+  详细解析看test10_SpringBoot2.sql
+  -->
+  <select id="findDirMenuByUserId" parameterType="java.lang.Long" resultType="java.util.Map" >
+    select distinct m.menu_id as menuId,  parent_id as parentId, m.name as name, type as type, icon as icon
+    from
+        sys_user_role as ur
+        left join (sys_role_menu as rm) on ur.role_id=rm.role_id
+        left join (sys_menu as m)       on rm.menu_id=m.menu_id
+    <where>
+        m.type=0 and ur.user_id=#{userId};
+    </where>
+  </select>
+
+  <!-- 2020-02-10 12:33:09
+  上一个查询的深入：查询此一级目录下的所有子菜单项
+  详细解析看test10_SpringBoot2.sql
+  -->
+  <!--
+  注意：reslutType和resultMap都是指定针对【某条SQL语句的返回值】而言的，
+		不关乎 【dao接口中的方法返回值】 的事！
+		如：这里id为findAll的<select/>标签 指定 resultMap="userMap" ——userMap返回的是User对象，看上面！
+		是指这条SQL语句返回值的【映射规则是 userMap】—— userMap返回的是User对象，看上面！
+
+		而dao接口中(与id="findAll"相对应的) findAll()方法 的返回值 【与resultMap="userMap"无关！】
+		即：用 List集合装着 【SQL语句的返回值 User】
+		即：dao方法中的返回值是 List<User> ！！
+		public abstract List<User> findAll(); //查询所有用户
+  -->
+  <select id="findMenuNotButtonByUserId" parameterType="java.util.Map" resultType="java.util.Map" >
+    select distinct m.menu_id as menuId,  m.parent_id as parentId,  m.name as name, m.type as type, m.icon as icon, m.url as url
+    from
+        sys_user_role as ur
+        left join (sys_role_menu as rm) on ur.role_id=rm.role_id
+        left join (sys_menu as m)       on rm.menu_id=m.menu_id
+        left join (sys_menu as m1)      on m1.parent_id=m.menu_id
+    <where>
+        m.type=1
+        and ur.user_id=#{userId}
+        and m.parent_id=#{parentId}
+    </where>
+
+  </select>
 
 </mapper>

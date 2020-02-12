@@ -27,4 +27,8 @@ public interface SysRoleMapper {
     int updateByPrimaryKeySelective(SysRole record);
 
     int updateByPrimaryKey(SysRole record);
+
+    //2020-02-08 18:04:21
+    //传入单个形参时，可以不加 @Param(XXX)注解
+    public abstract List<String> findRolesByUserId( Long userId );
 }
