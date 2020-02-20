@@ -23,7 +23,7 @@ public class YOUKUProcessServiceImpl2 implements ProcessService {
                 page,  LoadPropertiesUtil.getPropsFromYouKuByKeyName("mainActorRegEx"),  1
         );
 
-        System.out.println( "剧集别名："+aliasRst );
+        System.out.println( "剧集别名："+aliasRst.split("：")[1] ); //这家伙需要特殊处理split一下
         System.out.println( "上映时间："+showTimeRst );
         System.out.println( "主演名称："+mainActor );
     }
