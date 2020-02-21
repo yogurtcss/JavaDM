@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class YOUKUProcessServiceImpl implements ProcessService {
+public class YOUKUProcessServiceImpl implements ProcessService { //解析页面，并将解析结果封装进对象中
 
 
     @Override
@@ -51,6 +51,7 @@ public class YOUKUProcessServiceImpl implements ProcessService {
              *  */
             System.out.println( "整个正则表达式的匹配字符串："+m_alias.group(0) ); //原本的 整个正则表达式的匹配字符串
             System.out.println( "匹配的第一个括号处："+m_alias.group(1) ); //匹配的第一个括号处
+            page.setAlias( m_alias.group(1) ); //并将解析结果封装进对象中
         }else{
             System.out.println( "正则表达式匹配不到结果！" );
         }
@@ -82,6 +83,7 @@ public class YOUKUProcessServiceImpl implements ProcessService {
         Matcher m_showTime = showTimePtn.matcher( content ); //匹配全文
         if( m_showTime.find() ){ //一定要先find()，然后才group()啊！
             System.out.println( "正则表达式。上映时间为："+m_showTime.group(1) );
+            page.setShowTime( m_showTime.group(1) ); //并将解析结果封装进对象中
         }
 
         //获取其他的属性：主演。再做一个，我就不做了！
@@ -102,6 +104,7 @@ public class YOUKUProcessServiceImpl implements ProcessService {
         System.out.println( "RegExUtils。主演是："+rst );
         System.out.println( "-----------------" );
         System.out.println( "使用RegExHtmlUtil页面解析工具类嗷！："+RegExHtmlUtil.getFieldByRegEx(page, mainActorRegEx,1) );
+        //并将解析结果封装进对象中，我不做了！
     }
 
 
