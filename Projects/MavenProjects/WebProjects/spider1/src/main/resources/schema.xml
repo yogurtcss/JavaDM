@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="example" version="1.5" >
+    <!-- 保留字段，不能删除，否则报错 -->
+    <field name="_version_" type="long" indexed="true" stored="true" />
+    <field name="_root_" type="string"  indexed="true" stored="false" />
+    <!--
+    name字段名
+    type 之前定义过的各种 FieldType
+    indexed 是否被索引
+    stored 是否被存储 ——如果不需要存储相应字段值，尽量设为false
+    -->
+
+    <!-- 把需要分词的字段，设置为 text_ik -->
+    <field name="tvName" type="text_ik" indexed="true" stored="true" />
+
+    <field name="url" type="text_general" indexed="true" stored="true" />
+    <field name="heatText" type="string" indexed="true" stored="true" />
+    <field name="score" type="string" indexed="true" stored="true" />
+    <field name="tag" type="string" indexed="true" stored="true" />
+
+    <!-- 建一个拷贝字段，把所有的 全文本字段 都复制进这一个字段中，以便进行统一的检索 -->
+    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"  />
+
+    <!-- 文档的唯一标识，类似于主键 -->
+    <uniqueKey>tvId</uniqueKey>
+
+    <!-- 拷贝需要索引的字段(如tvName) 到整合字段text中 -->
+    <copyField source="tvName" dest="text" />
+
+    <!-- 我添加的IK分词 -->
+    <fieldType name="text_ik" class="solr.TextField" >
+        <analyzer type="index" isMaxWordLength="false" class="org.wltea.analyzer.lucene.IKAnalyzer" />
+        <analyzer type="query" isMaxWordLength="true" class="org.wltea.analyzer.lucene.IKAnalyzer" />
+    </fieldType>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+
+
+</schema>

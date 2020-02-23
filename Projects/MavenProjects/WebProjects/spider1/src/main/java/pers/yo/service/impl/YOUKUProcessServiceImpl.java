@@ -4,6 +4,7 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 import pers.yo.entity.Page;
+import pers.yo.service.DownloadService;
 import pers.yo.service.ProcessService;
 import pers.yo.utils.RegExHtmlUtil;
 import pers.yo.utils.RegExUtil;
@@ -12,11 +13,11 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class YOUKUProcessServiceImpl implements ProcessService { //解析页面，并将解析结果封装进对象中
+//这是2016年网址的正则表达式，2020年不适用了
+//public class YOUKUProcessServiceImpl implements ProcessService { //解析页面，并将解析结果封装进对象中
+public class YOUKUProcessServiceImpl {
 
-
-    @Override
-    public void process(Page page) { //爬虫爬到的页面对象Page：里面混杂一堆HTML标签
+    public void processDetailPage(Page page) { //爬虫爬到的页面对象Page：里面混杂一堆HTML标签
         String content = page.getContent(); //获取页面对象的正文内容：一堆HTML标签，需要用正则表达式整活
         //System.out.println( content );
         System.out.println( "----------" );
@@ -51,7 +52,7 @@ public class YOUKUProcessServiceImpl implements ProcessService { //解析页面�
              *  */
             System.out.println( "整个正则表达式的匹配字符串："+m_alias.group(0) ); //原本的 整个正则表达式的匹配字符串
             System.out.println( "匹配的第一个括号处："+m_alias.group(1) ); //匹配的第一个括号处
-            page.setAlias( m_alias.group(1) ); //并将解析结果封装进对象中
+            //page.setAlias( m_alias.group(1) ); //并将解析结果封装进对象中
         }else{
             System.out.println( "正则表达式匹配不到结果！" );
         }
@@ -83,7 +84,7 @@ public class YOUKUProcessServiceImpl implements ProcessService { //解析页面�
         Matcher m_showTime = showTimePtn.matcher( content ); //匹配全文
         if( m_showTime.find() ){ //一定要先find()，然后才group()啊！
             System.out.println( "正则表达式。上映时间为："+m_showTime.group(1) );
-            page.setShowTime( m_showTime.group(1) ); //并将解析结果封装进对象中
+            //page.setShowTime( m_showTime.group(1) ); //并将解析结果封装进对象中
         }
 
         //获取其他的属性：主演。再做一个，我就不做了！
@@ -108,4 +109,7 @@ public class YOUKUProcessServiceImpl implements ProcessService { //解析页面�
     }
 
 
+    public void processAsyncPage(String url_queue,DownloadService downloadService) {
+        //空实现
+    }
 }
