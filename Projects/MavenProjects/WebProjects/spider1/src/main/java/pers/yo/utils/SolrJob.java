@@ -23,7 +23,7 @@ public class SolrJob {
                     if( page!=null ){ //如果能查到，立马建立索引
                         SolrUtil.addIndex( page );
                     }
-                    tvId = JedisPoolUtils.poll( SOLR_TV_INDEX );
+                    tvId = JedisPoolUtils.poll( SOLR_TV_INDEX ); //获取下一个tvId
                 }else{
                     System.out.println( "目前没有需要索引的数据，休息一会再处理！" );
                     ThreadUtil.sleep( 5000 );
@@ -35,4 +35,12 @@ public class SolrJob {
         }
 
     }
+
+    /* 2020-02-24 09:36:32
+    * 原来还有这个主函数！
+    * */
+    public static void main(String[] args) {
+        buildIndex();
+    }
+
 }
