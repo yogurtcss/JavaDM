@@ -264,7 +264,16 @@ public class HBaseUtil {
 			if (raw.length == 5) {
 				page = new Page();
 				page.setTvId(row);
-				//这个顺序与 StoreServiceImpl中 HBaseUtil存入数据的顺序一致！
+				/* 2020-02-27 16:59:22 破案
+				* raw()方法返回的数组，已经按照字典序排列
+				* 即：按照26字母表ABCDEFG……顺序【按位】进行排序
+				* 如变量名中的：
+				* 1号：Againstnumber
+				* 2号：Allnumber
+				* 第一个字母都是A，
+				* 则比较第二个字母：1号的为g，2号的为l
+				* 则此时raw()方法返回的数组中： 1号在2号 的前面！！
+				*  */
 				page.setHeatText(new String(raw[0].getValue()));
 				page.setScore(new String(raw[1].getValue()));
 				page.setTag(new String(raw[2].getValue()));
