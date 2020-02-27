@@ -60,9 +60,11 @@ public class HBaseUtil {
 		conf = new Configuration();
 		/* 2020-02-23 20:57:53
 		* 这里我没有hadoop！没法做！
+		*
+		* 2020-02-26 21:34:05 回来了
 		*  */
-		conf.set("hbase.zookeeper.quorum", "192.168.20.129:2181");
-		conf.set("hbase.rootdir", "hdfs://192.168.20.129:9000/hbase");
+		conf.set("hbase.zookeeper.quorum", "192.168.11.102:2181");
+		conf.set("hbase.rootdir", "hdfs://192.168.11.102:9000/HBase");
 
 		try {
 			admin = new HBaseAdmin(conf);
@@ -263,11 +265,11 @@ public class HBaseUtil {
 				page = new Page();
 				page.setTvId(row);
 				//这个顺序与 StoreServiceImpl中 HBaseUtil存入数据的顺序一致！
-				page.setUrl(new String(raw[0].getValue()));
-				page.setTvName(new String(raw[1].getValue()));
-				page.setHeatText(new String(raw[2].getValue()));
-				page.setScore(new String(raw[3].getValue()));
-				page.setTag(new String(raw[4].getValue()));
+				page.setHeatText(new String(raw[0].getValue()));
+				page.setScore(new String(raw[1].getValue()));
+				page.setTag(new String(raw[2].getValue()));
+				page.setTvName(new String(raw[3].getValue()));
+				page.setUrl(new String(raw[4].getValue()));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
