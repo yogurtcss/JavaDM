@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolrUtil {
-    private static final String SOLR_URL = "http://localhost:8983/solr"; //solr服务器地址
+    private static final String SOLR_URL = "http://localhost:8983/solr/meta_db"; //solr服务器地址
     private static HttpSolrServer server = null;
 
     static{
@@ -98,7 +98,7 @@ public class SolrUtil {
         List<Page> pageList = new ArrayList<>();
         int count = 0;
         try{
-            pageList = SolrUtil.search( "爱情公寓",0,10,"","" );
+            pageList = SolrUtil.search( "我的",0,10,"","" );
             for( Page page : pageList ){
                 System.out.println( "tvName："+page.getTvName() );
             }
@@ -106,6 +106,8 @@ public class SolrUtil {
             e.printStackTrace();
         }
         System.out.println( JSONArray.fromObject(pageList).toString() );
+
+//        delIndex();
     }
 
 
