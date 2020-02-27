@@ -41,6 +41,7 @@ public class SolrJob {
     * */
     public static void main(String[] args) {
         buildIndex();
+
     }
 
 }
