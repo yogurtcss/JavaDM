@@ -87,7 +87,9 @@ public class StartDSJCount {
                         System.out.println( "当前是第 "+Thread.currentThread().getId()+" 个线程在工作：" );
                         Page page = StartDSJCount.this.downloadPage( url ); //下载当前列表的url，需要改为final！！
                         StartDSJCount.this.ps.processDetailPage(page); //要加上 StartDSJCount.this.XXX
-                        // StartDSJCount.this.ss.store(page);  //这里是连接HBase的关键！
+
+                        StartDSJCount.this.ss.store(page);  //这里是连接HBase的关键！
+
                         System.out.println( page );
 
                         String millions_str = LoadConfigPropertiesUtil.getPropsFromConfigByKeyName("millions");
